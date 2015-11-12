@@ -1,0 +1,8 @@
+name: BearQuake
+version: 0.1
+author: FrozenDroid
+
+main: com.frozendroid.bearquake.BearQuake
+commands:
+    railgun:
+        description: Main command for Railgun
