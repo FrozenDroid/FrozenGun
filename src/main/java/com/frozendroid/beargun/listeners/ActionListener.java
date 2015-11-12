@@ -1,10 +1,10 @@
-package com.frozendroid.bearquake.listeners;
+package com.frozendroid.beargun.listeners;
 
-import com.frozendroid.bearquake.MinigameManager;
-import com.frozendroid.bearquake.models.Arena;
-import com.frozendroid.bearquake.models.Gun;
-import com.frozendroid.bearquake.models.MinigamePlayer;
-import com.frozendroid.bearquake.models.Queue;
+import com.frozendroid.beargun.MinigameManager;
+import com.frozendroid.beargun.models.Arena;
+import com.frozendroid.beargun.models.Gun;
+import com.frozendroid.beargun.models.MinigamePlayer;
+import com.frozendroid.beargun.models.Queue;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

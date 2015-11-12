@@ -1,14 +1,8 @@
-package com.frozendroid.bearquake.commands;
+package com.frozendroid.beargun.commands;
 
-import com.frozendroid.bearquake.models.Gun;
-import com.frozendroid.bearquake.MinigameManager;
-import com.frozendroid.bearquake.models.Match;
-import com.frozendroid.bearquake.models.MinigamePlayer;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class CommandHandler implements CommandExecutor {

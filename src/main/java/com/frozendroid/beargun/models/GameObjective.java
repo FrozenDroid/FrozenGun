@@ -1,4 +1,4 @@
-package com.frozendroid.bearquake.models;
+package com.frozendroid.beargun.models;
 
 public class GameObjective {
 

@@ -1,9 +1,9 @@
-package com.frozendroid.bearquake;
+package com.frozendroid.beargun;
 
-import com.frozendroid.bearquake.models.Arena;
-import com.frozendroid.bearquake.models.Gun;
-import com.frozendroid.bearquake.models.Match;
-import com.frozendroid.bearquake.models.MinigamePlayer;
+import com.frozendroid.beargun.models.Arena;
+import com.frozendroid.beargun.models.Gun;
+import com.frozendroid.beargun.models.Match;
+import com.frozendroid.beargun.models.MinigamePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

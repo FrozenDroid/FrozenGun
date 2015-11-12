@@ -1,13 +1,12 @@
-package com.frozendroid.bearquake.models;
+package com.frozendroid.beargun.models;
 
 import com.darkblade12.particleeffect.ParticleEffect;
-import com.frozendroid.bearquake.MinigameManager;
-import com.frozendroid.bearquake.utils.Vector3D;
+import com.frozendroid.beargun.MinigameManager;
+import com.frozendroid.beargun.utils.Vector3D;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.Action;
 import org.bukkit.util.Vector;
 
 import java.util.Iterator;

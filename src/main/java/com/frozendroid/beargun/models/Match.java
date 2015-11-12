@@ -1,7 +1,7 @@
-package com.frozendroid.bearquake.models;
+package com.frozendroid.beargun.models;
 
-import com.frozendroid.bearquake.BearQuake;
-import com.frozendroid.bearquake.MinigameManager;
+import com.frozendroid.beargun.BearGun;
+import com.frozendroid.beargun.MinigameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -42,7 +42,7 @@ public class Match {
 
     public void startCooldownBar(MinigamePlayer player)
     {
-        cooldownbars.put(player, Bukkit.getScheduler().runTaskTimer(BearQuake.plugin, () -> player.getPlayer().setExp(
+        cooldownbars.put(player, Bukkit.getScheduler().runTaskTimer(BearGun.plugin, () -> player.getPlayer().setExp(
                         1F / ((float) player.getGun().getCooldown()) * (float) player.getGun().getCooldownTime() / 1000
                 ), 0L, 1L)
         );

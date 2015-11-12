@@ -1,12 +1,7 @@
-package com.frozendroid.bearquake.models;
+package com.frozendroid.beargun.models;
 
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Spawn {
 

@@ -1,4 +1,4 @@
-package com.frozendroid.bearquake.models;
+package com.frozendroid.beargun.models;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

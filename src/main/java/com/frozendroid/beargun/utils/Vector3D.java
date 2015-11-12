@@ -1,4 +1,4 @@
-package com.frozendroid.bearquake.utils;
+package com.frozendroid.beargun.utils;
 
 /*
 * Attack hidden players

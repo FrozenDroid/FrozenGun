@@ -1,9 +1,8 @@
-package com.frozendroid.bearquake.loaders;
+package com.frozendroid.beargun.loaders;
 
-import com.frozendroid.bearquake.MinigameManager;
-import com.frozendroid.bearquake.models.Gun;
-import com.frozendroid.bearquake.utils.ConfigLoader;
-import org.bukkit.Bukkit;
+import com.frozendroid.beargun.MinigameManager;
+import com.frozendroid.beargun.models.Gun;
+import com.frozendroid.beargun.utils.ConfigLoader;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

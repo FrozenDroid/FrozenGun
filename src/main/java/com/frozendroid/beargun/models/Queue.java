@@ -1,7 +1,7 @@
-package com.frozendroid.bearquake.models;
+package com.frozendroid.beargun.models;
 
-import com.frozendroid.bearquake.BearQuake;
-import com.frozendroid.bearquake.MinigameManager;
+import com.frozendroid.beargun.BearGun;
+import com.frozendroid.beargun.MinigameManager;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class Queue {
 
     public void startWaitingTimer()
     {
-        waiting_timer = BearQuake.plugin.getServer().getScheduler().runTaskTimer(BearQuake.plugin, () -> {
+        waiting_timer = BearGun.plugin.getServer().getScheduler().runTaskTimer(BearGun.plugin, () -> {
             if (checker_timer == null) {
                 startQueueChecker();
             }
@@ -38,7 +38,7 @@ public class Queue {
 
     public void startQueueChecker()
     {
-        checker_timer = BearQuake.plugin.getServer().getScheduler().runTaskTimer(BearQuake.plugin, () -> {
+        checker_timer = BearGun.plugin.getServer().getScheduler().runTaskTimer(BearGun.plugin, () -> {
             if (arena.getMinPlayers() <= players.size()) {
                 startingSince = System.currentTimeMillis()/1000L;
                 startStartingTimer();
@@ -50,7 +50,7 @@ public class Queue {
 
     public void startStartingTimer()
     {
-        starting_timer = BearQuake.plugin.getServer().getScheduler().runTaskTimer(BearQuake.plugin, () -> {
+        starting_timer = BearGun.plugin.getServer().getScheduler().runTaskTimer(BearGun.plugin, () -> {
             timeTillStart = 5-(System.currentTimeMillis()/1000L-startingSince);
             if (timeTillStart <= 0) {
                 Match match = new Match();

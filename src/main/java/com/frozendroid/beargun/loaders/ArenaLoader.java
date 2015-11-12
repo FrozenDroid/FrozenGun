@@ -1,11 +1,11 @@
-package com.frozendroid.bearquake.loaders;
+package com.frozendroid.beargun.loaders;
 
-import com.frozendroid.bearquake.BearQuake;
-import com.frozendroid.bearquake.MinigameManager;
-import com.frozendroid.bearquake.models.Arena;
-import com.frozendroid.bearquake.models.Gun;
-import com.frozendroid.bearquake.models.Spawn;
-import com.frozendroid.bearquake.utils.ConfigLoader;
+import com.frozendroid.beargun.BearGun;
+import com.frozendroid.beargun.MinigameManager;
+import com.frozendroid.beargun.models.Arena;
+import com.frozendroid.beargun.models.Gun;
+import com.frozendroid.beargun.models.Spawn;
+import com.frozendroid.beargun.utils.ConfigLoader;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -47,7 +47,7 @@ public class ArenaLoader {
                 JSONObject spawn_ = new JSONObject(spawnJSON);
 
 
-                World world = BearQuake.plugin.getServer().getWorld(spawn_.getString("world"));
+                World world = BearGun.plugin.getServer().getWorld(spawn_.getString("world"));
                 double x = spawn_.getDouble("x");
                 double y = spawn_.getDouble("y");
                 double z = spawn_.getDouble("z");

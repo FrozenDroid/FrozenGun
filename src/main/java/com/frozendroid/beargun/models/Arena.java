@@ -1,6 +1,6 @@
-package com.frozendroid.bearquake.models;
+package com.frozendroid.beargun.models;
 
-import com.frozendroid.bearquake.MinigameManager;
+import com.frozendroid.beargun.MinigameManager;
 
 import java.util.ArrayList;
 import java.util.List;

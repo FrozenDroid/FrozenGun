@@ -1,9 +1,9 @@
-package com.frozendroid.bearquake.listeners;
+package com.frozendroid.beargun.listeners;
 
-import com.frozendroid.bearquake.MinigameManager;
-import com.frozendroid.bearquake.models.Match;
-import com.frozendroid.bearquake.models.MinigamePlayer;
-import com.frozendroid.bearquake.models.Spawn;
+import com.frozendroid.beargun.MinigameManager;
+import com.frozendroid.beargun.models.Match;
+import com.frozendroid.beargun.models.MinigamePlayer;
+import com.frozendroid.beargun.models.Spawn;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
