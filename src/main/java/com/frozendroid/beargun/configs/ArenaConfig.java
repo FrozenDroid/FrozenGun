@@ -1,10 +1,11 @@
-package com.frozendroid.beargun.loaders;
+package com.frozendroid.beargun.configs;
 
 import com.frozendroid.beargun.BearGun;
 import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.models.Arena;
 import com.frozendroid.beargun.models.Gun;
 import com.frozendroid.beargun.models.Spawn;
+import com.frozendroid.beargun.models.objectives.KillObjective;
 import com.frozendroid.beargun.utils.ConfigLoader;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class ArenaLoader {
+public class ArenaConfig {
 
     public static boolean loadArenas()
     {
@@ -39,8 +40,14 @@ public class ArenaLoader {
             arena.setMaxPlayers(section.getInt("max_players"));
             arena.setGun(Gun.findByName(section.getString("gun")));
 
-            section.getConfigurationSection("objectives").getKeys(false).stream().forEach(System.out::println);
-            section.getConfigurationSection("objectives").getValues(false).values().stream().forEach(System.out::println);
+            section.getConfigurationSection("objectives").getKeys(false).stream().forEach((key_) -> {
+                switch (key_) {
+                    case "total_kills":
+                        KillObjective objective = new KillObjective();
+                        objective.setKillGoal(section.getConfigurationSection("objectives").getInt(key_));
+                        arena.addObjective(objective);
+                }
+            });
 
             section.getStringList("spawns").forEach((String spawnJSON) -> {
                 Spawn spawn = new Spawn();

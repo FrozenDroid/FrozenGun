@@ -2,6 +2,7 @@ package com.frozendroid.beargun.models;
 
 import com.frozendroid.beargun.BearGun;
 import com.frozendroid.beargun.MinigameManager;
+import com.frozendroid.beargun.interfaces.GameObjective;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -17,7 +18,7 @@ public class Match {
     private List<MinigamePlayer> players = new ArrayList<>();
     private HashMap<MinigamePlayer, BukkitTask> cooldownbars = new HashMap<>();
     private Scoreboard scoreboard;
-    private List<GameObjective> objectives;
+    private List<GameObjective> objectives = new ArrayList<>();
 
     public List<MinigamePlayer> getPlayers()
     {
@@ -56,8 +57,22 @@ public class Match {
 
     public void end()
     {
-        players.forEach(this::stopCooldownBar);
-        MinigameManager.getMatches().remove(this);
+
+        objectives.forEach((objective) -> {
+            BearGun.plugin.getServer().broadcastMessage(objective.getEndText());
+            objective.stop();
+            objective.reset();
+        });
+
+        Bukkit.getScheduler().runTaskLater(BearGun.plugin, () -> {
+             players.forEach((player) -> {
+                 this.stopCooldownBar(player);
+                 this.stopScoreboard(player);
+                 player.leave(this);
+             });
+
+             MinigameManager.getMatches().remove(this);
+         }, 5L);
     }
 
     public void startScoreboard()
@@ -73,23 +88,29 @@ public class Match {
             player.getPlayer().setScoreboard(scoreboard);
             objective.getScore(player.getPlayer()).setScore(0);
         });
+    }
 
+    public void stopScoreboard(MinigamePlayer player)
+    {
+        player.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
     }
 
     public void start()
     {
         players.forEach((player) -> {
+            player.setLastLocation(player.getPlayer().getLocation());
             player.join(this);
             player.setGun(new Gun(arena.getGun(), player));
-            arena.getSpawns().stream().forEach((spawn_) -> {
-                Bukkit.broadcastMessage(spawn_.getLocation().toString() + " feasible? " + spawn_.isFeasible());
-            });
             Spawn spawn = getFeasibleSpawn();
             player.getPlayer().teleport(spawn.getLocation());
             startCooldownBar(player);
         });
         startScoreboard();
-
+        this.objectives = arena.getObjectives();
+        this.getObjectives().forEach((objective) -> {
+            objective.setMatch(this);
+            objective.start();
+        });
     }
 
     public Spawn getFeasibleSpawn()
@@ -104,11 +125,13 @@ public class Match {
         });
     }
 
-    public Arena getArena() {
+    public Arena getArena()
+    {
         return arena;
     }
 
-    public void setArena(Arena arena) {
+    public void setArena(Arena arena)
+    {
         arena.getObjectives().stream().forEach(objective -> {
             try {
                 addObjective(objective.getClass().newInstance());
@@ -119,15 +142,23 @@ public class Match {
         this.arena = arena;
     }
 
-    public void addObjective(GameObjective objective) {
+    public void addObjective(GameObjective objective)
+    {
         this.objectives.add(objective);
     }
 
-    public List<GameObjective> getObjectives() {
+    public List<GameObjective> getObjectives()
+    {
         return objectives;
     }
 
-    public void setObjectives(List<GameObjective> objectives) {
+    public Scoreboard getScoreboard()
+    {
+        return scoreboard;
+    }
+
+    public void setObjectives(List<GameObjective> objectives)
+    {
         this.objectives = objectives;
     }
 }

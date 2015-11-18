@@ -16,23 +16,11 @@ public class CommandHandler implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-//        if (args.length == 1) {
-//            if (args[0].equalsIgnoreCase("init")) {
-//                Player player = (Player) sender;
-//                Match match = MinigameManager.getMatches().get(0);
-////                match.addPlayer(player);
-//                MinigamePlayer mgmplayer = match.findPlayer(player.getUniqueId());
-//                Gun gun = new Gun();
-//                gun.setCooldown(1.5);
-//                gun.setDamage(5);
-//                gun.setMaterial(Material.IRON_HOE);
-//                gun.setName("THE REKKER");
-//                mgmplayer.setGun(gun);
-//
-//
-//
-//            }
-//        }
+        if (args.length == 3) {
+            if (args[0].equalsIgnoreCase("arena") && args[1].equalsIgnoreCase("new")) {
+                NewCommand.run(args[2], sender);
+            }
+        }
         return true;
     }
 

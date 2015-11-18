@@ -1,4 +1,4 @@
-package com.frozendroid.beargun.loaders;
+package com.frozendroid.beargun.configs;
 
 import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.models.Gun;
@@ -10,7 +10,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GunLoader {
+public class GunConfig {
+
 
     public static boolean loadGuns()
     {

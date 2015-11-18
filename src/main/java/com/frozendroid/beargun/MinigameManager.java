@@ -66,4 +66,8 @@ public class MinigameManager {
         players.add(player);
     }
 
+    public static boolean removePlayer(MinigamePlayer player) {
+        return players.remove(player);
+    }
+
 }

@@ -58,6 +58,7 @@ public class Queue {
                 match.setArena(arena);
                 players.forEach(match::addPlayer);
                 match.start();
+                arena.setQueue(null);
                 this.starting_timer.cancel();
             }
             players.forEach((player) -> {

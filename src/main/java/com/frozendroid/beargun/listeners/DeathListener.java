@@ -4,8 +4,10 @@ import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.models.Match;
 import com.frozendroid.beargun.models.MinigamePlayer;
 import com.frozendroid.beargun.models.Spawn;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.Plugin;
@@ -32,25 +34,10 @@ public class DeathListener implements Listener {
             return;
 
         event.getDrops().clear();
-    }
-
-    @EventHandler
-    public void onPlayerRespawn(PlayerRespawnEvent event)
-    {
-        MinigamePlayer player = MinigameManager.getPlayer(event.getPlayer());
-
-        if (player == null)
-            return;
-
-        if (!player.isInMatch())
-            return;
-
 
         Match match = player.getMatch();
-        Spawn spawn = match.getFeasibleSpawn();
-        event.setRespawnLocation(spawn.getLocation());
         player.respawn(match);
-
+        event.setKeepInventory(true);
     }
 
 }

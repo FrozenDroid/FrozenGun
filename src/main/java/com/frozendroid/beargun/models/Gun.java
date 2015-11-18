@@ -1,12 +1,15 @@
 package com.frozendroid.beargun.models;
 
 import com.darkblade12.particleeffect.ParticleEffect;
+import com.frozendroid.beargun.BearGun;
 import com.frozendroid.beargun.MinigameManager;
+import com.frozendroid.beargun.events.PlayerShotEvent;
 import com.frozendroid.beargun.utils.Vector3D;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.util.Vector;
 
 import java.util.Iterator;
@@ -104,6 +107,10 @@ public class Gun {
                             && player.getMatch().findPlayer(hit.getUniqueId()) != null
                     )
             {
+                PlayerShotEvent event = new PlayerShotEvent();
+                event.setShooter(getPlayer());
+                event.setVictim(MinigameManager.getPlayer(hit));
+                BearGun.plugin.getServer().getPluginManager().callEvent(event);
                 hit.damage(this.getDamage(), shooter);
             }
 
