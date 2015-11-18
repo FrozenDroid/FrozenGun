@@ -12,6 +12,12 @@ import java.util.List;
 
 public class GunConfig {
 
+    private static FileConfiguration config;
+
+    private static FileConfiguration get()
+    {
+        return config;
+    }
 
     public static boolean loadGuns()
     {
