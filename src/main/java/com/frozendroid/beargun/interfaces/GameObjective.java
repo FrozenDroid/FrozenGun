@@ -11,6 +11,8 @@ public interface GameObjective {
     Match getMatch();
 
     String getEndText();
+    String getTypeName();
+    Object getGoal();
     void start();
     void stop();
     void reset();

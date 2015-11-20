@@ -31,6 +31,8 @@ public class BearGun extends JavaPlugin {
         arena.setMinPlayers(1);
         arena.setMaxPlayers(1337);
         arena.addSpawn(Spawn.fromLocation(this.getServer().getWorld("world").getSpawnLocation()));
+        arena.setGun(MinigameManager.getGuns().stream().findFirst().get());
+        arena.setObjectives(MinigameManager.getArenas().stream().findFirst().get().getObjectives());
         arena.save();
     }
 

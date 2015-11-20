@@ -78,10 +78,13 @@ public class Arena {
         arenaSection.set("max_players", maxPlayers);
         arenaSection.set("gun", gun.getName());
 
-        List<String> list = new ArrayList<>();
-        spawns.forEach((spawn -> list.add(spawn.toJson())));
+        List<String> spawnList = new ArrayList<>();
+        spawns.forEach((spawn -> spawnList.add(spawn.toJson())));
+        arenaSection.set("spawns", spawnList);
 
-        arenaSection.set("spawns", list);
+        ConfigurationSection objectivesSection = arenaSection.createSection("objectives");
+
+        objectives.forEach((objective) -> objectivesSection.set(objective.getTypeName(), objective.getGoal()));
 
         ConfigLoader.saveArenaConfig();
     }

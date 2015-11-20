@@ -5,13 +5,8 @@ import com.frozendroid.beargun.events.PlayerShotEvent;
 import com.frozendroid.beargun.interfaces.GameObjective;
 import com.frozendroid.beargun.models.Match;
 import com.frozendroid.beargun.models.MinigamePlayer;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -46,6 +41,16 @@ public class KillObjective implements GameObjective, Listener {
         Comparator<MinigamePlayer> byKills = (p1, p2) -> Integer.compare(kills.get(p2), kills.get(p1));
         Stream<MinigamePlayer> stream =  kills.keySet().stream().sorted(byKills);
         return stream.findFirst().get().getPlayer().getDisplayName() + " won!";
+    }
+
+    public String getTypeName()
+    {
+        return "total_kills";
+    }
+
+    public Integer getGoal()
+    {
+        return killGoal;
     }
 
     public void start()
