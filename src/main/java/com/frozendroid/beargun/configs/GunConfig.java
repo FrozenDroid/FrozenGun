@@ -21,7 +21,7 @@ public class GunConfig {
 
     public static boolean loadGuns()
     {
-        FileConfiguration config = ConfigLoader.getGunConfig();
+        config = ConfigLoader.getGunConfig();
 
         List<ConfigurationSection> gunsections = new ArrayList<>();
 

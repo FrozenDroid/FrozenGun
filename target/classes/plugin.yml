@@ -1,8 +1,0 @@
-name: BearGun
-version: 0.1
-author: FrozenDroid
-
-main: com.frozendroid.beargun.BearGun
-commands:
-    railgun:
-        description: Main command for BearGun

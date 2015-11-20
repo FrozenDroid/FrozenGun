@@ -1,12 +1,14 @@
 package com.frozendroid.beargun.models;
 
 import com.frozendroid.beargun.MinigameManager;
+import com.frozendroid.beargun.configs.ArenaConfig;
 import com.frozendroid.beargun.interfaces.GameObjective;
-import com.frozendroid.beargun.models.objectives.KillObjective;
+import com.frozendroid.beargun.utils.ConfigLoader;
+import org.bukkit.configuration.ConfigurationSection;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Arena {
 
@@ -59,6 +61,30 @@ public class Arena {
     }
 
 
+    public static Arena create()
+    {
+        return new Arena();
+    }
+
+    public void save()
+    {
+        ConfigurationSection section = ArenaConfig.get().getConfigurationSection("arenas");
+        Map<String, Object> ids = section.getValues(false);
+
+        System.out.println(ids.size()+1);
+        ConfigurationSection arenaSection = section.createSection(""+ (ids.size() + 1));
+        arenaSection.set("name", name);
+        arenaSection.set("min_players", minPlayers);
+        arenaSection.set("max_players", maxPlayers);
+        arenaSection.set("gun", gun.getName());
+
+        List<String> list = new ArrayList<>();
+        spawns.forEach((spawn -> list.add(spawn.toJson())));
+
+        arenaSection.set("spawns", list);
+
+        ConfigLoader.saveArenaConfig();
+    }
 
     public Integer getId() {
         return id;

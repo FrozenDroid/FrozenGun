@@ -1,7 +1,0 @@
-guns:
-  railgun:
-    display_name: "Railgun"
-    lore:
-      - "This is a badass railgun"
-    damage: 20
-    cooldown: 1.5

@@ -1,7 +1,13 @@
 package com.frozendroid.beargun.models;
 
+import jdk.nashorn.internal.parser.JSONParser;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.json.JSONObject;
+import org.json.simple.JSONArray;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Spawn {
 
@@ -22,6 +28,26 @@ public class Spawn {
         ).noneMatch(
                 entity -> entity.getLocation().distance(location) <= 5
         );
+    }
+
+    public static Spawn fromLocation(Location location)
+    {
+        Spawn spawn = new Spawn();
+        spawn.setLocation(location);
+        return spawn;
+    }
+
+    public String toJson()
+    {
+        JSONObject json = new JSONObject();
+        json.put("x", location.getX());
+        json.put("y", location.getY());
+        json.put("z", location.getZ());
+        json.put("world", location.getWorld().getName());
+        json.put("yaw", location.getYaw());
+        json.put("pitch", location.getPitch());
+
+        return json.toString();
     }
 
 }

@@ -13,6 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,9 +21,17 @@ import java.util.Set;
 
 public class ArenaConfig {
 
+
+    private static FileConfiguration config;
+
+    public static FileConfiguration get()
+    {
+        return config;
+    }
+
     public static boolean loadArenas()
     {
-        FileConfiguration config = ConfigLoader.getArenaConfig();
+        config = ConfigLoader.getArenaConfig();
         ConfigurationSection arenasection = config.getConfigurationSection("arenas");
         Set<String> list = arenasection.getKeys(false);
 
@@ -67,6 +76,15 @@ public class ArenaConfig {
         });
 
         return true;
+    }
+
+    public static void save()
+    {
+        try {
+            config.save("arenas.yml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

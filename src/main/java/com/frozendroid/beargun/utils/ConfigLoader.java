@@ -6,20 +6,33 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ConfigLoader {
 
+    private static ConfigAccessor arenaConfig;
+    private static ConfigAccessor gunConfig;
+
     public static FileConfiguration getArenaConfig()
     {
-        ConfigAccessor configAccessor = new ConfigAccessor((JavaPlugin) BearGun.plugin, "arenas.yml");
-        configAccessor.saveDefaultConfig();
-        configAccessor.reloadConfig();
-        return configAccessor.getConfig();
+        arenaConfig = new ConfigAccessor((JavaPlugin) BearGun.plugin, "arenas.yml");
+        arenaConfig.saveDefaultConfig();
+        arenaConfig.reloadConfig();
+        return arenaConfig.getConfig();
+    }
+
+    public static void saveArenaConfig()
+    {
+        arenaConfig.saveConfig();
+    }
+
+    public static void saveGunConfig()
+    {
+        gunConfig.saveConfig();
     }
 
     public static FileConfiguration getGunConfig()
     {
-        ConfigAccessor configAccessor = new ConfigAccessor((JavaPlugin) BearGun.plugin, "guns.yml");
-        configAccessor.saveDefaultConfig();
-        configAccessor.reloadConfig();
-        return configAccessor.getConfig();
+        gunConfig = new ConfigAccessor((JavaPlugin) BearGun.plugin, "guns.yml");
+        gunConfig.saveDefaultConfig();
+        gunConfig.reloadConfig();
+        return gunConfig.getConfig();
     }
 
 }
