@@ -4,5 +4,5 @@ author: FrozenDroid
 
 main: com.frozendroid.beargun.BearGun
 commands:
-    railgun:
+    beargun:
         description: Main command for BearGun

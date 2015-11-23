@@ -12,13 +12,13 @@ public class CommandHandler implements CommandExecutor {
     public CommandHandler(Plugin plugin)
     {
         this.plugin = plugin;
-        plugin.getServer().getPluginCommand("railgun").setExecutor(this);
+        plugin.getServer().getPluginCommand("beargun").setExecutor(this);
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 3) {
+        if (args.length == 2) {
             if (args[0].equalsIgnoreCase("arena") && args[1].equalsIgnoreCase("new")) {
-                NewCommand.run(args[2], sender);
+                NewCommand.run(sender);
             }
         }
         return true;
