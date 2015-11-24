@@ -95,7 +95,15 @@ public class ActionListener implements Listener {
                 return;
             }
 
+
+            MinigamePlayer player = MinigameManager.getPlayer(evt.getPlayer());
+
             if (arena.hasQueue()) {
+                if (arena.getQueue().getPlayers().contains(player)) {
+                    evt.getPlayer().sendMessage("Already in queue!");
+                    return;
+                }
+
                 arena.getQueue().addPlayer(new MinigamePlayer(evt.getPlayer()));
                 return;
             }
