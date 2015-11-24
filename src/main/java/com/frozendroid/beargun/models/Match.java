@@ -4,6 +4,7 @@ import com.frozendroid.beargun.BearGun;
 import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.interfaces.GameObjective;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
@@ -65,14 +66,26 @@ public class Match {
         });
 
         Bukkit.getScheduler().runTaskLater(BearGun.plugin, () -> {
-             players.forEach((player) -> {
-                 this.stopCooldownBar(player);
-                 this.stopScoreboard(player);
-                 player.leave(this);
-             });
+            for (Iterator<MinigamePlayer> iterator = players.iterator(); iterator.hasNext();) {
+                MinigamePlayer player = iterator.next();
+                this.stopCooldownBar(player);
+                this.stopScoreboard(player);
+                leave(player);
+                iterator.remove();
+            }
 
-             MinigameManager.getMatches().remove(this);
-         }, 5L);
+            MinigameManager.getMatches().remove(this);
+        }, 5L);
+    }
+
+    public void leave(MinigamePlayer player)
+    {
+        player.removeGun();
+        stopScoreboard(player);
+        player.getPlayer().setHealth(20);
+        player.getPlayer().getInventory().setContents(player.getLastInventoryContents());
+        player.getPlayer().teleport(player.getLastLocation());
+        MinigameManager.removePlayer(player);
     }
 
     public void startScoreboard()
@@ -99,6 +112,7 @@ public class Match {
     {
         players.forEach((player) -> {
             player.setLastLocation(player.getPlayer().getLocation());
+            player.setLastInventoryContents(player.getPlayer().getInventory().getContents());
             player.join(this);
             player.setGun(new Gun(arena.getGun(), player));
             Spawn spawn = getFeasibleSpawn();

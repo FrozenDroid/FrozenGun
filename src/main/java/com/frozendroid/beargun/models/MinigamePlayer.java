@@ -5,6 +5,7 @@ import com.frozendroid.beargun.MinigameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -17,6 +18,7 @@ public class MinigamePlayer {
     private Player player;
     private Match match;
     private Location lastLocation;
+    private ItemStack[] lastInventoryContents;
 
     public MinigamePlayer(Player player)
     {
@@ -70,12 +72,7 @@ public class MinigamePlayer {
 
     public void leave(Match match)
     {
-        this.removeGun();
-        match.stopScoreboard(this);
-        this.getPlayer().setHealth(20);
-        this.getPlayer().teleport(getLastLocation());
-        match.removePlayer(this);
-        MinigameManager.removePlayer(this);
+
     }
 
     public Location getLastLocation()
@@ -86,5 +83,15 @@ public class MinigamePlayer {
     public void setLastLocation(Location lastLocation)
     {
         this.lastLocation = lastLocation;
+    }
+
+    public ItemStack[] getLastInventoryContents()
+    {
+        return lastInventoryContents;
+    }
+
+    public void setLastInventoryContents(ItemStack[] contents)
+    {
+        this.lastInventoryContents = contents;
     }
 }
