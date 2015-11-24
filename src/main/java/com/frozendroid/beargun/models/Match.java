@@ -142,6 +142,14 @@ public class Match {
         this.arena = arena;
     }
 
+    public void removePlayer(MinigamePlayer player)
+    {
+        players.remove(player);
+        if (players.size() == 0) {
+            end();
+        }
+    }
+
     public void addObjective(GameObjective objective)
     {
         this.objectives.add(objective);

@@ -70,9 +70,11 @@ public class MinigamePlayer {
 
     public void leave(Match match)
     {
+        this.removeGun();
+        match.stopScoreboard(this);
         this.getPlayer().setHealth(20);
         this.getPlayer().teleport(getLastLocation());
-        this.removeGun();
+        match.removePlayer(this);
         MinigameManager.removePlayer(this);
     }
 

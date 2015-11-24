@@ -22,16 +22,22 @@ public class ObjectivePrompt extends StringPrompt {
     @Override
     public Prompt acceptInput(ConversationContext conversationContext, String s)
     {
+        Arena arena = (Arena) conversationContext.getSessionData("arena");
+
         Pattern pattern = Pattern.compile("(\\d+)");
         Matcher matcher = pattern.matcher(s);
+        Integer goal = 0;
         if (matcher.find()) {
-            System.out.println(matcher.group(1));
+            goal = Integer.parseInt(matcher.group(1));
         } else {
             return this;
         }
 
-        if (s.contains("total_kills")) {
+        if (s.contains("total_kills") && goal != 0) {
             GameObjective objective = new KillObjective();
+            objective.setGoal(goal);
+            arena.addObjective(objective);
+
         } else {
             return this;
         }

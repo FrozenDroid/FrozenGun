@@ -33,6 +33,9 @@ public class ArenaConfig {
     {
         config = ConfigLoader.getArenaConfig();
         ConfigurationSection arenasection = config.getConfigurationSection("arenas");
+
+        if (arenasection == null) return false;
+
         Set<String> list = arenasection.getKeys(false);
 
         List<Integer> keys = new ArrayList<>();

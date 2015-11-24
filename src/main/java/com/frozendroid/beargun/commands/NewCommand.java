@@ -17,6 +17,10 @@ public class NewCommand {
         if (!(sender instanceof Player))
             return;
 
+        if (!sender.hasPermission("beargun.create.arena")) {
+            return;
+        }
+
         Player player = (Player) sender;
         Map<Object, Object> map = new HashMap<>();
         map.put("arena", Arena.create());

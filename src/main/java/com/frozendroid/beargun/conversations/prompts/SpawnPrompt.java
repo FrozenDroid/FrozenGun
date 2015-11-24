@@ -21,8 +21,13 @@ public class SpawnPrompt extends StringPrompt {
         if (s.equalsIgnoreCase("add")) {
             Spawn spawn = Spawn.fromLocation(((Player) conversationContext.getForWhom()).getLocation());
             arena.addSpawn(spawn);
+            return this;
         }
 
+        if (s.equalsIgnoreCase("enter")) {
+            arena.save();
+
+        }
         return null;
     }
 }

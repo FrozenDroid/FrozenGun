@@ -13,6 +13,7 @@ public interface GameObjective {
     String getEndText();
     String getTypeName();
     Object getGoal();
+    void setGoal(Integer i);
     void start();
     void stop();
     void reset();

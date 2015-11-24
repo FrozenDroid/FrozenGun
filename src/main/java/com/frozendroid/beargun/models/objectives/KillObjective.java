@@ -53,6 +53,11 @@ public class KillObjective implements GameObjective, Listener {
         return killGoal;
     }
 
+    public void setGoal(Integer i)
+    {
+        killGoal = i;
+    }
+
     public void start()
     {
         match.getPlayers().forEach((player) -> kills.put(player, 0));

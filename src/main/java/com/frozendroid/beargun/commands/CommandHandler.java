@@ -20,6 +20,10 @@ public class CommandHandler implements CommandExecutor {
             if (args[0].equalsIgnoreCase("arena") && args[1].equalsIgnoreCase("new")) {
                 NewCommand.run(sender);
             }
+        } else if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("leave")) {
+                LeaveCommand.run(sender);
+            }
         }
         return true;
     }
