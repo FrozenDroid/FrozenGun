@@ -23,6 +23,8 @@ public class CommandHandler implements CommandExecutor {
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("leave")) {
                 LeaveCommand.run(sender);
+            } else if (args[0].equalsIgnoreCase("reload")) {
+                ReloadCommand.run(sender);
             }
         }
         return true;
