@@ -12,78 +12,79 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
-public class KillObjective implements GameObjective, Listener {
+public class MostKillObjective implements GameObjective, Listener {
 
-    private boolean achieved = false;
     private Match match;
-    private HashMap<MinigamePlayer, Integer> kills = new HashMap<>();
     private Integer killGoal;
-
-    public void reset()
-    {
-        kills = new HashMap<>();
-    }
+    private HashMap<MinigamePlayer, Integer> kills = new HashMap<>();
 
     @EventHandler
-    public void onPlayerKill(PlayerShotEvent event)
+    public void onPlayerShot(PlayerShotEvent event)
     {
+        if (event.getVictim().getPlayer().getHealth()-event.getGun().getDamage() > 0)
+            return;
         kills.putIfAbsent(event.getShooter(), 0);
         kills.replace(event.getShooter(), kills.get(event.getShooter())+1);
-        int total = 0;
-        for (Integer value : kills.values()) { total+=value; }
-        if (total >= getKillGoal()) {
-            match.end();
-        }
+        kills.forEach((player, kills) -> {
+            if (kills >= killGoal) {
+                match.end();
+            }
+        });
     }
 
+    @Override
+    public void setMatch(Match match)
+    {
+        this.match = match;
+    }
+
+    @Override
+    public Match getMatch()
+    {
+        return match;
+    }
+
+    @Override
     public String getEndText()
     {
         Comparator<MinigamePlayer> byKills = (p1, p2) -> Integer.compare(kills.get(p2), kills.get(p1));
         Stream<MinigamePlayer> stream =  kills.keySet().stream().sorted(byKills);
-        return stream.findFirst().get().getPlayer().getDisplayName() + " won!";
+        return stream.findFirst().get().getPlayer().getName() + " won the game at "+match.getArena().getName();
     }
 
+    @Override
     public String getTypeName()
     {
-        return "total_kills";
+        return "most_kills";
     }
 
-    public Integer getGoal()
+    @Override
+    public Object getGoal()
     {
         return killGoal;
     }
 
+    @Override
     public void setGoal(Integer i)
     {
-        killGoal = i;
+        this.killGoal = i;
     }
 
+    @Override
     public void start()
     {
-        match.getPlayers().forEach((player) -> kills.put(player, 0));
         BearGun.plugin.getServer().getPluginManager().registerEvents(this, BearGun.plugin);
     }
 
+    @Override
     public void stop()
     {
         PlayerShotEvent.getHandlerList().unregister(this);
     }
 
-    public Match getMatch() {
-        return match;
-    }
-
-    public void setMatch(Match match) {
-        this.match = match;
-    }
-
-    public Integer getKillGoal()
+    @Override
+    public void reset()
     {
-        return killGoal;
-    }
-
-    public void setKillGoal(Integer killGoal)
-    {
-        this.killGoal = killGoal;
+        killGoal = 0;
     }
 }

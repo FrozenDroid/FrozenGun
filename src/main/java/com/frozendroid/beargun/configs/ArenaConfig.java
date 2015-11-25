@@ -5,7 +5,8 @@ import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.models.Arena;
 import com.frozendroid.beargun.models.Gun;
 import com.frozendroid.beargun.models.Spawn;
-import com.frozendroid.beargun.models.objectives.KillObjective;
+import com.frozendroid.beargun.models.objectives.MostKillObjective;
+import com.frozendroid.beargun.models.objectives.TotalKillObjective;
 import com.frozendroid.beargun.utils.ConfigLoader;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -55,9 +56,15 @@ public class ArenaConfig {
             section.getConfigurationSection("objectives").getKeys(false).stream().forEach((key_) -> {
                 switch (key_) {
                     case "total_kills":
-                        KillObjective objective = new KillObjective();
-                        objective.setKillGoal(section.getConfigurationSection("objectives").getInt(key_));
-                        arena.addObjective(objective);
+                        TotalKillObjective totalKillObjective = new TotalKillObjective();
+                        totalKillObjective.setGoal(section.getConfigurationSection("objectives").getInt(key_));
+                        arena.addObjective(totalKillObjective);
+                        break;
+                    case "most_kills":
+                        MostKillObjective mostKillObjective = new MostKillObjective();
+                        mostKillObjective.setGoal(section.getConfigurationSection("objectives").getInt(key_));
+                        arena.addObjective(mostKillObjective);
+                        break;
                 }
             });
 

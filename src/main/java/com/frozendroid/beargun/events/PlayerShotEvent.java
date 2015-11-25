@@ -1,5 +1,6 @@
 package com.frozendroid.beargun.events;
 
+import com.frozendroid.beargun.models.Gun;
 import com.frozendroid.beargun.models.MinigamePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -10,7 +11,7 @@ public class PlayerShotEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private MinigamePlayer victim;
     private MinigamePlayer shooter;
-
+    private Gun gun;
 
     public HandlerList getHandlers()
     {
@@ -42,4 +43,13 @@ public class PlayerShotEvent extends Event {
         this.shooter = shooter;
     }
 
+    public Gun getGun()
+    {
+        return gun;
+    }
+
+    public void setGun(Gun gun)
+    {
+        this.gun = gun;
+    }
 }

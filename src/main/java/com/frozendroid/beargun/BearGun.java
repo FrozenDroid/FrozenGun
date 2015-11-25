@@ -6,6 +6,7 @@ import com.frozendroid.beargun.configs.GunConfig;
 import com.frozendroid.beargun.listeners.ActionListener;
 import com.frozendroid.beargun.listeners.DeathListener;
 import com.frozendroid.beargun.models.Arena;
+import com.frozendroid.beargun.models.Match;
 import com.frozendroid.beargun.models.Spawn;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -33,7 +34,7 @@ public class BearGun extends JavaPlugin {
     @Override
     public void onDisable()
     {
-
+        MinigameManager.endAllMathes();
     }
 
 }

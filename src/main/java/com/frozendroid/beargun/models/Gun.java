@@ -107,11 +107,12 @@ public class Gun {
                             && player.getMatch().findPlayer(hit.getUniqueId()) != null
                     )
             {
+                hit.damage(this.getDamage(), shooter);
                 PlayerShotEvent event = new PlayerShotEvent();
                 event.setShooter(getPlayer());
                 event.setVictim(MinigameManager.getPlayer(hit));
+                event.setGun(this);
                 BearGun.plugin.getServer().getPluginManager().callEvent(event);
-                hit.damage(this.getDamage(), shooter);
             }
 
         }
