@@ -7,6 +7,7 @@ import com.frozendroid.beargun.listeners.ActionListener;
 import com.frozendroid.beargun.listeners.DeathListener;
 import com.frozendroid.beargun.models.Arena;
 import com.frozendroid.beargun.models.Spawn;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,8 +20,10 @@ public class BearGun extends JavaPlugin {
     {
         plugin = this;
 
-        GunConfig.loadGuns();
-        ArenaConfig.loadArenas();
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            GunConfig.loadGuns();
+            ArenaConfig.loadArenas();
+        }, 1L);
 
         new DeathListener(this);
         new ActionListener(this);
