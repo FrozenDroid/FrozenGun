@@ -16,6 +16,14 @@ public class MinigameManager {
     private static List<Gun> guns = new ArrayList<>();
     private static List<MinigamePlayer> players = new ArrayList<>();
 
+    public static void reset()
+    {
+        matches = new ArrayList<>();
+        arenas = new ArrayList<>();
+        guns = new ArrayList<>();
+        players = new ArrayList<>();
+    }
+
     public static List<Match> getMatches() {
         return matches;
     }
