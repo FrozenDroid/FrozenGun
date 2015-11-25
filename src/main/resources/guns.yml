@@ -1,5 +1,6 @@
 guns:
   railgun:
+    material: IRON_HOE
     display_name: "Railgun"
     lore:
       - "This is a badass railgun"
