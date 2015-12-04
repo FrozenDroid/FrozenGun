@@ -25,7 +25,7 @@ public class LeaveCommand {
             return;
         }
 
-        _player.leave(match);
+//        _player.leave(match);
     }
 
 }

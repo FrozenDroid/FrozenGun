@@ -17,11 +17,12 @@ public class TotalKillObjective implements GameObjective, Listener {
     private boolean achieved = false;
     private Match match;
     private HashMap<MinigamePlayer, Integer> kills = new HashMap<>();
+
     private Integer killGoal;
 
     public void reset()
     {
-        kills = new HashMap<>();
+        kills.clear();
     }
 
     @EventHandler
@@ -29,6 +30,8 @@ public class TotalKillObjective implements GameObjective, Listener {
     {
         if (event.getVictim().getPlayer().getHealth()-event.getGun().getDamage() > 0)
             return;
+
+
         kills.putIfAbsent(event.getShooter(), 0);
         kills.replace(event.getShooter(), kills.get(event.getShooter())+1);
         int total = 0;

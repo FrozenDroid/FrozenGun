@@ -1,6 +1,7 @@
 package com.frozendroid.beargun.models;
 
 import com.frozendroid.beargun.BearGun;
+import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.interfaces.GameObjective;
 import org.bukkit.Bukkit;
@@ -39,7 +40,7 @@ public class Match {
 
     public void broadcast(String string)
     {
-        players.stream().forEach((player) -> player.getPlayer().sendMessage(string));
+        players.stream().forEach((player) -> player.getPlayer().sendMessage(Messenger.infoMsg(string)));
     }
 
     public void startCooldownBar(MinigamePlayer player)
@@ -60,7 +61,7 @@ public class Match {
     {
 
         objectives.forEach((objective) -> {
-            BearGun.plugin.getServer().broadcastMessage(objective.getEndText());
+            BearGun.plugin.getServer().broadcastMessage(Messenger.infoMsg(objective.getEndText()));
             objective.stop();
             objective.reset();
         });
@@ -132,13 +133,6 @@ public class Match {
         return arena.getSpawns().stream().filter(Spawn::isFeasible).findFirst().orElse(arena.getSpawns().stream().findAny().get());
     }
 
-    public void respawn(MinigamePlayer player)
-    {
-        arena.getSpawns().forEach((spawn) -> {
-
-        });
-    }
-
     public Arena getArena()
     {
         return arena;
@@ -146,13 +140,7 @@ public class Match {
 
     public void setArena(Arena arena)
     {
-        arena.getObjectives().stream().forEach(objective -> {
-            try {
-                addObjective(objective.getClass().newInstance());
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        });
+        objectives.clear();
         this.arena = arena;
     }
 

@@ -5,6 +5,7 @@ import com.frozendroid.beargun.BearGun;
 import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.events.PlayerShotEvent;
 import com.frozendroid.beargun.utils.Vector3D;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -52,24 +53,23 @@ public class Gun {
 
     public void shoot()
     {
+        System.out.println("time1: " + System.currentTimeMillis());
         int ATTACK_REACH = 100;
 
         lastShot = System.currentTimeMillis();
 
-        Player shooter = player.getPlayer();
-
-        Iterator iterator = shooter.getLineOfSight((Set) null, ATTACK_REACH).iterator();
+        Iterator iterator = player.getLineOfSight((Set) null, ATTACK_REACH).iterator();
 
         int blockdistance = 100;
 
         while (iterator.hasNext()) {
             Block block  = (Block) iterator.next();
             if (block.getType() != Material.AIR) {
-                blockdistance = ((Double) block.getLocation().distance(shooter.getLocation())).intValue();
+                blockdistance = ((Double) block.getLocation().distance(player.getLocation())).intValue();
             }
         }
 
-        Location start = shooter.getEyeLocation();
+        Location start = player.getEyeLocation();
         Vector increase = start.getDirection();
 
         for (int counter = 0; counter < blockdistance-1; counter++) {
@@ -78,7 +78,7 @@ public class Gun {
             ParticleEffect.CRIT.display(0F, 0F, 0F, 0F, 1, point, 200D);
         }
 
-        Location observerPos = shooter.getEyeLocation();
+        Location observerPos = player.getEyeLocation();
         Vector3D observerDir = new Vector3D(observerPos.getDirection());
 
         Vector3D observerStart = new Vector3D(observerPos);
@@ -86,12 +86,12 @@ public class Gun {
 
         Player hit = null;
 
-        for (Player target : shooter.getWorld().getPlayers()) {
+        for (Player target : player.getWorld().getPlayers()) {
             Vector3D targetPos = new Vector3D(target.getLocation());
             Vector3D minimum = targetPos.add(-0.5, 0, -0.5);
             Vector3D maximum = targetPos.add(0.5, 1.80, 0.5);
 
-            if (target != shooter && hasIntersection(observerStart, observerEnd, minimum, maximum)) {
+            if (target != player.getPlayer() && hasIntersection(observerStart, observerEnd, minimum, maximum)) {
                 if (hit == null ||
                         hit.getLocation().distanceSquared(observerPos) >
                                 target.getLocation().distanceSquared(observerPos)) {
@@ -103,19 +103,22 @@ public class Gun {
 
         if (hit != null) {
             if (
-                    blockdistance > hit.getPlayer().getLocation().distance(shooter.getLocation())
-                            && player.getMatch().findPlayer(hit.getUniqueId()) != null
+                    blockdistance > hit.getPlayer().getLocation().distance(player.getLocation())
+                            && this.player.getMatch().findPlayer(hit.getUniqueId()) != null
                     )
             {
-                hit.damage(this.getDamage(), shooter);
+                hit.damage(this.getDamage(), player.getPlayer());
                 PlayerShotEvent event = new PlayerShotEvent();
-                event.setShooter(getPlayer());
+                event.setShooter(player);
                 event.setVictim(MinigameManager.getPlayer(hit));
                 event.setGun(this);
                 BearGun.plugin.getServer().getPluginManager().callEvent(event);
             }
 
         }
+
+        System.out.println("time2: " + System.currentTimeMillis());
+
     }
 
     public double getCooldownTime()

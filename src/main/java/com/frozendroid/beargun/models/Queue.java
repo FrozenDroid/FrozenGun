@@ -1,6 +1,7 @@
 package com.frozendroid.beargun.models;
 
 import com.frozendroid.beargun.BearGun;
+import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.MinigameManager;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -32,7 +33,7 @@ public class Queue {
             if (checker_timer == null) {
                 startQueueChecker();
             }
-            players.forEach((player) -> player.getPlayer().sendMessage("Waiting for "+(arena.getMinPlayers()-players.size())+" more players to join..."));
+            players.forEach((player) -> player.getPlayer().sendMessage(Messenger.infoMsg("Waiting for "+(arena.getMinPlayers()-players.size())+" more players to join...")));
         }, 0L, 20L*5L);
     }
 
@@ -62,7 +63,7 @@ public class Queue {
                 this.starting_timer.cancel();
             }
             players.forEach((player) -> {
-                player.getPlayer().sendMessage("Starting in "+timeTillStart);
+                player.getPlayer().sendMessage(Messenger.infoMsg("Starting in "+timeTillStart));
             });
         }, 0L, 20L);
     }

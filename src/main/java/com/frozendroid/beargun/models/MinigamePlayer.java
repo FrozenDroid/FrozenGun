@@ -27,7 +27,49 @@ public class MinigamePlayer {
 
     private Gun gun;
 
-    private Player player;
+    private Player player = null;
+    private Match match;
+    private Location lastLocation;
+    private ItemStack[] lastInventoryContents;
+
+    public MinigamePlayer(Player player)
+    {
+        this.player = player;
+    }
+
+    public Gun getGun() {
+        return gun;
+    }
+
+    public void setGun(Gun gun) {
+        ItemStack item = new ItemStack(gun.getMaterial());
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(gun.getName());
+        List<String> lore = new ArrayList<String>();
+        lore.add("Does "+gun.getDamage()/2+" hearts of damage.");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        player.getInventory().addItem(item);
+        this.gun = gun;
+    }
+
+    public void removeGun()
+    {
+        player.getInventory().remove(gun.getMaterial());
+    }
+
+    public Match getMatch() {
+        return match;
+    }
+
+    public boolean isInMatch()
+    {
+        return match != null;
+    }
+
+    public void join(Match match) {
+        this.match = match;
+    }
 
     public String getDisplayName()
     {
@@ -64,6 +106,8 @@ public class MinigamePlayer {
         return player.getEnderChest();
     }
 
+    /** @deprecated
+     * @param b */
     @Deprecated
     public void setBanned(boolean b)
     {
@@ -100,12 +144,19 @@ public class MinigamePlayer {
         player.setStatistic(statistic, i);
     }
 
+    /** @deprecated
+     * @param s
+     * @param s1 */
     @Deprecated
     public void sendTitle(String s, String s1)
     {
         player.sendTitle(s, s1);
     }
 
+    /** @deprecated
+     * @param location
+     * @param material
+     * @param b */
     @Deprecated
     public void sendBlockChange(Location location, Material material, byte b)
     {
@@ -302,6 +353,8 @@ public class MinigamePlayer {
         player.setBedSpawnLocation(location);
     }
 
+    /** @deprecated
+     * @param s */
     @Deprecated
     public void setTexturePack(String s)
     {
@@ -373,6 +426,12 @@ public class MinigamePlayer {
         return player.setWindowProperty(property, i);
     }
 
+    /** @deprecated
+     * @param location
+     * @param i
+     * @param i1
+     * @param i2
+     * @param bytes */
     @Deprecated
     public boolean sendChunkChange(Location location, int i, int i1, int i2, byte[] bytes)
     {
@@ -469,6 +528,7 @@ public class MinigamePlayer {
         player.setFireTicks(i);
     }
 
+    /** @deprecated */
     @Deprecated
     public Arrow shootArrow()
     {
@@ -510,6 +570,8 @@ public class MinigamePlayer {
         return player.isValid();
     }
 
+    /** @deprecated
+     * @param i */
     @Deprecated
     public void _INVALID_setHealth(int i)
     {
@@ -526,6 +588,9 @@ public class MinigamePlayer {
         player.setWalkSpeed(v);
     }
 
+    /** @deprecated
+     * @param hashSet
+     * @param i */
     @Deprecated
     public List<Block> getLastTwoTargetBlocks(HashSet<Byte> hashSet, int i)
     {
@@ -592,6 +657,7 @@ public class MinigamePlayer {
         player.decrementStatistic(statistic);
     }
 
+    /** @deprecated */
     @Deprecated
     public void resetTitle()
     {
@@ -603,6 +669,8 @@ public class MinigamePlayer {
         return player.addAttachment(plugin, s, b);
     }
 
+    /** @deprecated
+     * @param i */
     @Deprecated
     public void _INVALID_setLastDamage(int i)
     {
@@ -669,6 +737,7 @@ public class MinigamePlayer {
         return player.hasAchievement(achievement);
     }
 
+    /** @deprecated */
     @Deprecated
     public int _INVALID_getHealth()
     {
@@ -715,12 +784,19 @@ public class MinigamePlayer {
         return player.isBanned();
     }
 
+    /** @deprecated
+     * @param location
+     * @param effect
+     * @param i */
     @Deprecated
     public void playEffect(Location location, Effect effect, int i)
     {
         player.playEffect(location, effect, i);
     }
 
+    /** @deprecated
+     * @param i
+     * @param entity */
     @Deprecated
     public void _INVALID_damage(int i, Entity entity)
     {
@@ -737,6 +813,8 @@ public class MinigamePlayer {
         return player.getFlySpeed();
     }
 
+    /** @deprecated
+     * @param i */
     @Deprecated
     public void _INVALID_setMaxHealth(int i)
     {
@@ -828,6 +906,10 @@ public class MinigamePlayer {
         player.sendMessage(strings);
     }
 
+    /** @deprecated
+     * @param location
+     * @param b
+     * @param b1 */
     @Deprecated
     public void playNote(Location location, byte b, byte b1)
     {
@@ -854,6 +936,7 @@ public class MinigamePlayer {
         return player.hasLineOfSight(entity);
     }
 
+    /** @deprecated */
     @Deprecated
     public boolean isOnGround()
     {
@@ -880,6 +963,9 @@ public class MinigamePlayer {
         return player.beginConversation(conversation);
     }
 
+    /** @deprecated
+     * @param hashSet
+     * @param i */
     @Deprecated
     public Block getTargetBlock(HashSet<Byte> hashSet, int i)
     {
@@ -951,6 +1037,8 @@ public class MinigamePlayer {
         player.setFlying(b);
     }
 
+    /** @deprecated
+     * @param i */
     @Deprecated
     public void _INVALID_damage(int i)
     {
@@ -987,6 +1075,7 @@ public class MinigamePlayer {
         return player.getSleepTicks();
     }
 
+    /** @deprecated */
     @Deprecated
     public int _INVALID_getMaxHealth()
     {
@@ -1013,6 +1102,10 @@ public class MinigamePlayer {
         player.setBedSpawnLocation(location, b);
     }
 
+    /** @deprecated
+     * @param location
+     * @param i
+     * @param b */
     @Deprecated
     public void sendBlockChange(Location location, int i, byte b)
     {
@@ -1039,6 +1132,7 @@ public class MinigamePlayer {
         player.playEffect(entityEffect);
     }
 
+    /** @deprecated */
     @Deprecated
     public int _INVALID_getLastDamage()
     {
@@ -1160,6 +1254,7 @@ public class MinigamePlayer {
         return player.getItemInHand();
     }
 
+    /** @deprecated */
     @Deprecated
     public Snowball throwSnowball()
     {
@@ -1281,12 +1376,16 @@ public class MinigamePlayer {
         return player.spigot();
     }
 
+    /** @deprecated */
     @Deprecated
     public Egg throwEgg()
     {
         return player.throwEgg();
     }
 
+    /** @deprecated
+     * @param hashSet
+     * @param i */
     @Deprecated
     public List<Block> getLineOfSight(HashSet<Byte> hashSet, int i)
     {
@@ -1306,49 +1405,6 @@ public class MinigamePlayer {
     public long getPlayerTimeOffset()
     {
         return player.getPlayerTimeOffset();
-    }
-
-    private Match match;
-    private Location lastLocation;
-    private ItemStack[] lastInventoryContents;
-
-    public MinigamePlayer(Player player)
-    {
-        this.player = player;
-    }
-
-    public Gun getGun() {
-        return gun;
-    }
-
-    public void setGun(Gun gun) {
-        ItemStack item = new ItemStack(gun.getMaterial());
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(gun.getName());
-        List<String> lore = new ArrayList<String>();
-        lore.add("Does "+gun.getDamage()/2+" hearts of damage.");
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        player.getInventory().addItem(item);
-        this.gun = gun;
-    }
-
-    public void removeGun()
-    {
-        player.getInventory().remove(gun.getMaterial());
-    }
-
-    public Match getMatch() {
-        return match;
-    }
-
-    public boolean isInMatch()
-    {
-        return match != null;
-    }
-
-    public void join(Match match) {
-        this.match = match;
     }
 
     public void respawn(Match match)

@@ -45,45 +45,57 @@ public class ArenaConfig {
         list.forEach((String key) -> keys.add(Integer.parseInt((String) key)));
         keys.forEach((Integer key) -> arenasections.put(key, config.getConfigurationSection("arenas."+key)));
 
-        arenasections.forEach((Integer key, ConfigurationSection section) -> {
-            Arena arena = new Arena();
-            arena.setId(key);
-            arena.setName(section.getString("name"));
-            arena.setMinPlayers(section.getInt("min_players"));
-            arena.setMaxPlayers(section.getInt("max_players"));
-            arena.setGun(Gun.findByName(section.getString("gun")));
-
-            section.getConfigurationSection("objectives").getKeys(false).stream().forEach((key_) -> {
-                switch (key_) {
-                    case "total_kills":
-                        TotalKillObjective totalKillObjective = new TotalKillObjective();
-                        totalKillObjective.setGoal(section.getConfigurationSection("objectives").getInt(key_));
-                        arena.addObjective(totalKillObjective);
-                        break;
-                    case "most_kills":
-                        MostKillObjective mostKillObjective = new MostKillObjective();
-                        mostKillObjective.setGoal(section.getConfigurationSection("objectives").getInt(key_));
-                        arena.addObjective(mostKillObjective);
-                        break;
+        try {
+            arenasections.forEach((Integer key, ConfigurationSection section) -> {
+                Arena arena = new Arena();
+                arena.setId(key);
+                arena.setName(section.getString("name"));
+                arena.setMinPlayers(section.getInt("min_players"));
+                arena.setMaxPlayers(section.getInt("max_players"));
+                boolean announceKillingSpree = section.getBoolean("killing_spree");
+                if (announceKillingSpree) {
+                    arena.setAnnounceKillingSpree(announceKillingSpree);
+                    arena.setKillingSpreeDelay(section.getDouble("spree_delay"));
                 }
+                arena.setGun(Gun.findByName(section.getString("gun")));
+
+                section.getConfigurationSection("objectives").getKeys(false).stream().forEach((key_) -> {
+                    switch (key_) {
+                        case "total_kills":
+                            TotalKillObjective totalKillObjective = new TotalKillObjective();
+                            totalKillObjective.setGoal(section.getConfigurationSection("objectives").getInt(key_));
+                            arena.addObjective(totalKillObjective);
+                            break;
+                        case "most_kills":
+                            MostKillObjective mostKillObjective = new MostKillObjective();
+                            mostKillObjective.setGoal(section.getConfigurationSection("objectives").getInt(key_));
+                            arena.addObjective(mostKillObjective);
+                            break;
+                    }
+                });
+
+                section.getStringList("spawns").forEach((String spawnJSON) -> {
+                    Spawn spawn = new Spawn();
+                    JSONObject spawn_ = new JSONObject(spawnJSON);
+
+
+                    World world = BearGun.plugin.getServer().getWorld(spawn_.getString("world"));
+                    double x = spawn_.getDouble("x");
+                    double y = spawn_.getDouble("y");
+                    double z = spawn_.getDouble("z");
+                    float yaw = spawn_.getBigDecimal("yaw").floatValue();
+                    float pitch = spawn_.getBigDecimal("pitch").floatValue();
+                    spawn.setLocation(new Location(world, x, y, z, yaw, pitch));
+                    arena.addSpawn(spawn);
+                });
+                MinigameManager.addArena(arena);
             });
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.out.println("Arena config is invalid!");
+            return false;
+        }
 
-            section.getStringList("spawns").forEach((String spawnJSON) -> {
-                Spawn spawn = new Spawn();
-                JSONObject spawn_ = new JSONObject(spawnJSON);
-
-
-                World world = BearGun.plugin.getServer().getWorld(spawn_.getString("world"));
-                double x = spawn_.getDouble("x");
-                double y = spawn_.getDouble("y");
-                double z = spawn_.getDouble("z");
-                float yaw = spawn_.getBigDecimal("yaw").floatValue();
-                float pitch = spawn_.getBigDecimal("pitch").floatValue();
-                spawn.setLocation(new Location(world, x, y, z, yaw, pitch));
-                arena.addSpawn(spawn);
-            });
-            MinigameManager.addArena(arena);
-        });
 
         return true;
     }

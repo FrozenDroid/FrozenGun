@@ -22,7 +22,8 @@ public class Arena {
     private Gun gun;
     private Queue queue;
     private List<GameObjective> objectives = new ArrayList<>();
-
+    private boolean announceKillingSpree = false;
+    private Double killingSpreeDelay = 0D;
 
     public String getName() {
         return name;
@@ -139,5 +140,25 @@ public class Arena {
     public void addObjective(GameObjective objective)
     {
         objectives.add(objective);
+    }
+
+    public boolean isAnnounceKillingSpree()
+    {
+        return announceKillingSpree;
+    }
+
+    public void setAnnounceKillingSpree(boolean announceKillingSpree)
+    {
+        this.announceKillingSpree = announceKillingSpree;
+    }
+
+    public Double getKillingSpreeDelay()
+    {
+        return killingSpreeDelay;
+    }
+
+    public void setKillingSpreeDelay(Double killingSpreeDelay)
+    {
+        this.killingSpreeDelay = killingSpreeDelay;
     }
 }
