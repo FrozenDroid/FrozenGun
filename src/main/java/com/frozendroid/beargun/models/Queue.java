@@ -44,7 +44,9 @@ public class Queue {
             if (checker_timer == null) {
                 startQueueChecker();
             }
-            players.forEach((player) -> player.getPlayer().sendMessage(Messenger.infoMsg("Waiting for "+(arena.getMinPlayers()-players.size())+" more players to join...")));
+            int delta = arena.getMinPlayers()-players.size();
+            if (delta != 0)
+                players.forEach((player) -> player.getPlayer().sendMessage(Messenger.infoMsg("Waiting for "+delta+" more players to join...")));
         }, 0L, 20L*5L);
     }
 
@@ -66,7 +68,7 @@ public class Queue {
 
 
             players.forEach((player) -> {
-                if (timeTillStart % 5 == 0) {
+                if (timeTillStart % 5 == 0 && timeTillStart > 0) {
                     player.getPlayer().sendMessage(Messenger.infoMsg("Starting in " + timeTillStart));
                 } else if (timeTillStart <= 5 && timeTillStart > 0) {
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, 1);
@@ -83,9 +85,7 @@ public class Queue {
                 players.forEach((player) -> player.playSound(player.getLocation(), Sound.NOTE_PLING, 2F, 2F));
                 this.starting_timer.cancel();
             }
-            players.forEach((player) -> {
-                player.getPlayer().sendMessage(Messenger.infoMsg("Starting in "+timeTillStart));
-            });
+            timeTillStart--;
         }, 0L, 20L);
     }
 
