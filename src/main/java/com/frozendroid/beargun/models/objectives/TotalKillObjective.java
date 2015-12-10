@@ -1,22 +1,22 @@
 package com.frozendroid.beargun.models.objectives;
-
 import com.frozendroid.beargun.BearGun;
 import com.frozendroid.beargun.events.PlayerShotEvent;
 import com.frozendroid.beargun.interfaces.GameObjective;
+import com.frozendroid.beargun.models.Kill;
 import com.frozendroid.beargun.models.Match;
 import com.frozendroid.beargun.models.MinigamePlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
-public class TotalKillObjective implements GameObjective, Listener {
+public class TotalKillObjective extends GameObjective implements Listener {
 
     private boolean achieved = false;
-    private Match match;
-    private HashMap<MinigamePlayer, Integer> kills = new HashMap<>();
 
     private Integer killGoal;
 
@@ -28,24 +28,34 @@ public class TotalKillObjective implements GameObjective, Listener {
     @EventHandler
     public void onPlayerKill(PlayerShotEvent event)
     {
-        if (event.getVictim().getPlayer().getHealth()-event.getGun().getDamage() > 0)
-            return;
+        Bukkit.getScheduler().runTaskLater(BearGun.plugin, () -> {
+            if (event.getVictim().getPlayer().getHealth()-event.getGun().getDamage() > 0)
+                return;
 
+            if (match.isEnded())
+                return;
 
-        kills.putIfAbsent(event.getShooter(), 0);
-        kills.replace(event.getShooter(), kills.get(event.getShooter())+1);
-        int total = 0;
-        for (Integer value : kills.values()) { total+=value; }
-        if (total >= getGoal()) {
-            match.end();
-        }
+            int total = 0;
+
+            for (MinigamePlayer player : kills.keySet()) {
+                total += kills.get(player).size();
+            }
+
+            if (total >= killGoal) {
+                match.end();
+            }
+        }, 1L);
     }
 
     public String getEndText()
     {
-        Comparator<MinigamePlayer> byKills = (p1, p2) -> Integer.compare(kills.get(p2), kills.get(p1));
+        Comparator<MinigamePlayer> byKills = (p1, p2) -> Integer.compare(kills.get(p2).size(), kills.get(p1).size());
         Stream<MinigamePlayer> stream =  kills.keySet().stream().sorted(byKills);
-        return stream.findFirst().get().getPlayer().getDisplayName() + " won!";
+        MinigamePlayer player = stream.findFirst().orElse(null);
+        if (player == null) {
+            return "The game at "+match.getArena().getName()+" ended.";
+        }
+        return player.getPlayer().getName() + " won the game at "+match.getArena().getName();
     }
 
     public String getTypeName()
@@ -58,6 +68,12 @@ public class TotalKillObjective implements GameObjective, Listener {
         return killGoal;
     }
 
+    @Override
+    public void removePlayer(MinigamePlayer player)
+    {
+        kills.remove(player);
+    }
+
     public void setGoal(Integer i)
     {
         killGoal = i;
@@ -65,7 +81,6 @@ public class TotalKillObjective implements GameObjective, Listener {
 
     public void start()
     {
-        match.getPlayers().forEach((player) -> kills.put(player, 0));
         BearGun.plugin.getServer().getPluginManager().registerEvents(this, BearGun.plugin);
     }
 

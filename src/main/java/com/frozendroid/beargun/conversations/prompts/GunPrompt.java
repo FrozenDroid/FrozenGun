@@ -1,5 +1,6 @@
 package com.frozendroid.beargun.conversations.prompts;
 
+import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.models.Arena;
 import com.frozendroid.beargun.models.Gun;
@@ -11,7 +12,7 @@ public class GunPrompt extends StringPrompt {
     @Override
     public String getPromptText(ConversationContext conversationContext)
     {
-        return "Please enter the name for the gun to use for this arena.";
+        return Messenger.infoMsg("Please enter the name for the gun to use for this arena.");
     }
 
     @Override

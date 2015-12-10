@@ -1,5 +1,6 @@
 package com.frozendroid.beargun.conversations.prompts;
 
+import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.models.Arena;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
@@ -11,7 +12,7 @@ public class ArenaNamePrompt extends StringPrompt {
     @Override
     public String getPromptText(ConversationContext conversationContext)
     {
-        return "Please enter a name for the new arena.";
+        return Messenger.infoMsg("Please enter a name for the new arena.");
     }
 
     @Override

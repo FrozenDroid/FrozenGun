@@ -19,6 +19,7 @@ public class Arena {
     private Integer id;
     private List<Spawn> spawns = new ArrayList<>();
     private String name;
+    private Integer startingTime = 30;
     private Gun gun;
     private Queue queue;
     private List<GameObjective> objectives = new ArrayList<>();
@@ -78,6 +79,7 @@ public class Arena {
         arenaSection.set("min_players", minPlayers);
         arenaSection.set("max_players", maxPlayers);
         arenaSection.set("gun", gun.getName());
+        arenaSection.set("start_time", startingTime);
 
         List<String> spawnList = new ArrayList<>();
         spawns.forEach((spawn -> spawnList.add(spawn.toJson())));
@@ -160,5 +162,15 @@ public class Arena {
     public void setKillingSpreeDelay(Double killingSpreeDelay)
     {
         this.killingSpreeDelay = killingSpreeDelay;
+    }
+
+    public Integer getStartingTime()
+    {
+        return startingTime;
+    }
+
+    public void setStartingTime(Integer startingTime)
+    {
+        this.startingTime = startingTime;
     }
 }

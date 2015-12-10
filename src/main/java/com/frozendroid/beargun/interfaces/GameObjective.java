@@ -1,21 +1,76 @@
 package com.frozendroid.beargun.interfaces;
 
+import com.frozendroid.beargun.Messenger;
+import com.frozendroid.beargun.events.PlayerShotEvent;
+import com.frozendroid.beargun.models.Kill;
 import com.frozendroid.beargun.models.Match;
+import com.frozendroid.beargun.models.MinigamePlayer;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
-public interface GameObjective {
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public abstract class GameObjective implements Listener {
 
     boolean achieved = false;
-    Match match = null;
+    public Match match = null;
 
-    void setMatch(Match match);
-    Match getMatch();
+    public HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>();
 
-    String getEndText();
-    String getTypeName();
-    Object getGoal();
-    void setGoal(Integer i);
-    void start();
-    void stop();
-    void reset();
+
+    public abstract void setMatch(Match match);
+    public abstract Match getMatch();
+
+    public abstract String getEndText();
+    public abstract String getTypeName();
+    public abstract Object getGoal();
+    public abstract void removePlayer(MinigamePlayer player);
+    public abstract void setGoal(Integer i);
+    public abstract void start();
+    public abstract void stop();
+    public abstract void reset();
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerShot(PlayerShotEvent event)
+    {
+        if (event.getVictim().getHealth()-event.getGun().getDamage() > 0)
+            return;
+
+        match.broadcast(event.getShooter().getName() + " killed " + event.getVictim().getName()+"!");
+
+        Kill kill = new Kill();
+        kill.setKilled(event.getVictim());
+        kill.setKiller(event.getShooter());
+        kill.setTime(System.currentTimeMillis());
+        kills.putIfAbsent(event.getShooter(), new ArrayList<>());
+        ArrayList<Kill> _kills = kills.get(event.getShooter());
+        _kills.add(kill);
+
+        if (_kills.size() >= 1) {
+            Kill lastKill;
+            if (_kills.size() == 1) {
+                lastKill = _kills.get(_kills.size() - 1);
+            } else {
+                lastKill = _kills.get(_kills.size() - 2);
+            }
+
+            Kill currentKill = _kills.get(_kills.size() - 1);
+            Long delta = currentKill.getTime() - lastKill.getTime();
+            if (match.getArena().getKillingSpreeDelay() >= delta) {
+                currentKill.setSpree(lastKill.getSpree() + 1);
+
+                if (currentKill.getSpree() == 2)
+                    match.broadcast(event.getShooter().getDisplayName() + " got a double kill!");
+                if (currentKill.getSpree() == 3)
+                    match.broadcast(event.getShooter().getDisplayName() + " got a triple kill!");
+                if (currentKill.getSpree() == 4)
+                    match.broadcast(event.getShooter().getDisplayName() + " got a quadra kill!");
+            }
+        }
+
+
+    }
 
 }

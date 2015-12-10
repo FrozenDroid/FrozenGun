@@ -16,6 +16,7 @@ import java.util.*;
 
 public class Match {
 
+    private boolean ended = false;
     private Arena arena;
     private List<MinigamePlayer> players = new ArrayList<>();
     private HashMap<MinigamePlayer, BukkitTask> cooldownbars = new HashMap<>();
@@ -59,7 +60,9 @@ public class Match {
 
     public void end()
     {
-
+        if (ended)
+            return;
+        setEnded(true);
         objectives.forEach((objective) -> {
             BearGun.plugin.getServer().broadcastMessage(Messenger.infoMsg(objective.getEndText()));
             objective.stop();
@@ -87,6 +90,10 @@ public class Match {
         player.getPlayer().getInventory().setContents(player.getLastInventoryContents());
         player.getPlayer().teleport(player.getLastLocation());
         MinigameManager.removePlayer(player);
+        objectives.forEach((objective) -> objective.removePlayer(player));
+
+        if (players.size() <= 1)
+            this.end();
     }
 
     public void startScoreboard()
@@ -106,6 +113,7 @@ public class Match {
 
     public void stopScoreboard(MinigamePlayer player)
     {
+        scoreboard.resetScores(player.getPlayer());
         player.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
     }
 
@@ -170,5 +178,15 @@ public class Match {
     public void setObjectives(List<GameObjective> objectives)
     {
         this.objectives = objectives;
+    }
+
+    public boolean isEnded()
+    {
+        return ended;
+    }
+
+    public void setEnded(boolean ended)
+    {
+        this.ended = ended;
     }
 }

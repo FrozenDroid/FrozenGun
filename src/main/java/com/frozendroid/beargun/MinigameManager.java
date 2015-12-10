@@ -64,7 +64,7 @@ public class MinigameManager {
         return players.stream().filter((player_) -> player_.getPlayer().equals(player)).findFirst().orElse(null);
     }
 
-    public static void endAllMathes()
+    public static void endAllMatches()
     {
         matches.forEach(Match::end);
     }

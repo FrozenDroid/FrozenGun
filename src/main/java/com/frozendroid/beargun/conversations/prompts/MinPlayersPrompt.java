@@ -1,5 +1,6 @@
 package com.frozendroid.beargun.conversations.prompts;
 
+import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.models.Arena;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
@@ -10,7 +11,7 @@ public class MinPlayersPrompt extends NumericPrompt {
     @Override
     public String getPromptText(ConversationContext conversationContext)
     {
-        return "Please enter the minimum amount of players required to start the matches in this arena.";
+        return Messenger.infoMsg("Please enter the minimum amount of players required to start the matches in this arena.");
     }
 
     @Override

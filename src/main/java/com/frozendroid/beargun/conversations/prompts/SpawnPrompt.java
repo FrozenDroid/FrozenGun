@@ -1,5 +1,6 @@
 package com.frozendroid.beargun.conversations.prompts;
 
+import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.models.Arena;
 import com.frozendroid.beargun.models.Spawn;
 import org.bukkit.conversations.ConversationContext;
@@ -11,7 +12,8 @@ public class SpawnPrompt extends StringPrompt {
     @Override
     public String getPromptText(ConversationContext conversationContext)
     {
-        return "Stand at a spawn location, then type \"add\" to add the location to the arena. Type \"delete\" to remove the last added spawn.";
+        return Messenger.infoMsg("Stand at a spawn location, then type \"add\" to add the location to the arena. " +
+                "Type \"delete\" to remove the last added spawn.");
     }
 
     @Override

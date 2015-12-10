@@ -5,9 +5,7 @@ import com.frozendroid.beargun.configs.ArenaConfig;
 import com.frozendroid.beargun.configs.GunConfig;
 import com.frozendroid.beargun.listeners.ActionListener;
 import com.frozendroid.beargun.listeners.DeathListener;
-import com.frozendroid.beargun.models.Arena;
-import com.frozendroid.beargun.models.Match;
-import com.frozendroid.beargun.models.Spawn;
+import com.frozendroid.beargun.listeners.PlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,13 +26,14 @@ public class BearGun extends JavaPlugin {
 
         new DeathListener(this);
         new ActionListener(this);
+        new PlayerListener(this);
         new CommandHandler(this);
     }
 
     @Override
     public void onDisable()
     {
-        MinigameManager.endAllMathes();
+        MinigameManager.endAllMatches();
     }
 
 }

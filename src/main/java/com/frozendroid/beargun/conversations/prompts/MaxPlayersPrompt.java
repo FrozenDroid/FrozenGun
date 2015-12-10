@@ -1,5 +1,6 @@
 package com.frozendroid.beargun.conversations.prompts;
 
+import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.models.Arena;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.NumericPrompt;
@@ -10,7 +11,7 @@ public class MaxPlayersPrompt extends NumericPrompt {
     @Override
     public String getPromptText(ConversationContext conversationContext)
     {
-        return "Please enter the maximum amount of players that this arena can hold.";
+        return Messenger.infoMsg("Please enter the maximum amount of players that this arena can hold.");
     }
 
     @Override

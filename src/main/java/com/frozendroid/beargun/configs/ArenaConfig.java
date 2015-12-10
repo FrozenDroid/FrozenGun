@@ -52,6 +52,7 @@ public class ArenaConfig {
                 arena.setName(section.getString("name"));
                 arena.setMinPlayers(section.getInt("min_players"));
                 arena.setMaxPlayers(section.getInt("max_players"));
+                arena.setStartingTime(section.getInt("starting_time"));
                 boolean announceKillingSpree = section.getBoolean("killing_spree");
                 if (announceKillingSpree) {
                     arena.setAnnounceKillingSpree(announceKillingSpree);

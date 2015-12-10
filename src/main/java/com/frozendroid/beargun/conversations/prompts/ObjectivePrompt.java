@@ -42,6 +42,6 @@ public class ObjectivePrompt extends StringPrompt {
 
 
 
-        return new SpawnPrompt();
+        return new StartTimePrompt();
     }
 }

@@ -5,7 +5,7 @@ public class Kill {
     private Long time;
     private MinigamePlayer killed;
     private MinigamePlayer killer;
-    private Integer spree;
+    private Integer spree = 0;
 
     public MinigamePlayer getKilled()
     {
