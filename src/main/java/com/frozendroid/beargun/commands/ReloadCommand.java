@@ -10,8 +10,7 @@ public class ReloadCommand {
 
     public static void run(CommandSender sender)
     {
-        MinigameManager.getMatches().forEach(Match::end);
-
+        MinigameManager.endAllMatches();
 
         MinigameManager.reset();
         GunConfig.loadGuns();

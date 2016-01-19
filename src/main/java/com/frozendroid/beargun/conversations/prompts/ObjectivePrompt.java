@@ -2,6 +2,7 @@ package com.frozendroid.beargun.conversations.prompts;
 
 import com.frozendroid.beargun.interfaces.GameObjective;
 import com.frozendroid.beargun.models.Arena;
+import com.frozendroid.beargun.models.objectives.MostKillObjective;
 import com.frozendroid.beargun.models.objectives.TotalKillObjective;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
@@ -36,6 +37,10 @@ public class ObjectivePrompt extends StringPrompt {
             objective.setGoal(goal);
             arena.addObjective(objective);
 
+        } else if (s.contains("most_kills") && goal != 0) {
+            GameObjective objective = new MostKillObjective();
+            objective.setGoal(goal);
+            arena.addObjective(objective);
         } else {
             return this;
         }

@@ -26,6 +26,7 @@ public class Queue {
     public void setArena(Arena arena) {
         this.arena = arena;
         arena.setQueue(this);
+        timeTillStart = arena.getStartingTime();
     }
 
     public void setTimeTillStart(Integer timeTillStart)

@@ -15,10 +15,9 @@ import java.util.HashMap;
 public abstract class GameObjective implements Listener {
 
     boolean achieved = false;
-    public Match match = null;
+    public Match match;
 
     public HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>();
-
 
     public abstract void setMatch(Match match);
     public abstract Match getMatch();

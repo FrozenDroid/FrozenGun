@@ -69,21 +69,20 @@ public class Match {
             objective.reset();
         });
 
-        Bukkit.getScheduler().runTaskLater(BearGun.plugin, () -> {
-            for (Iterator<MinigamePlayer> iterator = players.iterator(); iterator.hasNext();) {
-                MinigamePlayer player = iterator.next();
-                this.stopCooldownBar(player);
-                this.stopScoreboard(player);
-                leave(player);
-                iterator.remove();
-            }
-
-            MinigameManager.getMatches().remove(this);
-        }, 5L);
+        for (Iterator<MinigamePlayer> iterator = players.iterator(); iterator.hasNext();) {
+            MinigamePlayer player = iterator.next();
+            this.stopCooldownBar(player);
+            this.stopScoreboard(player);
+            leave(player);
+            iterator.remove();
+        }
+        arena.setOccupied(false);
+        MinigameManager.getMatches().remove(this);
     }
 
     public void leave(MinigamePlayer player)
     {
+
         player.removeGun();
         stopScoreboard(player);
         player.getPlayer().setHealth(20);
@@ -119,6 +118,7 @@ public class Match {
 
     public void start()
     {
+        arena.setOccupied(true);
         players.forEach((player) -> {
             player.setLastLocation(player.getPlayer().getLocation());
             player.setLastInventoryContents(player.getPlayer().getInventory().getContents());

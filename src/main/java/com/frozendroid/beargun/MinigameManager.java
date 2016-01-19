@@ -6,6 +6,7 @@ import com.frozendroid.beargun.models.Match;
 import com.frozendroid.beargun.models.MinigamePlayer;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +67,10 @@ public class MinigameManager {
 
     public static void endAllMatches()
     {
-        matches.forEach(Match::end);
+        ArrayList<Match> array = new ArrayList();
+        array.addAll(matches);
+        array.forEach(Match::end);
+
     }
 
     public static void addPlayers(List<MinigamePlayer> players_)

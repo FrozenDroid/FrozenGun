@@ -21,6 +21,7 @@ public class Arena {
     private String name;
     private Integer startingTime = 30;
     private Gun gun;
+    private boolean occupied = false;
     private Queue queue;
     private List<GameObjective> objectives = new ArrayList<>();
     private boolean announceKillingSpree = false;
@@ -172,5 +173,15 @@ public class Arena {
     public void setStartingTime(Integer startingTime)
     {
         this.startingTime = startingTime;
+    }
+
+    public boolean isOccupied()
+    {
+        return occupied;
+    }
+
+    public void setOccupied(boolean occupied)
+    {
+        this.occupied = occupied;
     }
 }

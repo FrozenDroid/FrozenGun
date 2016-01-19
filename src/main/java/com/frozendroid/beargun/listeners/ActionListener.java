@@ -1,5 +1,6 @@
 package com.frozendroid.beargun.listeners;
 
+import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.models.Arena;
 import com.frozendroid.beargun.models.Gun;
@@ -95,16 +96,19 @@ public class ActionListener implements Listener {
                 return;
             }
 
-
             MinigamePlayer player = MinigameManager.getPlayer(evt.getPlayer());
 
             if (arena.hasQueue()) {
                 if (arena.getQueue().getPlayers().contains(player)) {
-                    evt.getPlayer().sendMessage("Already in queue!");
+                    evt.getPlayer().sendMessage(Messenger.infoMsg("Already in queue!"));
                     return;
                 }
 
                 arena.getQueue().addPlayer(new MinigamePlayer(evt.getPlayer()));
+                return;
+            }
+            if (arena.isOccupied()) {
+                evt.getPlayer().sendMessage(Messenger.infoMsg("This arena is already in use!"));
                 return;
             }
 
