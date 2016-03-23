@@ -79,7 +79,7 @@ public class Gun {
             ParticleEffect.CRIT.display(0F, 0F, 0F, 0F, 1, point, 200D);
         }
 
-        player.playSound(player.getLocation(), Sound.FIREWORK_LAUNCH, 1, 0.8F);
+        player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_LAUNCH, 1, 0.8F);
 
         Location observerPos = player.getEyeLocation();
         Vector3D observerDir = new Vector3D(observerPos.getDirection());
@@ -100,7 +100,7 @@ public class Gun {
                     hitPlayers[i++] = MinigameManager.getPlayer(target);
                     final int finalI = i;
                     Bukkit.getScheduler().runTaskLater(BearGun.plugin, () -> {
-                        player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, 1 + (finalI * 0.25F));
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1 + (finalI * 0.25F));
                     }, 2 + (i*2));
                     target.damage(this.getDamage(), player.getPlayer());
                     PlayerShotEvent event = new PlayerShotEvent();

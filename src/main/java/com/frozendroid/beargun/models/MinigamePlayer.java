@@ -528,13 +528,6 @@ public class MinigamePlayer {
         player.setFireTicks(i);
     }
 
-    /** @deprecated */
-    @Deprecated
-    public Arrow shootArrow()
-    {
-        return player.shootArrow();
-    }
-
     public void setMaxHealth(double v)
     {
         player.setMaxHealth(v);
@@ -1254,13 +1247,6 @@ public class MinigamePlayer {
         return player.getItemInHand();
     }
 
-    /** @deprecated */
-    @Deprecated
-    public Snowball throwSnowball()
-    {
-        return player.throwSnowball();
-    }
-
     public int getTotalExperience()
     {
         return player.getTotalExperience();
@@ -1374,13 +1360,6 @@ public class MinigamePlayer {
     public Player.Spigot spigot()
     {
         return player.spigot();
-    }
-
-    /** @deprecated */
-    @Deprecated
-    public Egg throwEgg()
-    {
-        return player.throwEgg();
     }
 
     /** @deprecated

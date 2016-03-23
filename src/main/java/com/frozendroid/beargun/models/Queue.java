@@ -72,7 +72,7 @@ public class Queue {
                 if (timeTillStart % 5 == 0 && timeTillStart > 0) {
                     player.getPlayer().sendMessage(Messenger.infoMsg("Starting in " + timeTillStart));
                 } else if (timeTillStart <= 5 && timeTillStart > 0) {
-                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1, 1);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1);
                     player.getPlayer().sendMessage(Messenger.infoMsg("Starting in " + timeTillStart));
                 }
             });
@@ -83,7 +83,7 @@ public class Queue {
                 players.forEach(match::addPlayer);
                 match.start();
                 arena.setQueue(null);
-                players.forEach((player) -> player.playSound(player.getLocation(), Sound.NOTE_PLING, 2F, 2F));
+                players.forEach((player) -> player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 2F, 2F));
                 this.starting_timer.cancel();
             }
             timeTillStart--;
