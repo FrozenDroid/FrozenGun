@@ -56,6 +56,7 @@ public class ArenaConfig {
                 arena.setStartingTime(section.getInt("start_time"));
                 boolean announceKillingSpree = section.getBoolean("killing_spree");
                 if (announceKillingSpree) {
+                    BearGun.plugin.getLogger().info("enabling killstreak thingy");
                     arena.setAnnounceKillingSpree(announceKillingSpree);
                     arena.setKillingSpreeDelay(section.getDouble("spree_delay"));
                 }
@@ -104,7 +105,7 @@ public class ArenaConfig {
 
     public static void save()
     {
-        ConfigLoader.getArenaConfig();
+        ConfigLoader.saveArenaConfig();
     }
 
 }

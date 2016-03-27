@@ -21,7 +21,6 @@ import java.util.stream.Stream;
 public class MostKillObjective extends GameObjective implements Listener {
 
     private Integer killGoal;
-//    private HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>();
 
     @EventHandler
     public void onPlayerShot(PlayerShotEvent event)
@@ -35,7 +34,6 @@ public class MostKillObjective extends GameObjective implements Listener {
             }
         }
     }
-
 
     public void setMatch(Match match)
     {
@@ -53,9 +51,9 @@ public class MostKillObjective extends GameObjective implements Listener {
         Stream<MinigamePlayer> stream =  kills.keySet().stream().sorted(byKills);
         MinigamePlayer player = stream.findFirst().orElse(null);
         if (player == null) {
-            return "The game at "+match.getArena().getName()+" ended.";
+            return "The game at " + match.getArena().getName() + " ended.";
         }
-        return player.getPlayer().getName() + " won the game at "+match.getArena().getName();
+        return player.getPlayer().getName() + " won the game at " + match.getArena().getName() + "!";
     }
 
     public String getTypeName()

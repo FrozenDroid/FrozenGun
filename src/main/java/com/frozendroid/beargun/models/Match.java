@@ -42,7 +42,7 @@ public class Match {
 
     public void broadcast(String string)
     {
-        players.stream().forEach((player) -> player.getPlayer().sendMessage(Messenger.infoMsg(string)));
+        players.stream().forEach((player) -> player.sendMessage(Messenger.infoMsg(string)));
     }
 
     public void startCooldownBar(MinigamePlayer player)

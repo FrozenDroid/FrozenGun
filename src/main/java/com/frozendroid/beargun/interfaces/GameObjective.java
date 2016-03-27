@@ -5,6 +5,7 @@ import com.frozendroid.beargun.events.PlayerShotEvent;
 import com.frozendroid.beargun.models.Kill;
 import com.frozendroid.beargun.models.Match;
 import com.frozendroid.beargun.models.MinigamePlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -43,20 +44,16 @@ public abstract class GameObjective implements Listener {
         kill.setKiller(event.getShooter());
         kill.setTime(System.currentTimeMillis());
         kills.putIfAbsent(event.getShooter(), new ArrayList<>());
+
         ArrayList<Kill> _kills = kills.get(event.getShooter());
         _kills.add(kill);
 
-        if (_kills.size() >= 1) {
-            Kill lastKill;
-            if (_kills.size() == 1) {
-                lastKill = _kills.get(_kills.size() - 1);
-            } else {
-                lastKill = _kills.get(_kills.size() - 2);
-            }
-
+        if (_kills.size() > 1) {
+            Kill lastKill = _kills.get(_kills.size() - 2);
             Kill currentKill = _kills.get(_kills.size() - 1);
+
             Long delta = currentKill.getTime() - lastKill.getTime();
-            if (match.getArena().getKillingSpreeDelay() >= delta) {
+            if (match.getArena().getKillingSpreeDelay() >= delta/1000) {
                 currentKill.setSpree(lastKill.getSpree() + 1);
 
                 if (currentKill.getSpree() == 2)
@@ -67,8 +64,5 @@ public abstract class GameObjective implements Listener {
                     match.broadcast(event.getShooter().getDisplayName() + " got a quadra kill!");
             }
         }
-
-
     }
-
 }

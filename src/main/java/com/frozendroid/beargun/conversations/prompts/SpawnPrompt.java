@@ -1,6 +1,7 @@
 package com.frozendroid.beargun.conversations.prompts;
 
 import com.frozendroid.beargun.Messenger;
+import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.models.Arena;
 import com.frozendroid.beargun.models.Spawn;
 import org.bukkit.conversations.ConversationContext;
@@ -28,6 +29,7 @@ public class SpawnPrompt extends StringPrompt {
 
         if (s.equalsIgnoreCase("enter")) {
             arena.save();
+            MinigameManager.addArena(arena);
         }
         return null;
     }
