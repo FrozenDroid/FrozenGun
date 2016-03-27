@@ -126,7 +126,6 @@ public class Match {
             player.teleport(player.getLastLocation());
             player.setGameMode(player.getLastGamemode());
         } else {
-            BearGun.plugin.getLogger().info("Using NBT...");
             Player entity = (Player) BearGun.getNbtTools().getEntityByUUID(player.getWorld(), player.getUniqueId());
             CompoundTag tag = BearGun.getNbtTools().readEntity(entity);
             DoubleTag[] tags = new DoubleTag[3];

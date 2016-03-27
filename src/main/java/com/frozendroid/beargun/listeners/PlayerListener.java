@@ -19,18 +19,16 @@ public class PlayerListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event)
     {
         MinigamePlayer player = MinigameManager.getPlayer(event.getPlayer());
 
         if (player == null) {
-            BearGun.plugin.getLogger().info("Player is null when leaving");
             return;
         }
 
         if (player.isInMatch()) {
-            BearGun.plugin.getLogger().info("Leaving because player quit");
             player.getMatch().leave(player, true);
         }
     }
