@@ -1,9 +1,6 @@
 package com.frozendroid.beargun;
 
-import com.frozendroid.beargun.models.Arena;
-import com.frozendroid.beargun.models.Gun;
-import com.frozendroid.beargun.models.Match;
-import com.frozendroid.beargun.models.MinigamePlayer;
+import com.frozendroid.beargun.models.*;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Array;
@@ -70,7 +67,15 @@ public class MinigameManager {
         ArrayList<Match> array = new ArrayList();
         array.addAll(matches);
         array.forEach(Match::end);
+    }
 
+    public static void endAllQueues()
+    {
+        arenas.forEach(arena -> {
+            Queue queue = arena.getQueue();
+            if (queue != null)
+                queue.stop();
+        });
     }
 
     public static void addPlayers(List<MinigamePlayer> players_)

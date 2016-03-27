@@ -51,6 +51,18 @@ public class Queue {
         }, 0L, 20L*5L);
     }
 
+    public void stop()
+    {
+        if (waiting_timer != null)
+            waiting_timer.cancel();
+
+        if (checker_timer != null)
+            checker_timer.cancel();
+
+        if (starting_timer != null)
+            starting_timer.cancel();
+    }
+
     public void startQueueChecker()
     {
         checker_timer = BearGun.plugin.getServer().getScheduler().runTaskTimer(BearGun.plugin, () -> {
