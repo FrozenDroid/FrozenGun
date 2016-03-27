@@ -22,6 +22,7 @@
             <includes>
               <include>com.darkblade12:*</include>
               <include>org.json:*</include>
+              <include>org.cyberiantiger.minecraft:*</include>
             </includes>
           </artifactSet>
         </configuration>
@@ -44,6 +45,10 @@
     <repository>
       <id>sinndev-repo</id>
       <url>http://repo.sinndev.com/content/groups/public/</url>
+    </repository>
+    <repository>
+      <id>cybertiger-repo</id>
+      <url>http://cyberiantiger.org/maven/</url>
     </repository>
   </repositories>
   <dependencies>

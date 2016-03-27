@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.cyberiantiger.minecraft.unsafe.v1_9_R1.NBTTools;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +21,7 @@ import java.util.Set;
 public class BearGun extends JavaPlugin {
 
     public static Plugin plugin;
+    public static NBTTools nbtTools;
 
     @Override
     public void onEnable()
@@ -35,6 +37,13 @@ public class BearGun extends JavaPlugin {
         new ActionListener(this);
         new PlayerListener(this);
         new CommandHandler(this);
+
+        nbtTools = new NBTTools();
+    }
+
+    public static NBTTools getNbtTools()
+    {
+        return nbtTools;
     }
 
     @Override

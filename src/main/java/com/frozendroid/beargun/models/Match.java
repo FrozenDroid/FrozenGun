@@ -6,12 +6,18 @@ import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.interfaces.GameObjective;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.Objective;
+import org.cyberiantiger.minecraft.nbt.CompoundTag;
+import org.cyberiantiger.minecraft.nbt.DoubleTag;
+import org.cyberiantiger.minecraft.nbt.ListTag;
+import org.cyberiantiger.minecraft.nbt.TagType;
+import org.cyberiantiger.minecraft.unsafe.v1_9_R1.NBTTools;
 
 import java.util.*;
 
@@ -75,7 +81,7 @@ public class Match {
         playerSet.forEach(player -> {
             this.stopCooldownBar(player);
             this.stopScoreboard(player);
-            leave(player);
+            leave(player, false);
         });
         arena.setOccupied(false);
         MinigameManager.getMatches().remove(this);
@@ -107,17 +113,38 @@ public class Match {
         });
     }
 
-    public void leave(MinigamePlayer player)
+    public void leave(MinigamePlayer player, boolean useNbt)
     {
         player.removeGun();
         stopScoreboard(player);
-        player.setFoodLevel(player.getLastFoodLevel());
-        player.setMaxHealth(player.getLastMaxHealth());
-        player.setHealth(player.getLastHealth());
-        player.getInventory().setContents(player.getLastInventoryContents());
-        player.setExp(player.getLastExp());
-        player.teleport(player.getLastLocation());
-        player.setGameMode(player.getLastGamemode());
+        if (!useNbt) {
+            player.setFoodLevel(player.getLastFoodLevel());
+            player.setMaxHealth(player.getLastMaxHealth());
+            player.setHealth(player.getLastHealth());
+            player.getInventory().setContents(player.getLastInventoryContents());
+            player.setExp(player.getLastExp());
+            player.teleport(player.getLastLocation());
+            player.setGameMode(player.getLastGamemode());
+        } else {
+            BearGun.plugin.getLogger().info("Using NBT...");
+            Player entity = (Player) BearGun.getNbtTools().getEntityByUUID(player.getWorld(), player.getUniqueId());
+            CompoundTag tag = BearGun.getNbtTools().readEntity(entity);
+            DoubleTag[] tags = new DoubleTag[3];
+            tags[0] = new DoubleTag(player.getLastLocation().getBlockX());
+            tags[1] = new DoubleTag(player.getLastLocation().getBlockY());
+            tags[2] = new DoubleTag(player.getLastLocation().getBlockZ());
+            ListTag listTag = new ListTag(TagType.DOUBLE, tags);
+            tag.setList("Pos", listTag);
+            entity.teleport(player.getLastLocation());
+            entity.setFoodLevel(player.getLastFoodLevel());
+            entity.setMaxHealth(player.getLastMaxHealth());
+            entity.setHealth(player.getLastHealth());
+            entity.getInventory().setContents(player.getLastInventoryContents());
+            entity.setExp(player.getLastExp());
+            entity.setGameMode(player.getLastGamemode());
+            BearGun.getNbtTools().updateEntity(entity, tag);
+        }
+
         MinigameManager.removePlayer(player);
         objectives.forEach((objective) -> objective.removePlayer(player));
         players.remove(player);
