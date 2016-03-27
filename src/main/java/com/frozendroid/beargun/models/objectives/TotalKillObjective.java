@@ -26,25 +26,25 @@ public class TotalKillObjective extends GameObjective implements Listener {
     }
 
     @EventHandler
-    public void onPlayerKill(PlayerShotEvent event)
+    public void onPlayerShot(PlayerShotEvent event)
     {
-        Bukkit.getScheduler().runTaskLater(BearGun.plugin, () -> {
-            if (event.getVictim().getPlayer().getHealth()-event.getGun().getDamage() > 0)
-                return;
+        super.onPlayerShot(event);
 
-            if (match.isEnded())
-                return;
+        if (event.getVictim().getPlayer().getHealth()-event.getGun().getDamage() > 0)
+            return;
 
-            int total = 0;
+        if (match.isEnded())
+            return;
 
-            for (MinigamePlayer player : kills.keySet()) {
-                total += kills.get(player).size();
-            }
+        int total = 0;
 
-            if (total >= killGoal) {
-                match.end();
-            }
-        }, 1L);
+        for (MinigamePlayer player : kills.keySet()) {
+            total += kills.get(player).size();
+        }
+
+        if (total >= killGoal) {
+            match.end();
+        }
     }
 
     public String getEndText()

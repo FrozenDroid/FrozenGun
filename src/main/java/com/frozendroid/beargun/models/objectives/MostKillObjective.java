@@ -21,19 +21,21 @@ import java.util.stream.Stream;
 public class MostKillObjective extends GameObjective implements Listener {
 
     private Integer killGoal;
-    private HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>();
+//    private HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>();
 
     @EventHandler
     public void onPlayerShot(PlayerShotEvent event)
     {
-        Bukkit.getScheduler().runTaskLater(BearGun.plugin, () -> {
-            for (MinigamePlayer player : kills.keySet()) {
-                if (kills.get(player).size() >= killGoal) {
-                    match.end();
-                    return;
-                }
+        super.onPlayerShot(event);
+        
+        Bukkit.broadcastMessage("Killgoal" + killGoal);
+        for (MinigamePlayer player : kills.keySet()) {
+            Bukkit.getServer().broadcastMessage(player.getDisplayName() + " has " + kills.get(player).size());
+            if (kills.get(player).size() >= killGoal) {
+                match.end();
+                return;
             }
-        }, 1L);
+        }
     }
 
 

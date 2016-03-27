@@ -31,7 +31,6 @@ public abstract class GameObjective implements Listener {
     public abstract void stop();
     public abstract void reset();
 
-    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerShot(PlayerShotEvent event)
     {
         if (event.getVictim().getHealth()-event.getGun().getDamage() > 0)
