@@ -92,7 +92,7 @@ public class ActionListener implements Listener {
             Arena arena = Arena.getByName(arena_name);
 
             if (arena == null) {
-                evt.getPlayer().sendMessage("Couldn't find the arena :(");
+                evt.getPlayer().sendMessage(Messenger.infoMsg("Couldn't find the arena :("));
                 return;
             }
 
@@ -118,24 +118,23 @@ public class ActionListener implements Listener {
             queue.startWaitingTimer();
         }
 
-        MinigamePlayer player = MinigameManager.getPlayer(evt.getPlayer());
+        if (evt.getAction() == Action.RIGHT_CLICK_BLOCK || evt.getAction() == Action.RIGHT_CLICK_AIR) {
+            MinigamePlayer player = MinigameManager.getPlayer(evt.getPlayer());
 
+            if(player == null)
+                return;
 
-        if(player == null)
-            return;
+            if (!player.isInMatch())
+                return;
 
-        if (!player.isInMatch())
-            return;
+            Gun gun = player.getGun();
 
-        Gun gun = player.getGun();
-
-        if(evt.getAction().equals(Action.RIGHT_CLICK_AIR)) {
             if(evt.getPlayer().getItemInHand().getType() == gun.getMaterial()) {
-                if (gun.canShoot())
+                if (gun.canShoot()) {
                     gun.shoot();
+                }
             }
         }
-
     }
 
 }
