@@ -27,10 +27,8 @@ public class MostKillObjective extends GameObjective implements Listener {
     public void onPlayerShot(PlayerShotEvent event)
     {
         super.onPlayerShot(event);
-        
-        Bukkit.broadcastMessage("Killgoal" + killGoal);
+
         for (MinigamePlayer player : kills.keySet()) {
-            Bukkit.getServer().broadcastMessage(player.getDisplayName() + " has " + kills.get(player).size());
             if (kills.get(player).size() >= killGoal) {
                 match.end();
                 return;
