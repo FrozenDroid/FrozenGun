@@ -31,6 +31,11 @@ public class MinigamePlayer {
     private Match match;
     private Location lastLocation;
     private ItemStack[] lastInventoryContents;
+    private GameMode lastGamemode;
+    private int lastFoodLevel;
+    private double lastHealth;
+    private double lastMaxHealth;
+    private float lastExp;
 
     public MinigamePlayer(Player player)
     {
@@ -51,6 +56,33 @@ public class MinigamePlayer {
         item.setItemMeta(meta);
         player.getInventory().addItem(item);
         this.gun = gun;
+    }
+
+    public void respawn(Match match)
+    {
+        Player player = getPlayer();
+        player.setHealth(20);
+        player.teleport(match.getFeasibleSpawn().getLocation());
+    }
+
+    public Location getLastLocation()
+    {
+        return lastLocation;
+    }
+
+    public void setLastLocation(Location lastLocation)
+    {
+        this.lastLocation = lastLocation;
+    }
+
+    public ItemStack[] getLastInventoryContents()
+    {
+        return lastInventoryContents;
+    }
+
+    public void setLastInventoryContents(ItemStack[] contents)
+    {
+        this.lastInventoryContents = contents;
     }
 
     public void removeGun()
@@ -1386,30 +1418,43 @@ public class MinigamePlayer {
         return player.getPlayerTimeOffset();
     }
 
-    public void respawn(Match match)
-    {
-        Player player = getPlayer();
-        player.setHealth(20);
-        player.teleport(match.getFeasibleSpawn().getLocation());
+    public GameMode getLastGamemode() {
+        return lastGamemode;
     }
 
-    public Location getLastLocation()
-    {
-        return lastLocation;
+    public void setLastGamemode(GameMode lastGamemode) {
+        this.lastGamemode = lastGamemode;
     }
 
-    public void setLastLocation(Location lastLocation)
-    {
-        this.lastLocation = lastLocation;
+    public float getLastExp() {
+        return lastExp;
     }
 
-    public ItemStack[] getLastInventoryContents()
-    {
-        return lastInventoryContents;
+    public void setLastExp(float lastExp) {
+        this.lastExp = lastExp;
     }
 
-    public void setLastInventoryContents(ItemStack[] contents)
-    {
-        this.lastInventoryContents = contents;
+    public int getLastFoodLevel() {
+        return lastFoodLevel;
+    }
+
+    public void setLastFoodLevel(int lastFoodLevel) {
+        this.lastFoodLevel = lastFoodLevel;
+    }
+
+    public double getLastHealth() {
+        return lastHealth;
+    }
+
+    public void setLastHealth(double lastHealth) {
+        this.lastHealth = lastHealth;
+    }
+
+    public double getLastMaxHealth() {
+        return lastMaxHealth;
+    }
+
+    public void setLastMaxHealth(double lastMaxHealth) {
+        this.lastMaxHealth = lastMaxHealth;
     }
 }

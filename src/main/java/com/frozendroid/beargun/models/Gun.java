@@ -14,7 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.util.Vector;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class Gun {
@@ -25,6 +27,7 @@ public class Gun {
     private Double cooldown = 0D;
     private Long lastShot = 0L;
     private MinigamePlayer player;
+    private Set<Material> passthroughMaterials = new HashSet<>();
 
     public Gun()
     {
@@ -33,6 +36,7 @@ public class Gun {
 
     public Gun(Gun gun, MinigamePlayer player)
     {
+        this.passthroughMaterials = gun.getPassthroughMaterials();
         this.name       = gun.getName();
         this.material   = gun.getMaterial();
         this.damage     = gun.getDamage();
@@ -59,16 +63,12 @@ public class Gun {
 
         lastShot = System.currentTimeMillis();
 
-        Iterator iterator = player.getLineOfSight((Set) null, ATTACK_REACH).iterator();
+//        Iterator iterator = .iterator();
 
-        int blockdistance = 100;
+        double blockdistance = 100;
 
-        while (iterator.hasNext()) {
-            Block block  = (Block) iterator.next();
-            if (block.getType() != Material.AIR) {
-                blockdistance = ((Double) block.getLocation().distance(player.getLocation())).intValue();
-            }
-        }
+        List<Block> los = player.getLineOfSight(passthroughMaterials, ATTACK_REACH);
+        blockdistance = los.get(los.size()-1).getLocation().distance(player.getLocation());
 
         Location start = player.getEyeLocation();
         Vector increase = start.getDirection();
@@ -87,7 +87,6 @@ public class Gun {
         Vector3D observerStart = new Vector3D(observerPos);
         Vector3D observerEnd = observerStart.add(observerDir.multiply(ATTACK_REACH));
 
-        MinigamePlayer[] hitPlayers = new MinigamePlayer[player.getWorld().getPlayers().size()];
         int i = 0;
         for (Player target : player.getWorld().getPlayers()) {
             Vector3D targetPos = new Vector3D(target.getLocation());
@@ -97,7 +96,6 @@ public class Gun {
             if (target != player.getPlayer() && hasIntersection(observerStart, observerEnd, minimum, maximum)) {
                 if (blockdistance > target.getPlayer().getLocation().distance(player.getLocation()) &&
                     this.player.getMatch().findPlayer(target.getUniqueId()) != null) {
-                    hitPlayers[i++] = MinigameManager.getPlayer(target);
                     final int finalI = i;
                     Bukkit.getScheduler().runTaskLater(BearGun.plugin, () -> {
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1 + (finalI * 0.25F));
@@ -182,4 +180,11 @@ public class Gun {
         return true;
     }
 
+    public Set<Material> getPassthroughMaterials() {
+        return passthroughMaterials;
+    }
+
+    public void setPassthroughMaterials(Set<Material> passthroughMaterials) {
+        this.passthroughMaterials = passthroughMaterials;
+    }
 }

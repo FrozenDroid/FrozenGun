@@ -5,6 +5,7 @@ import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.interfaces.GameObjective;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -69,29 +70,59 @@ public class Match {
             objective.reset();
         });
 
-        for (Iterator<MinigamePlayer> iterator = players.iterator(); iterator.hasNext();) {
-            MinigamePlayer player = iterator.next();
+        Set<MinigamePlayer> playerSet = new HashSet<>();
+        playerSet.addAll(players);
+        playerSet.forEach(player -> {
             this.stopCooldownBar(player);
             this.stopScoreboard(player);
             leave(player);
-            iterator.remove();
-        }
+        });
         arena.setOccupied(false);
         MinigameManager.getMatches().remove(this);
     }
 
+    public void start()
+    {
+        arena.setOccupied(true);
+        players.forEach((player) -> {
+            player.setLastFoodLevel(player.getFoodLevel());
+            player.setLastHealth(player.getHealth());
+            player.setLastMaxHealth(player.getMaxHealth());
+            player.setLastExp(player.getExp());
+            player.setLastLocation(player.getLocation());
+            player.setLastInventoryContents(player.getInventory().getContents());
+            player.setLastGamemode(player.getGameMode());
+            player.join(this);
+            player.setGameMode(GameMode.SURVIVAL);
+            player.setGun(new Gun(arena.getGun(), player));
+            Spawn spawn = getFeasibleSpawn();
+            player.teleport(spawn.getLocation());
+            startCooldownBar(player);
+        });
+        startScoreboard();
+        this.objectives = arena.getObjectives();
+        this.getObjectives().forEach((objective) -> {
+            objective.setMatch(this);
+            objective.start();
+        });
+    }
+
     public void leave(MinigamePlayer player)
     {
-
         player.removeGun();
         stopScoreboard(player);
-        player.getPlayer().setHealth(20);
-        player.getPlayer().getInventory().setContents(player.getLastInventoryContents());
-        player.getPlayer().teleport(player.getLastLocation());
+        player.setFoodLevel(player.getLastFoodLevel());
+        player.setMaxHealth(player.getLastMaxHealth());
+        player.setHealth(player.getLastHealth());
+        player.getInventory().setContents(player.getLastInventoryContents());
+        player.setExp(player.getLastExp());
+        player.teleport(player.getLastLocation());
+        player.setGameMode(player.getLastGamemode());
         MinigameManager.removePlayer(player);
         objectives.forEach((objective) -> objective.removePlayer(player));
+        players.remove(player);
 
-        if (players.size() <= 1)
+        if (players.size() <= 1 && !this.ended)
             this.end();
     }
 
@@ -114,26 +145,6 @@ public class Match {
     {
         scoreboard.resetScores(player.getPlayer());
         player.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-    }
-
-    public void start()
-    {
-        arena.setOccupied(true);
-        players.forEach((player) -> {
-            player.setLastLocation(player.getPlayer().getLocation());
-            player.setLastInventoryContents(player.getPlayer().getInventory().getContents());
-            player.join(this);
-            player.setGun(new Gun(arena.getGun(), player));
-            Spawn spawn = getFeasibleSpawn();
-            player.getPlayer().teleport(spawn.getLocation());
-            startCooldownBar(player);
-        });
-        startScoreboard();
-        this.objectives = arena.getObjectives();
-        this.getObjectives().forEach((objective) -> {
-            objective.setMatch(this);
-            objective.start();
-        });
     }
 
     public Spawn getFeasibleSpawn()

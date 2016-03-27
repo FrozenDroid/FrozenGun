@@ -90,7 +90,7 @@ public class Arena {
 
         objectives.forEach((objective) -> objectivesSection.set(objective.getTypeName(), objective.getGoal()));
 
-        ConfigLoader.saveArenaConfig();
+        ArenaConfig.save();
     }
 
     public Integer getId() {

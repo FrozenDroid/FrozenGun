@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.classpath.icedtea.Config;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -103,11 +104,7 @@ public class ArenaConfig {
 
     public static void save()
     {
-        try {
-            config.save("arenas.yml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ConfigLoader.getArenaConfig();
     }
 
 }

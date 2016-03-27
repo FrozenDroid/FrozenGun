@@ -20,8 +20,6 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event)
     {
-        System.out.println("omg player left");
-
         MinigamePlayer player = MinigameManager.getPlayer(event.getPlayer());
 
         if (player == null)

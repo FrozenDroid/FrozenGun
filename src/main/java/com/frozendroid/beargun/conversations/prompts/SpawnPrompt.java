@@ -28,7 +28,6 @@ public class SpawnPrompt extends StringPrompt {
 
         if (s.equalsIgnoreCase("enter")) {
             arena.save();
-
         }
         return null;
     }
