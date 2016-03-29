@@ -3,7 +3,6 @@ package com.frozendroid.beargun.models;
 import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.configs.ArenaConfig;
 import com.frozendroid.beargun.interfaces.GameObjective;
-import com.frozendroid.beargun.utils.ConfigLoader;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -20,7 +19,8 @@ public class Arena {
     private List<Spawn> spawns = new ArrayList<>();
     private String name;
     private Integer startingTime = 30;
-    private Gun gun;
+    private Gun_old gun;
+    private ArrayList<Weapon> weapons = new ArrayList<>();
     private boolean occupied = false;
     private Queue queue;
     private List<GameObjective> objectives = new ArrayList<>();
@@ -44,11 +44,11 @@ public class Arena {
         spawns.add(spawn);
     }
 
-    public Gun getGun() {
+    public Gun_old getGun() {
         return gun;
     }
 
-    public void setGun(Gun gun) {
+    public void setGun(Gun_old gun) {
         this.gun = gun;
     }
 
@@ -184,4 +184,18 @@ public class Arena {
     {
         this.occupied = occupied;
     }
+
+    public ArrayList<Weapon> getWeapons() {
+        return weapons;
+    }
+
+    public void setWeapons(ArrayList<Weapon> weapons) {
+        this.weapons = weapons;
+    }
+
+    public void addWeapon(Weapon weapon)
+    {
+        this.weapons.add(weapon);
+    }
+
 }

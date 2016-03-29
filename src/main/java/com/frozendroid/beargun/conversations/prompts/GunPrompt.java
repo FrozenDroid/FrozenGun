@@ -1,9 +1,8 @@
 package com.frozendroid.beargun.conversations.prompts;
 
 import com.frozendroid.beargun.Messenger;
-import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.models.Arena;
-import com.frozendroid.beargun.models.Gun;
+import com.frozendroid.beargun.models.Gun_old;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
@@ -22,7 +21,7 @@ public class GunPrompt extends StringPrompt {
         if (s.equals(""))
             return this;
 
-        arena.setGun(Gun.findByName(s));
+        arena.setGun(Gun_old.findByName(s));
         return new ObjectivePrompt();
     }
 }

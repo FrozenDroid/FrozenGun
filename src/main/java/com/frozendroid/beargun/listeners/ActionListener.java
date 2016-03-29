@@ -2,10 +2,7 @@ package com.frozendroid.beargun.listeners;
 
 import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.MinigameManager;
-import com.frozendroid.beargun.models.Arena;
-import com.frozendroid.beargun.models.Gun;
-import com.frozendroid.beargun.models.MinigamePlayer;
-import com.frozendroid.beargun.models.Queue;
+import com.frozendroid.beargun.models.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -127,13 +124,17 @@ public class ActionListener implements Listener {
             if (!player.isInMatch())
                 return;
 
-            Gun gun = player.getGun();
+            Weapon weapon = player.getWeaponInHand();
 
-            if(evt.getPlayer().getItemInHand().getType() == gun.getMaterial()) {
-                if (gun.canShoot()) {
+            if (weapon == null)
+                return;
+
+            if (weapon instanceof Gun) {
+                Gun gun = (Gun) weapon;
+                if (gun.canShoot())
                     gun.shoot();
-                }
             }
+
         }
     }
 

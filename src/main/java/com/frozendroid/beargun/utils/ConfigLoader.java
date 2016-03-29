@@ -29,7 +29,7 @@ public class ConfigLoader {
 
     public static FileConfiguration getGunConfig()
     {
-        gunConfig = new ConfigAccessor((JavaPlugin) BearGun.plugin, "guns.yml");
+        gunConfig = new ConfigAccessor((JavaPlugin) BearGun.plugin, "weapons.yml");
         gunConfig.saveDefaultConfig();
         gunConfig.reloadConfig();
         return gunConfig.getConfig();

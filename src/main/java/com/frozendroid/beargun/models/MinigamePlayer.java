@@ -24,8 +24,7 @@ import java.net.InetSocketAddress;
 import java.util.*;
 
 public class MinigamePlayer {
-
-    private Gun gun;
+    private ArrayList<Weapon> weapons = new ArrayList<>();
 
     private Player player = null;
     private Match match;
@@ -42,20 +41,35 @@ public class MinigamePlayer {
         this.player = player;
     }
 
-    public Gun getGun() {
-        return gun;
+    public void addWeapon(Weapon weapon)
+    {
+        weapons.add(weapon);
+
+        ItemStack itemstack = new ItemStack(weapon.getMaterial(), 1);
+        ItemMeta meta = itemstack.getItemMeta();
+        meta.setDisplayName(weapon.getName());
+        itemstack.setItemMeta(meta);
+
+        weapon.setPlayer(this);
+        player.getInventory().addItem(itemstack);
     }
 
-    public void setGun(Gun gun) {
-        ItemStack item = new ItemStack(gun.getMaterial());
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(gun.getName());
-        List<String> lore = new ArrayList<String>();
-        lore.add("Does "+gun.getDamage()/2+" hearts of damage.");
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        player.getInventory().addItem(item);
-        this.gun = gun;
+    public Weapon getWeaponInHand()
+    {
+        ItemStack itemStack = getItemInHand();
+        Weapon weapon = null;
+
+        for (Weapon _weapon : weapons) {
+            if (_weapon.getMaterial() == itemStack.getType() && _weapon.getName().equals(itemStack.getItemMeta().getDisplayName()))
+                weapon = _weapon;
+        }
+
+        return weapon;
+    }
+
+    public ArrayList<Weapon> getWeapons()
+    {
+        return weapons;
     }
 
     public void respawn(Match match)
@@ -83,11 +97,6 @@ public class MinigamePlayer {
     public void setLastInventoryContents(ItemStack[] contents)
     {
         this.lastInventoryContents = contents;
-    }
-
-    public void removeGun()
-    {
-        player.getInventory().remove(gun.getMaterial());
     }
 
     public Match getMatch() {

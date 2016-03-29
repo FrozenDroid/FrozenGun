@@ -1,8 +1,12 @@
 guns:
   railgun:
+    type: RAILGUN
+    range: 100
     material: IRON_HOE
     display_name: "Railgun"
     lore:
       - "This is a badass railgun"
     damage: 20
     cooldown: 1.5
+    pass_through:
+    - AIR

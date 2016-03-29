@@ -2,9 +2,11 @@ package com.frozendroid.beargun.configs;
 
 import com.frozendroid.beargun.BearGun;
 import com.frozendroid.beargun.MinigameManager;
+import com.frozendroid.beargun.WeaponManager;
 import com.frozendroid.beargun.models.Arena;
-import com.frozendroid.beargun.models.Gun;
+import com.frozendroid.beargun.models.Gun_old;
 import com.frozendroid.beargun.models.Spawn;
+import com.frozendroid.beargun.models.Weapon;
 import com.frozendroid.beargun.models.objectives.MostKillObjective;
 import com.frozendroid.beargun.models.objectives.TotalKillObjective;
 import com.frozendroid.beargun.utils.ConfigLoader;
@@ -12,10 +14,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.classpath.icedtea.Config;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +60,14 @@ public class ArenaConfig {
                     arena.setAnnounceKillingSpree(announceKillingSpree);
                     arena.setKillingSpreeDelay(section.getDouble("spree_delay"));
                 }
-                arena.setGun(Gun.findByName(section.getString("gun")));
+
+                Weapon weapon = WeaponManager.findByName(section.getString("gun"));
+                if (weapon != null) {
+                    arena.addWeapon(weapon);
+                    BearGun.plugin.getLogger().info("Loaded " + weapon.getName() + " to arena " + arena.getName() + "!");
+                }
+                else
+                    BearGun.plugin.getLogger().info(section.getString("gun") + " does not exist!");
 
                 section.getConfigurationSection("objectives").getKeys(false).stream().forEach((key_) -> {
                     switch (key_) {

@@ -6,7 +6,6 @@ import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.interfaces.GameObjective;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -17,7 +16,6 @@ import org.cyberiantiger.minecraft.nbt.CompoundTag;
 import org.cyberiantiger.minecraft.nbt.DoubleTag;
 import org.cyberiantiger.minecraft.nbt.ListTag;
 import org.cyberiantiger.minecraft.nbt.TagType;
-import org.cyberiantiger.minecraft.unsafe.v1_9_R1.NBTTools;
 
 import java.util.*;
 
@@ -53,10 +51,14 @@ public class Match {
 
     public void startCooldownBar(MinigamePlayer player)
     {
-        cooldownbars.put(player, Bukkit.getScheduler().runTaskTimer(BearGun.plugin, () -> player.getPlayer().setExp(
-                        1F / ((float) player.getGun().getCooldown()) * (float) player.getGun().getCooldownTime() / 1000
-                ), 0L, 1L)
-        );
+        cooldownbars.put(player, Bukkit.getScheduler().runTaskTimer(BearGun.plugin, () -> {
+            if (player.getWeaponInHand() instanceof Gun) {
+                Gun gun = (Gun) player.getWeaponInHand();
+                player.setExp(1F / ((float) gun.getCooldown()) * (float) gun.getCooldownTime() / 1000);
+            } else {
+                player.setExp(0);
+            }
+        }, 0L, 1L));
     }
 
     public void stopCooldownBar(MinigamePlayer player)
@@ -100,7 +102,11 @@ public class Match {
             player.setLastGamemode(player.getGameMode());
             player.join(this);
             player.setGameMode(GameMode.SURVIVAL);
-            player.setGun(new Gun(arena.getGun(), player));
+
+            for (Weapon weapon : arena.getWeapons()) {
+                player.addWeapon(weapon.clone());
+            }
+
             Spawn spawn = getFeasibleSpawn();
             player.teleport(spawn.getLocation());
             startCooldownBar(player);
@@ -115,7 +121,6 @@ public class Match {
 
     public void leave(MinigamePlayer player, boolean useNbt)
     {
-        player.removeGun();
         stopScoreboard(player);
         if (!useNbt) {
             player.setFoodLevel(player.getLastFoodLevel());

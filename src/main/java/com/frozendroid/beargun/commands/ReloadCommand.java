@@ -3,9 +3,7 @@ package com.frozendroid.beargun.commands;
 import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.configs.ArenaConfig;
-import com.frozendroid.beargun.configs.GunConfig;
-import com.frozendroid.beargun.models.Match;
-import org.bukkit.ChatColor;
+import com.frozendroid.beargun.configs.WeaponConfig;
 import org.bukkit.command.CommandSender;
 
 public class ReloadCommand {
@@ -16,7 +14,7 @@ public class ReloadCommand {
         MinigameManager.endAllMatches();
 
         MinigameManager.reset();
-        GunConfig.loadGuns();
+        WeaponConfig.loadGuns();
         ArenaConfig.loadArenas();
 
         sender.sendMessage(Messenger.infoMsg("Reloaded!"));

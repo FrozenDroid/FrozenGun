@@ -3,7 +3,6 @@ package com.frozendroid.beargun;
 import com.frozendroid.beargun.models.*;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,15 +10,16 @@ public class MinigameManager {
 
     private static List<Match> matches = new ArrayList<>();
     private static List<Arena> arenas = new ArrayList<>();
-    private static List<Gun> guns = new ArrayList<>();
+    private static List<Gun_old> guns = new ArrayList<>();
+    private static List<Weapon> weapons = new ArrayList<>();
     private static List<MinigamePlayer> players = new ArrayList<>();
 
     public static void reset()
     {
-        matches = new ArrayList<>();
-        arenas = new ArrayList<>();
-        guns = new ArrayList<>();
-        players = new ArrayList<>();
+        matches.clear();
+        arenas.clear();
+        guns.clear();
+        players.clear();
     }
 
     public static List<Match> getMatches() {
@@ -44,11 +44,11 @@ public class MinigameManager {
         arenas.add(arena);
     }
 
-    public static List<Gun> getGuns() {
+    public static List<Gun_old> getGuns() {
         return guns;
     }
 
-    public static void addGun(Gun gun)
+    public static void addGun(Gun_old gun)
     {
         guns.add(gun);
     }
@@ -60,6 +60,21 @@ public class MinigameManager {
     public static MinigamePlayer getPlayer(Player player)
     {
         return players.stream().filter((player_) -> player_.getPlayer().equals(player)).findFirst().orElse(null);
+    }
+
+    public static List<Weapon> getWeapons()
+    {
+        return weapons;
+    }
+
+    public static void addWeapon(Weapon weapon)
+    {
+        weapons.add(weapon);
+    }
+
+    public static void setWeapons(List<Weapon> weapons)
+    {
+        MinigameManager.weapons = weapons;
     }
 
     public static void endAllMatches()
@@ -91,5 +106,6 @@ public class MinigameManager {
     public static boolean removePlayer(MinigamePlayer player) {
         return players.remove(player);
     }
+
 
 }
