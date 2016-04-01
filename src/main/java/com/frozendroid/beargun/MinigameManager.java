@@ -10,7 +10,6 @@ public class MinigameManager {
 
     private static List<Match> matches = new ArrayList<>();
     private static List<Arena> arenas = new ArrayList<>();
-    private static List<Gun_old> guns = new ArrayList<>();
     private static List<Weapon> weapons = new ArrayList<>();
     private static List<MinigamePlayer> players = new ArrayList<>();
 
@@ -18,7 +17,7 @@ public class MinigameManager {
     {
         matches.clear();
         arenas.clear();
-        guns.clear();
+        weapons.clear();
         players.clear();
     }
 
@@ -42,15 +41,6 @@ public class MinigameManager {
     public static void addArena(Arena arena)
     {
         arenas.add(arena);
-    }
-
-    public static List<Gun_old> getGuns() {
-        return guns;
-    }
-
-    public static void addGun(Gun_old gun)
-    {
-        guns.add(gun);
     }
 
     public static List<MinigamePlayer> getPlayers() {

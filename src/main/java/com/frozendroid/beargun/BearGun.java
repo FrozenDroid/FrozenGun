@@ -6,6 +6,9 @@ import com.frozendroid.beargun.configs.WeaponConfig;
 import com.frozendroid.beargun.listeners.ActionListener;
 import com.frozendroid.beargun.listeners.DeathListener;
 import com.frozendroid.beargun.listeners.PlayerListener;
+import com.frozendroid.beargun.models.Arena;
+import com.frozendroid.beargun.models.MinigamePlayer;
+import com.frozendroid.beargun.models.Weapon;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,7 +28,13 @@ public class BearGun extends JavaPlugin {
             WeaponConfig.loadGuns();
             ArenaConfig.loadArenas();
 
-            WeaponManager.getGuns().forEach(gun -> System.out.println("Gun loaded: " + gun.getName() ));
+            for (Arena arena : MinigameManager.getArenas()) {
+                getLogger().info("Arena loaded: " + arena.getName());
+            }
+
+            for (Weapon weapon : WeaponManager.getWeapons()) {
+                getLogger().info("Weapon loaded: " + weapon.getName());
+            }
 
         }, 1L);
 
@@ -36,6 +45,11 @@ public class BearGun extends JavaPlugin {
 
 
         nbtTools = new NBTTools();
+    }
+
+    public static void info(String msg)
+    {
+        plugin.getLogger().info(msg);
     }
 
     public static NBTTools getNbtTools()

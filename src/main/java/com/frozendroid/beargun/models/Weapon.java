@@ -7,7 +7,7 @@ public abstract class Weapon {
     protected String name;
     protected MinigamePlayer player;
     protected Material material;
-
+    protected String[] lore;
     public abstract Weapon clone();
 
     public Material getMaterial() {
@@ -33,4 +33,13 @@ public abstract class Weapon {
     public void setPlayer(MinigamePlayer player) {
         this.player = player;
     }
+
+    public String[] getLore() {
+        return lore;
+    }
+
+    public void setLore(String[] lore) {
+        this.lore = lore;
+    }
+
 }

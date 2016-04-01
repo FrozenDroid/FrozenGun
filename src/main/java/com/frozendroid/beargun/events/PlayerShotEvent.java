@@ -1,7 +1,6 @@
 package com.frozendroid.beargun.events;
 
 import com.frozendroid.beargun.models.Gun;
-import com.frozendroid.beargun.models.Gun_old;
 import com.frozendroid.beargun.models.MinigamePlayer;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

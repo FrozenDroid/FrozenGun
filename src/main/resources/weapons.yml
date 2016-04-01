@@ -10,3 +10,10 @@ guns:
     cooldown: 1.5
     pass_through:
     - AIR
+  grenade:
+    type: GRENADE
+    display_name: "Grenade"
+    radius: 1
+    material: SPLASH_POTION
+    detonation_time: 3.5
+    power: 4

@@ -4,7 +4,6 @@ import com.frozendroid.beargun.BearGun;
 import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.WeaponManager;
 import com.frozendroid.beargun.models.Arena;
-import com.frozendroid.beargun.models.Gun_old;
 import com.frozendroid.beargun.models.Spawn;
 import com.frozendroid.beargun.models.Weapon;
 import com.frozendroid.beargun.models.objectives.MostKillObjective;
@@ -61,13 +60,15 @@ public class ArenaConfig {
                     arena.setKillingSpreeDelay(section.getDouble("spree_delay"));
                 }
 
-                Weapon weapon = WeaponManager.findByName(section.getString("gun"));
-                if (weapon != null) {
-                    arena.addWeapon(weapon);
-                    BearGun.plugin.getLogger().info("Loaded " + weapon.getName() + " to arena " + arena.getName() + "!");
-                }
-                else
-                    BearGun.plugin.getLogger().info(section.getString("gun") + " does not exist!");
+                ArrayList<String> weapon_strings = (ArrayList<String>) section.getList("weapons");
+                weapon_strings.forEach(weapon_string -> {
+                    Weapon weapon = WeaponManager.findByName(weapon_string);
+                    if (weapon != null) {
+                        arena.addWeapon(weapon);
+                    } else {
+                        BearGun.plugin.getLogger().info("The weapon \"" + weapon_string + "\" was not found...");
+                    }
+                });
 
                 section.getConfigurationSection("objectives").getKeys(false).stream().forEach((key_) -> {
                     switch (key_) {

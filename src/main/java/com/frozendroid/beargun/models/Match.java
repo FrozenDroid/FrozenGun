@@ -104,7 +104,9 @@ public class Match {
             player.setGameMode(GameMode.SURVIVAL);
 
             for (Weapon weapon : arena.getWeapons()) {
-                player.addWeapon(weapon.clone());
+                Weapon _weapon = weapon.clone();
+                _weapon.setPlayer(player);
+                player.addWeapon(_weapon);
             }
 
             Spawn spawn = getFeasibleSpawn();

@@ -86,6 +86,7 @@ public class Railgun extends Gun {
         railgun.setMaterial(this.getMaterial());
         railgun.setCooldown(this.getCooldown());
         railgun.setDamage(this.getDamage());
+        railgun.setLore(this.getLore());
 
         return railgun;
     }

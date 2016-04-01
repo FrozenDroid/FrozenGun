@@ -1,8 +1,8 @@
 package com.frozendroid.beargun.configs;
 
 import com.frozendroid.beargun.BearGun;
-import com.frozendroid.beargun.MinigameManager;
-import com.frozendroid.beargun.models.Gun_old;
+import com.frozendroid.beargun.WeaponManager;
+import com.frozendroid.beargun.models.Grenade;
 import com.frozendroid.beargun.models.Railgun;
 import com.frozendroid.beargun.utils.ConfigLoader;
 import org.bukkit.Material;
@@ -36,17 +36,36 @@ public class WeaponConfig {
                 case "RAILGUN":
                     loadRailgun(section);
                     break;
+                case "GRENADE":
+                    loadGrenade(section);
+                    break;
             }
         });
 
         return true;
     }
 
+    public static void loadGrenade(ConfigurationSection section)
+    {
+        Grenade grenade = new Grenade();
+        grenade.setName(section.getString("display_name"));
+        Material material = Material.getMaterial(section.getString("material"));
+        if (material == null) {
+            BearGun.plugin.getLogger().info(section.getString("material") + " was not found...");
+            return;
+        }
+        grenade.setVelocityMultiplier(section.getDouble("velocity_multiplier"));
+        grenade.setDetonationTime(section.getDouble("detonation_time"));
+        grenade.setMaterial(material);
+        grenade.setPower((float) section.getDouble("power"));
+        WeaponManager.addWeapon(grenade);
+    }
+
     public static void loadRailgun(ConfigurationSection section)
     {
         Railgun gun = new Railgun();
-        gun.setMaterial(Material.getMaterial(section.getString("material")));
         gun.setName(section.getString("display_name"));
+        gun.setMaterial(Material.getMaterial(section.getString("material")));
         gun.setRange(section.getDouble("range"));
         gun.setDamage(section.getDouble("damage"));
         gun.setCooldown(section.getDouble("cooldown"));
@@ -66,7 +85,7 @@ public class WeaponConfig {
             });
         }
 
-        MinigameManager.addWeapon(gun);
+        WeaponManager.addWeapon(gun);
     }
 
     public static void save()

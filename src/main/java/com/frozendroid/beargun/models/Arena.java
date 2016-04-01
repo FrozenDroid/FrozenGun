@@ -19,7 +19,6 @@ public class Arena {
     private List<Spawn> spawns = new ArrayList<>();
     private String name;
     private Integer startingTime = 30;
-    private Gun_old gun;
     private ArrayList<Weapon> weapons = new ArrayList<>();
     private boolean occupied = false;
     private Queue queue;
@@ -42,14 +41,6 @@ public class Arena {
     public void addSpawn(Spawn spawn)
     {
         spawns.add(spawn);
-    }
-
-    public Gun_old getGun() {
-        return gun;
-    }
-
-    public void setGun(Gun_old gun) {
-        this.gun = gun;
     }
 
     public static Arena getByName(String name)
@@ -79,7 +70,9 @@ public class Arena {
         arenaSection.set("name", name);
         arenaSection.set("min_players", minPlayers);
         arenaSection.set("max_players", maxPlayers);
-        arenaSection.set("gun", gun.getName());
+        ArrayList<String> weapons = new ArrayList<>();
+        this.weapons.forEach(weapon -> weapons.add(weapon.getName()));
+        arenaSection.set("weapons", weapons);
         arenaSection.set("start_time", startingTime);
 
         List<String> spawnList = new ArrayList<>();

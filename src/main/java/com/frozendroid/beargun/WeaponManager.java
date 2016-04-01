@@ -1,6 +1,7 @@
 package com.frozendroid.beargun;
 
 import com.frozendroid.beargun.models.Gun;
+import com.frozendroid.beargun.models.MinigamePlayer;
 import com.frozendroid.beargun.models.Weapon;
 
 import java.util.ArrayList;
@@ -20,9 +21,19 @@ public class WeaponManager {
         return guns;
     }
 
+    public static ArrayList<Weapon> getWeapons()
+    {
+        return (ArrayList<Weapon>) MinigameManager.getWeapons();
+    }
+
+    public static void addWeapon(Weapon weapon)
+    {
+        MinigameManager.addWeapon(weapon);
+    }
+
     public static Weapon findByName(String name)
     {
-        return MinigameManager.getWeapons().stream().filter(weapon -> weapon.getName().equals(name)).findFirst().orElse(null);
+        return MinigameManager.getWeapons().stream().filter(weapon -> weapon.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
 }

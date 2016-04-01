@@ -1,19 +1,30 @@
 package com.frozendroid.beargun.listeners;
 
+import com.frozendroid.beargun.BearGun;
 import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.MinigameManager;
 import com.frozendroid.beargun.models.*;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.SplashPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
 
 public class ActionListener implements Listener {
     final int ATTACK_REACH = 100;
@@ -65,6 +76,97 @@ public class ActionListener implements Listener {
         sign.setLine(2, ChatColor.BLACK+arena.getName());
         sign.update();
 
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent event)
+    {
+        Item item = event.getItemDrop();
+        Player player = event.getPlayer();
+
+        Bukkit.broadcastMessage("x: " + item.getVelocity().getX() + ", y: " + item.getVelocity().getY() + ", z: " + item.getVelocity().getZ());
+
+        MinigamePlayer minigamePlayer = MinigameManager.getPlayer(player);
+
+        if (minigamePlayer == null)
+            return;
+
+        Match match = minigamePlayer.getMatch();
+
+        if (match == null)
+            return;
+
+        Weapon weapon = null;
+
+        ArrayList<Weapon> weapons = minigamePlayer.getWeapons();
+        for (Weapon _weapon : weapons) {
+            if (_weapon.getMaterial() == event.getItemDrop().getItemStack().getType()) {
+                BearGun.info("Grenade is not null!!");
+                weapon = _weapon;
+            }
+        }
+
+        if (weapon == null)
+            return;
+
+
+
+        if (weapon instanceof Grenade) {
+            Grenade grenade = (Grenade) weapon;
+            grenade.throwWeapon(item);
+        }
+
+
+    }
+
+    @EventHandler
+    public void onProjectileLaunch(ProjectileLaunchEvent event)
+    {
+        if (!(event.getEntity().getShooter() instanceof Player))
+            return;
+
+
+        Player player =(Player) event.getEntity().getShooter();
+
+        MinigamePlayer minigamePlayer = MinigameManager.getPlayer(player);
+
+        if (minigamePlayer == null)
+            return;
+
+        Match match = minigamePlayer.getMatch();
+
+        if (match == null)
+            return;
+
+        Weapon weapon = null;
+
+        if (event.getEntity().getType() == EntityType.SPLASH_POTION) {
+            Bukkit.broadcastMessage("potion has been thrown");
+            SplashPotion potion = (SplashPotion) event.getEntity();
+            ItemStack item = potion.getItem();
+
+            Item _item = potion.getLocation().getWorld().dropItemNaturally(player.getLocation(), item);
+            Vector vector = new Vector();
+            _item.teleport(player.getEyeLocation());
+            _item.getLocation().setDirection(player.getEyeLocation().getDirection());
+//            _item.getlo(player.getEyeLocation().getDirection());
+            Bukkit.getPluginManager().callEvent(new PlayerDropItemEvent(player.getPlayer(), _item));
+
+//            player.getInventory().
+
+            event.setCancelled(true);
+        }
+
+
+//        Bukkit.broadcastMessage(event.getEntity().getType().getEntityClass().getName());
+
+//        ArrayList<Weapon> weapons = minigamePlayer.getWeapons();
+//        for (Weapon _weapon : weapons) {
+//            if (_weapon.getMaterial() == ) {
+//                BearGun.info("Grenade is not null!!");
+//                weapon = _weapon;
+//            }
+//        }
     }
 
     @EventHandler
