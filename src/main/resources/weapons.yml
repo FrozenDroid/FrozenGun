@@ -17,3 +17,4 @@ guns:
     material: SPLASH_POTION
     detonation_time: 3.5
     power: 4
+    velocity_multiplier: 3

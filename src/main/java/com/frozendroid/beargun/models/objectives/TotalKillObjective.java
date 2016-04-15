@@ -25,6 +25,8 @@ public class TotalKillObjective extends GameObjective implements Listener {
         kills.clear();
     }
 
+
+
     @EventHandler
     public void onPlayerShot(PlayerShotEvent event)
     {

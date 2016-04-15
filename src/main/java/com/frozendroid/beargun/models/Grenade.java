@@ -4,6 +4,7 @@ import com.darkblade12.particleeffect.ParticleEffect;
 import com.frozendroid.beargun.BearGun;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Explosive;
 import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitTask;
 

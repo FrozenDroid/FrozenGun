@@ -3,6 +3,8 @@ package com.frozendroid.beargun.listeners;
 import com.frozendroid.beargun.BearGun;
 import com.frozendroid.beargun.Messenger;
 import com.frozendroid.beargun.MinigameManager;
+import com.frozendroid.beargun.events.PlayerKilledEvent;
+import com.frozendroid.beargun.events.PlayerShotEvent;
 import com.frozendroid.beargun.models.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -17,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -237,6 +240,38 @@ public class ActionListener implements Listener {
                     gun.shoot();
             }
 
+        }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent event)
+    {
+        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
+            return;
+
+        if (event.getEntityType() == EntityType.PLAYER)
+        {
+            Player player = (Player) event.getEntity();
+
+            MinigamePlayer _player = MinigameManager.getPlayer(player);
+
+            if (_player == null) {
+                return;
+            }
+
+            if (!_player.isInMatch()) {
+                return;
+            }
+            event.setDamage(9999);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerShot(PlayerShotEvent event)
+    {
+        if (event.getVictim().getHealth() <= 0) {
+            PlayerKilledEvent playerKilledEvent = new PlayerKilledEvent();
+//            playerKilledEvent
         }
     }
 
