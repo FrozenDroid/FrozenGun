@@ -1,8 +1,8 @@
-name: BearGun
+name: FrozenGun
 version: 0.1
 author: FrozenDroid
 
 main: com.frozendroid.frozengun.FrozenGun
 commands:
     beargun:
-        description: Main command for BearGun
+        description: Main command for FrozenGun
