@@ -3,6 +3,7 @@ package com.frozendroid.frozengun.listeners;
 import com.frozendroid.frozengun.MinigameManager;
 import com.frozendroid.frozengun.models.Match;
 import com.frozendroid.frozengun.models.MinigamePlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -21,6 +22,7 @@ public class DeathListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event)
     {
+        Bukkit.broadcastMessage("Player death happened");
         MinigamePlayer player = MinigameManager.getPlayer(event.getEntity());
 
         if (player == null)

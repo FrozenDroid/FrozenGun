@@ -4,5 +4,5 @@ author: FrozenDroid
 
 main: com.frozendroid.frozengun.FrozenGun
 commands:
-    beargun:
+    frozengun:
         description: Main command for FrozenGun

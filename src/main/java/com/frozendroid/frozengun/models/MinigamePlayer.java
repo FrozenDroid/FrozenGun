@@ -1,5 +1,6 @@
 package com.frozendroid.frozengun.models;
 
+import com.frozendroid.frozengun.FrozenGun;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.conversations.Conversation;
@@ -31,6 +32,7 @@ public class MinigamePlayer {
     private Location lastLocation;
     private ItemStack[] lastInventoryContents;
     private GameMode lastGamemode;
+    private Queue queue;
     private int lastFoodLevel;
     private double lastHealth;
     private double lastMaxHealth;
@@ -39,6 +41,19 @@ public class MinigamePlayer {
     public MinigamePlayer(Player player)
     {
         this.player = player;
+    }
+
+
+    public Queue getQueue() {
+        return queue;
+    }
+
+    public void setQueue(Queue queue) {
+        this.queue = queue;
+    }
+
+    public boolean inQueue() {
+        return this.queue != null;
     }
 
     public void addWeapon(Weapon weapon)
@@ -76,7 +91,7 @@ public class MinigamePlayer {
     {
         Player player = getPlayer();
         player.setHealth(20);
-        player.teleport(match.getFeasibleSpawn().getLocation());
+        player.teleport(match.getFeasibleSpawn().getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
     }
 
     public Location getLastLocation()

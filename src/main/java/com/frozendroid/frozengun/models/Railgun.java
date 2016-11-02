@@ -34,7 +34,7 @@ public class Railgun extends Gun {
 
         for (int counter = 0; counter < block_distance-1; counter++) {
             Location point = start.add(increase);
-            ParticleEffect.CRIT.send(Bukkit.getOnlinePlayers(), point, 0, 0, 0, 1, 1);
+            ParticleEffect.SMOKE_NORMAL.send(Bukkit.getOnlinePlayers(), point, 0, 0, 0, 1.5, 1);
         }
 
         player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_LAUNCH, 1, 0.8F);

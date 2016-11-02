@@ -1,6 +1,7 @@
 package com.frozendroid.frozengun.conversations.prompts;
 
-import com.frozendroid.frozengun.interfaces.GameObjective;
+import com.frozendroid.frozengun.Messenger;
+import com.frozendroid.frozengun.models.objectives.GameObjective;
 import com.frozendroid.frozengun.models.Arena;
 import com.frozendroid.frozengun.models.objectives.MostKillObjective;
 import com.frozendroid.frozengun.models.objectives.TotalKillObjective;
@@ -15,7 +16,7 @@ public class ObjectivePrompt extends StringPrompt {
     @Override
     public String getPromptText(ConversationContext conversationContext)
     {
-        return "Enter the objectives that this arena will have.";
+        return Messenger.infoMsg("Enter the objectives that this arena will have.");
     }
 
     @Override

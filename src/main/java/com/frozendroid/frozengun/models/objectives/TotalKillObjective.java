@@ -1,7 +1,6 @@
 package com.frozendroid.frozengun.models.objectives;
 import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.events.PlayerShotEvent;
-import com.frozendroid.frozengun.interfaces.GameObjective;
 import com.frozendroid.frozengun.models.Match;
 import com.frozendroid.frozengun.models.MinigamePlayer;
 import org.bukkit.event.EventHandler;

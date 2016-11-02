@@ -16,9 +16,11 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.SplashPotion;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -87,8 +89,6 @@ public class ActionListener implements Listener {
         Item item = event.getItemDrop();
         Player player = event.getPlayer();
 
-        Bukkit.broadcastMessage("x: " + item.getVelocity().getX() + ", y: " + item.getVelocity().getY() + ", z: " + item.getVelocity().getZ());
-
         MinigamePlayer minigamePlayer = MinigameManager.getPlayer(player);
 
         if (minigamePlayer == null)
@@ -122,21 +122,35 @@ public class ActionListener implements Listener {
 
     }
 
+    // This is neccesary because some plugins like to go full retard and block entity damage after teleport or respawn.
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player))
+            return;
+
+        MinigamePlayer player = MinigameManager.getPlayer((Player) event.getEntity());
+
+        if (player == null)
+            return;
+
+        if (!player.isInMatch())
+            return;
+
+        event.setCancelled(false);
+    }
+
     @EventHandler
     public void onProjectileLaunch(ProjectileLaunchEvent event)
     {
         if (!(event.getEntity().getShooter() instanceof Player))
             return;
 
+        MinigamePlayer player = MinigameManager.getPlayer((Player) event.getEntity().getShooter());
 
-        Player player =(Player) event.getEntity().getShooter();
-
-        MinigamePlayer minigamePlayer = MinigameManager.getPlayer(player);
-
-        if (minigamePlayer == null)
+        if (player == null)
             return;
 
-        Match match = minigamePlayer.getMatch();
+        Match match = player.getMatch();
 
         if (match == null)
             return;
@@ -177,7 +191,7 @@ public class ActionListener implements Listener {
     {
         if (evt.getAction() == Action.RIGHT_CLICK_BLOCK &&
                 (evt.getClickedBlock().getType() == Material.WALL_SIGN
-                || evt.getClickedBlock().getType() == Material.SIGN)
+                || evt.getClickedBlock().getType() == Material.SIGN_POST)
                 ) {
             Sign sign = (Sign) evt.getClickedBlock().getState();
             String[] lines = sign.getLines();
@@ -186,7 +200,8 @@ public class ActionListener implements Listener {
                 return;
 
             if (lines[1].equals("")) {
-                evt.getPlayer().sendMessage("The second row is empty.. so we'll never be able to find the arena to join.");
+                evt.getPlayer().sendMessage("The second row is empty..." +
+                        " so we'll never be able to find the arena to join.");
                 return;
             }
 
@@ -200,13 +215,18 @@ public class ActionListener implements Listener {
 
             MinigamePlayer player = MinigameManager.getPlayer(evt.getPlayer());
 
+            if (player == null) {
+                player = new MinigamePlayer(evt.getPlayer());
+            }
+
             if (arena.hasQueue()) {
-                if (arena.getQueue().getPlayers().contains(player)) {
+                if (player.getQueue() != null) {
                     evt.getPlayer().sendMessage(Messenger.infoMsg("Already in queue!"));
                     return;
                 }
 
-                arena.getQueue().addPlayer(new MinigamePlayer(evt.getPlayer()));
+                arena.getQueue().addPlayer(player);
+                player.setQueue(arena.getQueue());
                 return;
             }
             if (arena.isOccupied()) {
@@ -216,7 +236,8 @@ public class ActionListener implements Listener {
 
             Queue queue = new Queue();
             queue.setArena(arena);
-            queue.addPlayer(new MinigamePlayer(evt.getPlayer()));
+            queue.addPlayer(player);
+            player.setQueue(queue);
             queue.startWaitingTimer();
         }
 

@@ -27,7 +27,7 @@ public class SpawnPrompt extends StringPrompt {
             return this;
         }
 
-        if (s.equalsIgnoreCase("enter")) {
+        if (s.equalsIgnoreCase("done")) {
             arena.save();
             MinigameManager.addArena(arena);
         }

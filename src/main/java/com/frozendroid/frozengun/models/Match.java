@@ -3,10 +3,11 @@ package com.frozendroid.frozengun.models;
 import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
-import com.frozendroid.frozengun.interfaces.GameObjective;
+import com.frozendroid.frozengun.models.objectives.GameObjective;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
@@ -91,8 +92,10 @@ public class Match {
 
     public void start()
     {
+        arena.setQueue(null);
         arena.setOccupied(true);
         players.forEach((player) -> {
+            player.setQueue(null);
             player.setLastFoodLevel(player.getFoodLevel());
             player.setLastHealth(player.getHealth());
             player.setLastMaxHealth(player.getMaxHealth());
@@ -101,6 +104,9 @@ public class Match {
             player.setLastInventoryContents(player.getInventory().getContents());
             player.setLastGamemode(player.getGameMode());
             player.join(this);
+            player.resetMaxHealth();
+            player.setHealth(20);
+            player.setFoodLevel(20);
             player.setGameMode(GameMode.SURVIVAL);
 
             for (Weapon weapon : arena.getWeapons()) {
@@ -110,7 +116,7 @@ public class Match {
             }
 
             Spawn spawn = getFeasibleSpawn();
-            player.teleport(spawn.getLocation());
+            player.teleport(spawn.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
             startCooldownBar(player);
         });
         startScoreboard();

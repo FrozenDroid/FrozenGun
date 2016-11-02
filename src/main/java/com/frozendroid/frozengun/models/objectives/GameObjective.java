@@ -1,4 +1,4 @@
-package com.frozendroid.frozengun.interfaces;
+package com.frozendroid.frozengun.models.objectives;
 
 import com.frozendroid.frozengun.events.PlayerShotEvent;
 import com.frozendroid.frozengun.models.Kill;
@@ -42,23 +42,29 @@ public abstract class GameObjective implements Listener {
         kills.putIfAbsent(event.getShooter(), new ArrayList<>());
 
         ArrayList<Kill> _kills = kills.get(event.getShooter());
-        _kills.add(kill);
 
-        if (_kills.size() > 1) {
-            Kill lastKill = _kills.get(_kills.size() - 2);
-            Kill currentKill = _kills.get(_kills.size() - 1);
 
-            Long delta = currentKill.getTime() - lastKill.getTime();
+        if (_kills.size() >= 1) {
+            Kill lastKill = _kills.get(_kills.size() - 1);
+
+            Long delta = kill.getTime() - lastKill.getTime();
             if (match.getArena().getKillingSpreeDelay() >= delta/1000) {
-                currentKill.setSpree(lastKill.getSpree() + 1);
+                kill.setSpree(lastKill.getSpree() + 1);
 
-                if (currentKill.getSpree() == 2)
+                if (kill.getSpree() == 2)
                     match.broadcast(event.getShooter().getDisplayName() + " got a double kill!");
-                if (currentKill.getSpree() == 3)
+                if (kill.getSpree() == 3)
                     match.broadcast(event.getShooter().getDisplayName() + " got a triple kill!");
-                if (currentKill.getSpree() == 4)
+                if (kill.getSpree() == 4)
                     match.broadcast(event.getShooter().getDisplayName() + " got a quadra kill!");
+                if (kill.getSpree() == 5)
+                    match.broadcast(event.getShooter().getDisplayName() + " got a penta kill!");
+                if (kill.getSpree() == 6)
+                    match.broadcast(event.getShooter().getDisplayName() + " got a hexa kill!");
             }
-        }
+        } else
+            kill.setSpree(1);
+
+        _kills.add(kill);
     }
 }

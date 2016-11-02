@@ -11,7 +11,7 @@ import com.frozendroid.frozengun.models.Weapon;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.cyberiantiger.minecraft.unsafe.v1_9_R1.NBTTools;
+import org.cyberiantiger.minecraft.unsafe.v1_10_R1.NBTTools;
 
 public class FrozenGun extends JavaPlugin {
 
@@ -28,11 +28,11 @@ public class FrozenGun extends JavaPlugin {
             ArenaConfig.loadArenas();
 
             for (Arena arena : MinigameManager.getArenas()) {
-                getLogger().info("Arena loaded: " + arena.getName());
+                FrozenGun.info("Arena loaded: " + arena.getName());
             }
 
             for (Weapon weapon : WeaponManager.getWeapons()) {
-                getLogger().info("Weapon loaded: " + weapon.getName());
+                FrozenGun.info("Weapon loaded: " + weapon.getName());
             }
 
         }, 1L);
@@ -41,7 +41,6 @@ public class FrozenGun extends JavaPlugin {
         new ActionListener(this);
         new PlayerListener(this);
         new CommandHandler(this);
-
 
         nbtTools = new NBTTools();
     }

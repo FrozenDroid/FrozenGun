@@ -104,8 +104,15 @@ public class Queue {
 
     public void addPlayer(MinigamePlayer player)
     {
+        player.sendMessage(Messenger.infoMsg("Joined the queue for " + arena.getName()) + ".");
         MinigameManager.addPlayer(player);
         players.add(player);
+    }
+
+    public void removePlayer(MinigamePlayer player)
+    {
+        MinigameManager.removePlayer(player);
+        players.remove(player);
     }
 
     public List<MinigamePlayer> getPlayers() {

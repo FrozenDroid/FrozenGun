@@ -1,5 +1,6 @@
 package com.frozendroid.frozengun.commands;
 
+import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
 import com.frozendroid.frozengun.models.Match;
 import com.frozendroid.frozengun.models.MinigamePlayer;
@@ -14,18 +15,25 @@ public class LeaveCommand {
             return;
         }
 
-        Player player = (Player) sender;
-        MinigamePlayer _player = MinigameManager.getPlayer(player);
-        if (_player == null) {
+        MinigamePlayer player = MinigameManager.getPlayer((Player) sender);
+        if (player == null) {
             return;
         }
-        Match match = _player.getMatch();
+
+        if (player.inQueue()) {
+            player.getQueue().removePlayer(player);
+            player.sendMessage(Messenger.infoMsg("Left queue for arena " + player.getQueue().getArena().getName() + "!"));
+            return;
+        }
+
+        Match match = player.getMatch();
 
         if (match == null) {
             return;
         }
 
-//        _player.leave(match);
+        match.leave(player, false);
+        player.sendMessage(Messenger.infoMsg("Left match in arena " + match.getArena().getName() + "!"));
     }
 
 }

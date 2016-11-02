@@ -56,7 +56,7 @@ public class ArenaConfig {
                 boolean announceKillingSpree = section.getBoolean("killing_spree");
                 if (announceKillingSpree) {
                     FrozenGun.plugin.getLogger().info("enabling killstreak thingy");
-                    arena.setAnnounceKillingSpree(announceKillingSpree);
+                    arena.setAnnounceKillingSpree(true);
                     arena.setKillingSpreeDelay(section.getDouble("spree_delay"));
                 }
 

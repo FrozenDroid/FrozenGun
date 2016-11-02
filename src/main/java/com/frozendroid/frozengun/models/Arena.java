@@ -2,7 +2,7 @@ package com.frozendroid.frozengun.models;
 
 import com.frozendroid.frozengun.MinigameManager;
 import com.frozendroid.frozengun.configs.ArenaConfig;
-import com.frozendroid.frozengun.interfaces.GameObjective;
+import com.frozendroid.frozengun.models.objectives.GameObjective;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
