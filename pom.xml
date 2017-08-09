@@ -51,7 +51,7 @@
                 <configuration>
                     <artifactSet>
                         <includes>
-                            <include>org.inventivetalent:*</include>
+                            <include>org.inventivetalent:particleapi</include>
                             <include>org.json:*</include>
                         </includes>
                     </artifactSet>
