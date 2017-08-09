@@ -11,12 +11,10 @@ import com.frozendroid.frozengun.models.Weapon;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.cyberiantiger.minecraft.unsafe.v1_10_R1.NBTTools;
 
 public class FrozenGun extends JavaPlugin {
 
     public static Plugin plugin;
-    public static NBTTools nbtTools;
 
     @Override
     public void onEnable()
@@ -41,18 +39,11 @@ public class FrozenGun extends JavaPlugin {
         new ActionListener(this);
         new PlayerListener(this);
         new CommandHandler(this);
-
-        nbtTools = new NBTTools();
     }
 
     public static void info(String msg)
     {
         plugin.getLogger().info(msg);
-    }
-
-    public static NBTTools getNbtTools()
-    {
-        return nbtTools;
     }
 
     @Override

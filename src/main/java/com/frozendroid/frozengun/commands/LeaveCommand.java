@@ -32,7 +32,7 @@ public class LeaveCommand {
             return;
         }
 
-        match.leave(player, false);
+        match.leave(player);
         player.sendMessage(Messenger.infoMsg("Left match in arena " + match.getArena().getName() + "!"));
     }
 

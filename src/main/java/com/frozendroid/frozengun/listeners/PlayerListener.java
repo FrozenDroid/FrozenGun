@@ -17,18 +17,4 @@ public class PlayerListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler
-    public void onPlayerLeave(PlayerQuitEvent event)
-    {
-        MinigamePlayer player = MinigameManager.getPlayer(event.getPlayer());
-
-        if (player == null) {
-            return;
-        }
-
-        if (player.isInMatch()) {
-            player.getMatch().leave(player, true);
-        }
-    }
-
 }
