@@ -11,7 +11,7 @@ import com.frozendroid.frozengun.models.Weapon;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-//test
+
 public class FrozenGun extends JavaPlugin {
 
     public static Plugin plugin;
