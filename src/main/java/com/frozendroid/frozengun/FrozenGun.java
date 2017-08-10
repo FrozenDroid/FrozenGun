@@ -38,7 +38,7 @@ public class FrozenGun extends JavaPlugin {
         new ActionListener(this);
         new PlayerListener(this);
         new CommandHandler(this);
-    }
+    } // another test
 
     public static void info(String msg)
     {
