@@ -32,7 +32,6 @@ public class FrozenGun extends JavaPlugin {
             for (Weapon weapon : WeaponManager.getWeapons()) {
                 FrozenGun.info("Weapon loaded: " + weapon.getName());
             }
-
         }, 1L);
 
         new DeathListener(this);
