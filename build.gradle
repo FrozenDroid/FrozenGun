@@ -1,0 +1,48 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "1.2.3"
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+
+group = "com.frozendroid"
+version = "1.0"
+sourceCompatibility = "1.8"
+
+repositories {
+    jcenter()
+
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' // Spigot repo
+    }
+
+    maven {
+        url 'https://repo.inventivetalent.org/content/groups/public/'
+    }
+
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots/' // Sonatype snapshots
+    }
+}
+
+dependencies {
+    compile 'org.spigotmc:spigot-api:1.10-R0.1-SNAPSHOT'
+    compile 'org.projectlombok:lombok:1.16.6'
+    compile group: 'org.inventivetalent', name: 'particleapi', version: '2.1.1'
+    compile 'org.json:json:20150729'
+}
+
+jar {
+    actions = []
+    dependsOn = []
+    dependsOn('shadowJar')
+}
+
+shadowJar {
+    baseName = rootProject.name
+    classifier = null
+    dependencies {
+        include(dependency('org.inventivetalent:particleapi'))
+    }
+}
