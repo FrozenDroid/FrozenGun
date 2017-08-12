@@ -45,7 +45,6 @@ public class MinigamePlayer {
         this.player = player;
     }
 
-
     public Queue getQueue() {
         return queue;
     }

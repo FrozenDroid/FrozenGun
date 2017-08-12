@@ -35,15 +35,13 @@ public class ActionListener implements Listener {
     final int ATTACK_REACH = 100;
     private Plugin plugin;
 
-    public ActionListener(Plugin plugin)
-    {
+    public ActionListener(Plugin plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
-    public void onSignChange(SignChangeEvent event)
-    {
+    public void onSignChange(SignChangeEvent event) {
         Block block = event.getBlock();
         Sign sign = (Sign) event.getBlock().getState();
         String[] lines = event.getLines();
@@ -76,16 +74,15 @@ public class ActionListener implements Listener {
 
         event.setCancelled(true);
 
-        sign.setLine(0, ChatColor.DARK_AQUA+"[FrozenGun]");
-        sign.setLine(1, ChatColor.AQUA+"Join");
-        sign.setLine(2, ChatColor.BLACK+arena.getName());
+        sign.setLine(0, ChatColor.DARK_AQUA + "[FrozenGun]");
+        sign.setLine(1, ChatColor.AQUA + "Join");
+        sign.setLine(2, ChatColor.BLACK + arena.getName());
         sign.update();
 
     }
 
     @EventHandler
-    public void onItemDrop(PlayerDropItemEvent event)
-    {
+    public void onItemDrop(PlayerDropItemEvent event) {
         Item item = event.getItemDrop();
         Player player = event.getPlayer();
 
@@ -111,7 +108,6 @@ public class ActionListener implements Listener {
 
         if (weapon == null)
             return;
-
 
 
         if (weapon instanceof Grenade) {
@@ -140,8 +136,7 @@ public class ActionListener implements Listener {
     }
 
     @EventHandler
-    public void onProjectileLaunch(ProjectileLaunchEvent event)
-    {
+    public void onProjectileLaunch(ProjectileLaunchEvent event) {
         if (!(event.getEntity().getShooter() instanceof Player))
             return;
 
@@ -172,16 +167,18 @@ public class ActionListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent evt)
-    {
-        if (evt.getAction() == Action.RIGHT_CLICK_BLOCK &&
-                (evt.getClickedBlock().getType() == Material.WALL_SIGN
-                || evt.getClickedBlock().getType() == Material.SIGN_POST)
+    public void onPlayerInteract(PlayerInteractEvent evt) {
+        if (
+                evt.getAction() == Action.RIGHT_CLICK_BLOCK &&
+                        (
+                                evt.getClickedBlock().getType() == Material.WALL_SIGN ||
+                                        evt.getClickedBlock().getType() == Material.SIGN_POST
+                        )
                 ) {
             Sign sign = (Sign) evt.getClickedBlock().getState();
             String[] lines = sign.getLines();
 
-            if (!lines[0].equals(ChatColor.DARK_AQUA+"[FrozenGun]"))
+            if (!lines[0].equals(ChatColor.DARK_AQUA + "[FrozenGun]"))
                 return;
 
             if (lines[1].equals("")) {
@@ -229,7 +226,7 @@ public class ActionListener implements Listener {
         if (evt.getAction() == Action.RIGHT_CLICK_BLOCK || evt.getAction() == Action.RIGHT_CLICK_AIR) {
             MinigamePlayer player = MinigameManager.getPlayer(evt.getPlayer());
 
-            if(player == null)
+            if (player == null)
                 return;
 
             if (!player.isInMatch())
@@ -250,12 +247,8 @@ public class ActionListener implements Listener {
     }
 
     @EventHandler
-    public void onDamage(EntityDamageEvent event)
-    {
-
-
-        if (event.getEntityType() == EntityType.PLAYER)
-        {
+    public void onDamage(EntityDamageEvent event) {
+        if (event.getEntityType() == EntityType.PLAYER) {
             Player player = (Player) event.getEntity();
 
             MinigamePlayer _player = MinigameManager.getPlayer(player);
@@ -270,7 +263,7 @@ public class ActionListener implements Listener {
 
             if (
                     !_player.getMatch().getArena().hasFallingDamage() &&
-                    event.getCause() == EntityDamageEvent.DamageCause.FALL
+                            event.getCause() == EntityDamageEvent.DamageCause.FALL
                     ) {
                 event.setDamage(0);
                 event.setCancelled(true);
@@ -284,8 +277,7 @@ public class ActionListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerShot(PlayerShotEvent event)
-    {
+    public void onPlayerShot(PlayerShotEvent event) {
         if (event.getVictim().getHealth() <= 0) {
             PlayerKilledEvent playerKilledEvent = new PlayerKilledEvent();
 //            playerKilledEvent
