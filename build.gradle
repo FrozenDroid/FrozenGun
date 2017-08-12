@@ -31,7 +31,6 @@ repositories {
 
 dependencies {
     compile 'org.spigotmc:spigot-api:1.10-R0.1-SNAPSHOT'
-    compile 'org.projectlombok:lombok:1.16.6'
     compile group: 'org.inventivetalent', name: 'particleapi', version: '2.1.1'
     compile 'org.json:json:20150729'
 }
@@ -47,5 +46,6 @@ shadowJar {
     classifier = null
     dependencies {
         include(dependency('org.inventivetalent:particleapi'))
+        include(dependency('org.json:json'))
     }
 }

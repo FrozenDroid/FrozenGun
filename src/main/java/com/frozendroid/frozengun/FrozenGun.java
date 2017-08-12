@@ -43,7 +43,7 @@ public class FrozenGun extends JavaPlugin {
 
         // Disable plugin if it can't find the main config values.
         if (!loadMainConfig()) {
-            error("Missing required config values... Disabling...");
+            error("Missing required config values, disabling...");
             setEnabled(false);
             return;
         }
@@ -75,9 +75,11 @@ public class FrozenGun extends JavaPlugin {
 
     private void reloadOnUpdate()
     {
-        if (devMode) {
-            info("Development mode is true, therefore we'll reload the server when " +
-                    "the JAR's modified date is newer.");
+        if (inDevelopmentMode()) {
+            info(
+                    "Development mode is true, therefore we'll reload the server when " +
+                    "the JAR's modified date is newer."
+            );
 
             hasFoundNewFile = false;
 
@@ -88,8 +90,10 @@ public class FrozenGun extends JavaPlugin {
                 long modifiedMostRecent = getFile().lastModified();
                 if (modifiedMostRecent > lastModified) {
                     hasFoundNewFile = true;
-                    info("Found a newer file so, waiting a second to reload the server.");
+                    info("Found a newer file, waiting a second to reload the server.");
                     getServer().getScheduler().runTaskLater(this, () -> {
+                        if (inDebugMode())
+                            getServer().broadcastMessage(Messenger.infoMsg("Auto-reloading..."));
                         info("Reloading...");
                         lastModified = getFile().lastModified();
                         this.getServer().reload();

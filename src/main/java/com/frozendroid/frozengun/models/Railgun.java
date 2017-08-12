@@ -20,11 +20,7 @@ public class Railgun extends Gun {
     public void shoot() {
         lastShot = System.currentTimeMillis();
 
-        System.out.println("Damage: " + this.getDamage());
-
-        passthroughMaterials.forEach(material1 -> {
-            System.out.println("Pass through: " + material1.name());
-        });
+        FrozenGun.debug("Damage: " + this.getDamage());
 
         List<Block> los = player.getLineOfSight(passthroughMaterials, (int) this.getRange());
         double block_distance = los.get(los.size()-1).getLocation().distance(player.getLocation());
@@ -34,7 +30,7 @@ public class Railgun extends Gun {
 
         for (int counter = 0; counter < block_distance-1; counter++) {
             Location point = start.add(increase);
-            ParticleEffect.SMOKE_NORMAL.send(Bukkit.getOnlinePlayers(), point, 0, 0, 0, 1.5, 1);
+            ParticleEffect.CRIT.send(Bukkit.getOnlinePlayers(), point, 0, 0, 0, 0.1, 1);
         }
 
         player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_LAUNCH, 1, 0.8F);

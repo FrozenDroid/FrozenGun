@@ -166,24 +166,9 @@ public class ActionListener implements Listener {
             Vector vector = new Vector();
             _item.teleport(player.getEyeLocation());
             _item.getLocation().setDirection(player.getEyeLocation().getDirection());
-//            _item.getlo(player.getEyeLocation().getDirection());
             Bukkit.getPluginManager().callEvent(new PlayerDropItemEvent(player.getPlayer(), _item));
-
-//            player.getInventory().
-
             event.setCancelled(true);
         }
-
-
-//        Bukkit.broadcastMessage(event.getEntity().getType().getEntityClass().getName());
-
-//        ArrayList<Weapon> weapons = minigamePlayer.getWeapons();
-//        for (Weapon _weapon : weapons) {
-//            if (_weapon.getMaterial() == ) {
-//                FrozenGun.info("Grenade is not null!!");
-//                weapon = _weapon;
-//            }
-//        }
     }
 
     @EventHandler
