@@ -97,8 +97,6 @@ public class FrozenGun extends JavaPlugin {
                 }
             }, 0, 10);
         }
-=======
->>>>>>> dba8a1031d47c623e8ec9e1e47c1dfa64ee6398b
     }
 
     public static boolean debug(String msg) {
