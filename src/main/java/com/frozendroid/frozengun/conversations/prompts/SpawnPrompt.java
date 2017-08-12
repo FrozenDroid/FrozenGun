@@ -10,11 +10,13 @@ import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
 public class SpawnPrompt extends StringPrompt {
+    private int spawnCount = 0;
+
     @Override
     public String getPromptText(ConversationContext conversationContext)
     {
         return Messenger.infoMsg("Stand at a spawn location, then type \"add\" to add the location to the arena. " +
-                "Type \"delete\" to remove the last added spawn.");
+                "Type \"delete\" to remove the last added spawn. When done, type \"done\".");
     }
 
     @Override
@@ -24,10 +26,14 @@ public class SpawnPrompt extends StringPrompt {
         if (s.equalsIgnoreCase("add")) {
             Spawn spawn = Spawn.fromLocation(((Player) conversationContext.getForWhom()).getLocation());
             arena.addSpawn(spawn);
+            conversationContext.getForWhom().sendRawMessage(
+                    Messenger.infoMsg("Spawn #" + ++spawnCount + " added!")
+            );
             return this;
         }
 
         if (s.equalsIgnoreCase("done")) {
+            conversationContext.getForWhom().sendRawMessage(Messenger.infoMsg("Arena saved!"));
             arena.save();
             MinigameManager.addArena(arena);
         }
