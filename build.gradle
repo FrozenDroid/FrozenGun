@@ -10,6 +10,9 @@ group = "com.frozendroid"
 version = "1.0"
 sourceCompatibility = "1.8"
 
+// This is necessary because otherwise it starts yelling about unclosed character literals...
+compileJava.options.encoding = 'UTF-8'
+
 repositories {
     jcenter()
 
