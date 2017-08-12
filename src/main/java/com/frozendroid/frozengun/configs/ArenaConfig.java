@@ -53,9 +53,13 @@ public class ArenaConfig {
                 arena.setMinPlayers(section.getInt("min_players"));
                 arena.setMaxPlayers(section.getInt("max_players"));
                 arena.setStartingTime(section.getInt("start_time"));
+
+                // Load options
+                ConfigurationSection options = section.getConfigurationSection("options");
+                arena.setFallingDamage(options.getBoolean("falling_damage"));
+
                 boolean announceKillingSpree = section.getBoolean("killing_spree");
                 if (announceKillingSpree) {
-                    FrozenGun.plugin.getLogger().info("enabling killstreak thingy");
                     arena.setAnnounceKillingSpree(true);
                     arena.setKillingSpreeDelay(section.getDouble("spree_delay"));
                 }
@@ -66,7 +70,7 @@ public class ArenaConfig {
                     if (weapon != null) {
                         arena.addWeapon(weapon);
                     } else {
-                        FrozenGun.plugin.getLogger().info("The weapon \"" + weapon_string + "\" was not found...");
+                        FrozenGun.warn("The weapon \"" + weapon_string + "\" was not found...");
                     }
                 });
 
@@ -89,7 +93,6 @@ public class ArenaConfig {
                     Spawn spawn = new Spawn();
                     JSONObject spawn_ = new JSONObject(spawnJSON);
 
-
                     World world = FrozenGun.plugin.getServer().getWorld(spawn_.getString("world"));
                     double x = spawn_.getDouble("x");
                     double y = spawn_.getDouble("y");
@@ -103,7 +106,7 @@ public class ArenaConfig {
             });
         } catch (NullPointerException e) {
             e.printStackTrace();
-            System.out.println("Arena config is invalid!");
+            FrozenGun.error("Arena config is invalid!");
             return false;
         }
 

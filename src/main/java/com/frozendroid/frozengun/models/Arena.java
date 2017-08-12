@@ -26,6 +26,9 @@ public class Arena {
     private boolean announceKillingSpree = false;
     private Double killingSpreeDelay = 0D;
 
+    // Options
+    private boolean fallingDamage = false;
+
     public String getName() {
         return name;
     }
@@ -74,6 +77,10 @@ public class Arena {
         this.weapons.forEach(weapon -> weapons.add(weapon.getName()));
         arenaSection.set("weapons", weapons);
         arenaSection.set("start_time", startingTime);
+
+        // Options section
+        ConfigurationSection options = arenaSection.createSection("options");
+        options.set("falling_damage", fallingDamage);
 
         List<String> spawnList = new ArrayList<>();
         spawns.forEach((spawn -> spawnList.add(spawn.toJson())));
@@ -191,4 +198,11 @@ public class Arena {
         this.weapons.add(weapon);
     }
 
+    public boolean hasFallingDamage() {
+        return fallingDamage;
+    }
+
+    public void setFallingDamage(boolean fallingDamage) {
+        this.fallingDamage = fallingDamage;
+    }
 }

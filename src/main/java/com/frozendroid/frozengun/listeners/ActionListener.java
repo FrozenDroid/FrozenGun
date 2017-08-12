@@ -49,10 +49,10 @@ public class ActionListener implements Listener {
         String[] lines = event.getLines();
         Player player = event.getPlayer();
 
-        if (!lines[0].equals("[railgun]"))
+        if (!lines[0].equals("[frozengun]"))
             return;
 
-        if (!player.hasPermission("railgun.create.sign")) {
+        if (!player.hasPermission("railgun.create.sign") && !player.isOp()) {
             player.sendMessage("You're not allowed to create a join sign.");
             block.breakNaturally();
             return;
@@ -76,7 +76,7 @@ public class ActionListener implements Listener {
 
         event.setCancelled(true);
 
-        sign.setLine(0, ChatColor.DARK_AQUA+"[Railgun]");
+        sign.setLine(0, ChatColor.DARK_AQUA+"[FrozenGun]");
         sign.setLine(1, ChatColor.AQUA+"Join");
         sign.setLine(2, ChatColor.BLACK+arena.getName());
         sign.update();
@@ -196,7 +196,7 @@ public class ActionListener implements Listener {
             Sign sign = (Sign) evt.getClickedBlock().getState();
             String[] lines = sign.getLines();
 
-            if (!lines[0].equals(ChatColor.DARK_AQUA+"[Railgun]"))
+            if (!lines[0].equals(ChatColor.DARK_AQUA+"[FrozenGun]"))
                 return;
 
             if (lines[1].equals("")) {
@@ -267,8 +267,7 @@ public class ActionListener implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent event)
     {
-        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
-            return;
+
 
         if (event.getEntityType() == EntityType.PLAYER)
         {
@@ -283,6 +282,18 @@ public class ActionListener implements Listener {
             if (!_player.isInMatch()) {
                 return;
             }
+
+            if (
+                    !_player.getMatch().getArena().hasFallingDamage() &&
+                    event.getCause() == EntityDamageEvent.DamageCause.FALL
+                    ) {
+                event.setDamage(0);
+                event.setCancelled(true);
+            }
+
+            if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
+                return;
+
             event.setDamage(9999);
         }
     }

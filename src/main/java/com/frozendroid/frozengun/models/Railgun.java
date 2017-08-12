@@ -51,9 +51,12 @@ public class Railgun extends Gun {
             Vector3D minimum = targetPos.add(-0.5, 0, -0.5);
             Vector3D maximum = targetPos.add(0.5, 1.80, 0.5);
 
-            if (target != player.getPlayer() && hasIntersection(observerStart, observerEnd, minimum, maximum)) {
-                if (block_distance > target.getPlayer().getLocation().distance(player.getLocation()) &&
-                        this.player.getMatch().findPlayer(target.getUniqueId()) != null) {
+            boolean hasIntersection = hasIntersection(observerStart, observerEnd, minimum, maximum);
+            boolean notTargetingSelf = target != player.getPlayer();
+            if (notTargetingSelf && hasIntersection) {
+                boolean inGunRange = block_distance > target.getPlayer().getLocation().distance(player.getLocation());
+                boolean playerNotNull = this.player.getMatch().findPlayer(target.getUniqueId()) != null;
+                if (inGunRange && playerNotNull) {
                     final int finalI = i;
                     Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1 + (finalI * 0.25F));

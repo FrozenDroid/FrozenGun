@@ -1,5 +1,7 @@
 package com.frozendroid.frozengun.commands;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,11 +23,14 @@ public class CommandHandler implements CommandExecutor {
                 NewCommand.run(sender);
             }
         } else if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("leave")) {
+            if (args[0].equalsIgnoreCase("leave"))
                 LeaveCommand.run(sender);
-            } else if (args[0].equalsIgnoreCase("reload")) {
+            if (args[0].equalsIgnoreCase("reload"))
                 ReloadCommand.run(sender);
-            }
+            if (args[0].equalsIgnoreCase("help"))
+                HelpCommand.run(sender);
+        } else if (args.length == 0) {
+            HelpCommand.run(sender);
         }
         return true;
     }

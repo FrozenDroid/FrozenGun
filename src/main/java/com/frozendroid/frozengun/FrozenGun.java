@@ -9,56 +9,152 @@ import com.frozendroid.frozengun.listeners.PlayerListener;
 import com.frozendroid.frozengun.models.Arena;
 import com.frozendroid.frozengun.models.Weapon;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.cyberiantiger.minecraft.unsafe.v1_10_R1.NBTTools;
 
 public class FrozenGun extends JavaPlugin {
 
+    private static String defaultPrefix;
+
     public static Plugin plugin;
-    public static NBTTools nbtTools;
+    private static long lastModified = 0L;
+    private static boolean hasFoundNewFile = false;
+
+    private static FileConfiguration config;
+    private static boolean devMode = false;
+    private static boolean debugMode = false;
+
+    private static ConsoleCommandSender console;
+
+    public FrozenGun()
+    {
+        plugin = this;
+        lastModified = getFile().lastModified();
+    }
 
     @Override
     public void onEnable()
     {
-        plugin = this;
+        defaultPrefix = this.getName();
+        console = this.getServer().getConsoleSender();
+
+        // Disable plugin if it can't find the main config values.
+        if (!loadMainConfig()) {
+            error("Missing required config values... Disabling...");
+            setEnabled(false);
+            return;
+        }
+
+        if (inDebugMode()) {
+            info("Debug mode is activated.");
+        }
+
+        reloadOnUpdate();
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             WeaponConfig.loadGuns();
             ArenaConfig.loadArenas();
 
             for (Arena arena : MinigameManager.getArenas()) {
-                FrozenGun.info("Arena loaded: " + arena.getName());
+                FrozenGun.debug("Arena loaded: " + arena.getName());
             }
 
             for (Weapon weapon : WeaponManager.getWeapons()) {
-                FrozenGun.info("Weapon loaded: " + weapon.getName());
+                FrozenGun.debug("Weapon loaded: " + weapon.getName());
             }
-
         }, 1L);
 
         new DeathListener(this);
         new ActionListener(this);
         new PlayerListener(this);
         new CommandHandler(this);
-
-        nbtTools = new NBTTools();
     }
 
+    private void reloadOnUpdate()
+    {
+        if (devMode) {
+            info("Development mode is true, therefore we'll reload the server when " +
+                    "the JAR's modified date is newer.");
+
+            hasFoundNewFile = false;
+
+            getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
+                if (hasFoundNewFile)
+                    return;
+
+                long modifiedMostRecent = getFile().lastModified();
+                if (modifiedMostRecent > lastModified) {
+                    hasFoundNewFile = true;
+                    info("Found a newer file so, waiting a second to reload the server.");
+                    getServer().getScheduler().runTaskLater(this, () -> {
+                        info("Reloading...");
+                        lastModified = getFile().lastModified();
+                        this.getServer().reload();
+                    }, 20);
+                }
+            }, 0, 10);
+        }
+    }
+
+    public static boolean debug(String msg) {
+        if (inDebugMode()) {
+            FrozenGun.info("DEBUG: " + msg);
+            return true;
+        }
+        return false;
+    }
     public static void info(String msg)
     {
-        plugin.getLogger().info(msg);
+        console.sendMessage(Messenger.infoMsg(msg));
+    }
+    public static void warn(String msg)
+    {
+        plugin.getLogger().warning(msg);
+    }
+    public static void error(String msg)
+    {
+        plugin.getLogger().severe(msg);
     }
 
-    public static NBTTools getNbtTools()
+    private boolean loadMainConfig()
     {
-        return nbtTools;
+        this.saveDefaultConfig();
+        this.reloadConfig();
+        config = this.getConfig();
+
+        try {
+            FrozenGun.devMode = config.getBoolean("devMode");
+            FrozenGun.debugMode = config.getBoolean("debugMode");
+            String prefix = config.getString("prefix");
+            if (prefix == null || prefix.equalsIgnoreCase("")) {
+                prefix = defaultPrefix;
+            }
+
+            Messenger.setPrefix(prefix);
+        } catch (NullPointerException ex) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public void onDisable()
     {
         MinigameManager.endAllMatches();
+    }
+
+    public static boolean inDebugMode()
+    {
+        return debugMode;
+    }
+
+    public static boolean inDevelopmentMode()
+    {
+        return devMode;
     }
 
 }
