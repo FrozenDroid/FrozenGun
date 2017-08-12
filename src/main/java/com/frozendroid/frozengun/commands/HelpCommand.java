@@ -77,20 +77,6 @@ public class HelpCommand {
             finalCommands.add(cmd + "test");
         });
 
-
-
-//        helpMessage.add(ChatColor.DARK_AQUA + "         -====-" + ChatColor.AQUA + " FrozenGun " + ChatColor.DARK_AQUA + "-====-");
-//        if (page == 1) {
-//            helpMessage.add(
-//                    ChatColor.YELLOW + "" + ChatColor.ITALIC + "/frozengun help               " +
-//                    ChatColor.RESET + ChatColor.AQUA + "Brings up this help page."
-//            );
-//            helpMessage.add(
-//                    ChatColor.YELLOW + "" + ChatColor.ITALIC + "/frozengun help <page>      " +
-//                    ChatColor.RESET + ChatColor.AQUA + "Brings up the specified help page."
-//            );
-//        }
-
         sender.sendMessage(finalCommands.toArray(new String[]{}));
     }
 
