@@ -11,7 +11,26 @@ public abstract class Gun extends Weapon {
     protected double damage;
     protected double cooldown;
     protected double range;
+
+    public double getLastShot() {
+        return lastShot;
+    }
+
+    public void setLastShot(double lastShot) {
+        this.lastShot = lastShot;
+    }
+
     protected double lastShot;
+    protected double hitbox;
+
+    public double getHitbox() {
+        return hitbox;
+    }
+
+    public void setHitbox(double hitbox) {
+        this.hitbox = hitbox;
+    }
+
     public abstract void shoot();
 
     public double getRange() {

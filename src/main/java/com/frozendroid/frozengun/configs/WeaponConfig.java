@@ -69,6 +69,7 @@ public class WeaponConfig {
         gun.setRange(section.getDouble("range"));
         gun.setDamage(section.getDouble("damage"));
         gun.setCooldown(section.getDouble("cooldown"));
+        gun.setHitbox(section.getDouble("hitbox", 1D));
 
         List<?> pass_through = section.getList("pass_through");
         if (pass_through != null) {

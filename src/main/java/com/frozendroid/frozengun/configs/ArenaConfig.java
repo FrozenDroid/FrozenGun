@@ -9,6 +9,7 @@ import com.frozendroid.frozengun.models.Weapon;
 import com.frozendroid.frozengun.models.objectives.MostKillObjective;
 import com.frozendroid.frozengun.models.objectives.TotalKillObjective;
 import com.frozendroid.frozengun.utils.ConfigLoader;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -53,6 +54,22 @@ public class ArenaConfig {
                 arena.setMinPlayers(section.getInt("min_players"));
                 arena.setMaxPlayers(section.getInt("max_players"));
                 arena.setStartingTime(section.getInt("start_time"));
+                arena.setRunSpeed(Float.parseFloat(String.valueOf(section.getDouble("running_speed", 1D))));
+
+                ConfigurationSection lobbySection = section.getConfigurationSection("lobby");
+                arena.setLobbyDuration(lobbySection.getInt("duration"));
+                ConfigurationSection lobbyLocSection = lobbySection.getConfigurationSection("location");
+
+                World lobbyWorld = Bukkit.getServer().getWorld(lobbyLocSection.getString("world"));
+                double lobbyX = lobbyLocSection.getDouble("x");
+                double lobbyY = lobbyLocSection.getDouble("y");
+                double lobbyZ = lobbyLocSection.getDouble("z");
+                double lobbyYaw = lobbyLocSection.getDouble("yaw");
+                double lobbyPitch = lobbyLocSection.getDouble("pitch");
+                arena.setLobbyLocation(
+                        new Location(lobbyWorld, lobbyX, lobbyY, lobbyZ, (float) lobbyYaw, (float) lobbyPitch)
+                );
+
 
                 // Load options
                 ConfigurationSection options = section.getConfigurationSection("options");

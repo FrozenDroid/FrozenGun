@@ -9,6 +9,8 @@ import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 
+import java.util.regex.Pattern;
+
 public class SpawnPrompt extends StringPrompt {
     private int spawnCount = 0;
 
@@ -31,6 +33,9 @@ public class SpawnPrompt extends StringPrompt {
             );
             return this;
         }
+
+        Pattern p = Pattern.compile("delete (\\d+)");
+        System.out.println(p.matcher(s).group(0));
 
         if (s.equalsIgnoreCase("done")) {
             conversationContext.getForWhom().sendRawMessage(Messenger.infoMsg("Arena saved!"));

@@ -3,11 +3,13 @@ package com.frozendroid.frozengun.models;
 import com.frozendroid.frozengun.MinigameManager;
 import com.frozendroid.frozengun.configs.ArenaConfig;
 import com.frozendroid.frozengun.models.objectives.GameObjective;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Arena {
 
@@ -25,6 +27,9 @@ public class Arena {
     private List<GameObjective> objectives = new ArrayList<>();
     private boolean announceKillingSpree = false;
     private Double killingSpreeDelay = 0D;
+    private float runSpeed = 1f;
+    private Location lobbyLoc;
+    private int lobbyDuration;
 
     // Options
     private boolean fallingDamage = false;
@@ -57,7 +62,6 @@ public class Arena {
         return MinigameManager.getArenas().stream().filter(arena -> arena.getId().equals(id)).findFirst().orElse(null);
     }
 
-
     public static Arena create()
     {
         return new Arena();
@@ -77,6 +81,13 @@ public class Arena {
         this.weapons.forEach(weapon -> weapons.add(weapon.getName()));
         arenaSection.set("weapons", weapons);
         arenaSection.set("start_time", startingTime);
+
+        ConfigurationSection lobbySection = arenaSection.createSection("lobby");
+        ConfigurationSection lobbyLocSection = lobbySection.createSection("location");
+
+        if (this.getLobbyLoc())
+
+        lobbyLocSection.set("x");
 
         // Options section
         ConfigurationSection options = arenaSection.createSection("options");
@@ -204,5 +215,29 @@ public class Arena {
 
     public void setFallingDamage(boolean fallingDamage) {
         this.fallingDamage = fallingDamage;
+    }
+
+    public float getRunSpeed() {
+        return runSpeed;
+    }
+
+    public void setRunSpeed(float runSpeed) {
+        this.runSpeed = runSpeed;
+    }
+
+    public Optional<Location> getLobbyLoc() {
+        return Optional.of(lobbyLoc);
+    }
+
+    public void setLobbyLocation(Location lobbyLoc) {
+        this.lobbyLoc = lobbyLoc;
+    }
+
+    public int getLobbyDuration() {
+        return lobbyDuration;
+    }
+
+    public void setLobbyDuration(int lobbyDuration) {
+        this.lobbyDuration = lobbyDuration;
     }
 }

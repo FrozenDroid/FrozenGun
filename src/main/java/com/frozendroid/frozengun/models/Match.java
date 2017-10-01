@@ -5,13 +5,15 @@ import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
 import com.frozendroid.frozengun.models.objectives.GameObjective;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import org.bukkit.scoreboard.Objective;
+
 import java.util.*;
 
 public class Match {
@@ -41,7 +43,7 @@ public class Match {
 
     public void broadcast(String string)
     {
-        players.stream().forEach((player) -> player.sendMessage(Messenger.infoMsg(string)));
+        players.forEach(player -> player.sendMessage(Messenger.infoMsg(string)));
     }
 
     public void startCooldownBar(MinigamePlayer player)
@@ -73,15 +75,25 @@ public class Match {
             objective.reset();
         });
 
-        Set<MinigamePlayer> playerSet = new HashSet<>();
-        playerSet.addAll(players);
-        playerSet.forEach(player -> {
-            this.stopCooldownBar(player);
-            this.stopScoreboard(player);
-            leave(player);
+        players.forEach(player -> {
+            player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Victory", "You won!");
+            if (player.getWeaponInHand() instanceof Gun) {
+                Gun gun = (Gun) player.getWeaponInHand();
+                gun.setCooldown(10);
+                gun.lastShot = System.currentTimeMillis();
+            }
         });
-        arena.setOccupied(false);
-        MinigameManager.getMatches().remove(this);
+        Bukkit.getServer().getScheduler().runTaskLater(FrozenGun.plugin, () -> {
+            Set<MinigamePlayer> playerSet = new HashSet<>();
+            playerSet.addAll(players);
+            playerSet.forEach(player -> {
+                this.stopCooldownBar(player);
+                this.stopScoreboard(player);
+                leave(player);
+            });
+            arena.setOccupied(false);
+            MinigameManager.getMatches().remove(this);
+        }, 20L*10);
     }
 
     public void start()
@@ -101,7 +113,11 @@ public class Match {
             player.resetMaxHealth();
             player.setHealth(20);
             player.setFoodLevel(20);
+            player.setWalkSpeed(arena.getRunSpeed());
+            player.getInventory().setHeldItemSlot(0);
             player.setGameMode(GameMode.SURVIVAL);
+
+            player.getInventory().clear();
 
             for (Weapon weapon : arena.getWeapons()) {
                 Weapon _weapon = weapon.clone();
@@ -131,6 +147,7 @@ public class Match {
         player.setExp(player.getLastExp());
         player.teleport(player.getLastLocation());
         player.setGameMode(player.getLastGamemode());
+        player.setWalkSpeed(0.2f);
         MinigameManager.removePlayer(player);
         objectives.forEach((objective) -> objective.removePlayer(player));
         players.remove(player);

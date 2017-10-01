@@ -19,9 +19,6 @@ public class Railgun extends Gun {
     @Override
     public void shoot() {
         lastShot = System.currentTimeMillis();
-
-        FrozenGun.debug("Damage: " + this.getDamage());
-
         List<Block> los = player.getLineOfSight(passthroughMaterials, (int) this.getRange());
         double block_distance = los.get(los.size()-1).getLocation().distance(player.getLocation());
 
@@ -44,8 +41,9 @@ public class Railgun extends Gun {
         int i = 0;
         for (Player target : player.getWorld().getPlayers()) {
             Vector3D targetPos = new Vector3D(target.getLocation());
-            Vector3D minimum = targetPos.add(-0.5, 0, -0.5);
-            Vector3D maximum = targetPos.add(0.5, 1.80, 0.5);
+            double hitboxVal = this.getHitbox()/2;
+            Vector3D minimum = targetPos.add(-hitboxVal, 0, -hitboxVal);
+            Vector3D maximum = targetPos.add(hitboxVal, 1.80, hitboxVal);
 
             boolean hasIntersection = hasIntersection(observerStart, observerEnd, minimum, maximum);
             boolean notTargetingSelf = target != player.getPlayer();
@@ -55,7 +53,7 @@ public class Railgun extends Gun {
                 if (inGunRange && playerNotNull) {
                     final int finalI = i;
                     Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1 + (finalI * 0.25F));
+                        player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_BULLET_HIT, 1, 1 + (finalI * 0.25F));
                     }, 2 + (i*2));
                     target.damage(this.getDamage(), player.getPlayer());
                     PlayerShotEvent event = new PlayerShotEvent();
@@ -86,6 +84,7 @@ public class Railgun extends Gun {
         railgun.setCooldown(this.getCooldown());
         railgun.setDamage(this.getDamage());
         railgun.setLore(this.getLore());
+        railgun.setHitbox(this.getHitbox());
 
         return railgun;
     }
