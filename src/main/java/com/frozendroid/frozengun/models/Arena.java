@@ -85,9 +85,18 @@ public class Arena {
         ConfigurationSection lobbySection = arenaSection.createSection("lobby");
         ConfigurationSection lobbyLocSection = lobbySection.createSection("location");
 
-        if (this.getLobbyLoc())
+        // Save lobby information
+        if (this.getLobbyLoc().isPresent() && this.getLobbyDuration() != 0) {
+            lobbySection.set("duration", this.getLobbyDuration());
+            Location lobbyLoc = this.getLobbyLoc().get();
+            lobbyLocSection.set("x", lobbyLoc.getX());
+            lobbyLocSection.set("y", lobbyLoc.getY());
+            lobbyLocSection.set("z", lobbyLoc.getZ());
+            lobbyLocSection.set("yaw", lobbyLoc.getDirection());
+            lobbyLocSection.set("pitch", lobbyLoc.getPitch());
+            lobbyLocSection.set("world", lobbyLoc.getWorld().getName());
+        }
 
-        lobbyLocSection.set("x");
 
         // Options section
         ConfigurationSection options = arenaSection.createSection("options");
