@@ -1,6 +1,7 @@
 name: FrozenGun
 version: 0.1
 author: FrozenDroid
+softdepend: [NoteBlockAPI]
 
 main: com.frozendroid.frozengun.FrozenGun
 commands:
