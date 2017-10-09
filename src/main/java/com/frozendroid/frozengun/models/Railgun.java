@@ -49,7 +49,7 @@ public class Railgun extends Gun {
             boolean notTargetingSelf = target != player.getPlayer();
             if (notTargetingSelf && hasIntersection) {
                 boolean inGunRange = block_distance > target.getPlayer().getLocation().distance(player.getLocation());
-                boolean playerNotNull = this.player.getMatch().findPlayer(target.getUniqueId()) != null;
+                boolean playerNotNull = this.player.getMatch().findPlayer(target.getUniqueId()).isPresent();
                 if (inGunRange && playerNotNull) {
                     final int finalI = i;
                     Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {

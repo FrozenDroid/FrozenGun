@@ -30,6 +30,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class ActionListener implements Listener {
     private Plugin plugin;
@@ -194,10 +195,20 @@ public class ActionListener implements Listener {
                 return;
             }
 
-            MinigamePlayer player = MinigameManager.getPlayer(evt.getPlayer());
+            MinigamePlayer player = MinigameManager.getPlayerOrNewIfNotExists(evt.getPlayer());
 
-            if (player == null) {
-                player = new MinigamePlayer(evt.getPlayer());
+            Optional<Match> matchOptional = MinigameManager.findMatchByArena(arena);
+            if (matchOptional.isPresent()) {
+                Match match = matchOptional.get();
+                if (!match.findPlayer(player.getUniqueId()).isPresent()) {
+                    MinigameManager.addPlayer(player);
+                    player.saveCurrentState();
+                    player.join(match);
+                    return;
+                } else {
+                    player.sendMessage(Messenger.infoMsg("You're already in this match!"));
+                    return;
+                }
             }
 
             Lobby arenaLobby = arena.getLobby();
@@ -206,16 +217,12 @@ public class ActionListener implements Listener {
                 evt.getPlayer().sendMessage(Messenger.infoMsg("Already in queue!"));
                 return;
             }
+
             arenaLobby.addPlayer(player);
+            MinigameManager.addPlayer(player);
             player.saveCurrentState();
             player.teleportToLobbyIfExists(arenaLobby);
             player.setLobby(arenaLobby);
-
-//            TODO: fix this
-//            if (arena.isOccupied()) {
-//                evt.getPlayer().sendMessage(Messenger.infoMsg("This arena is already in use!"));
-//                return;
-//            }
         }
 
         if (evt.getAction() == Action.RIGHT_CLICK_BLOCK || evt.getAction() == Action.RIGHT_CLICK_AIR) {

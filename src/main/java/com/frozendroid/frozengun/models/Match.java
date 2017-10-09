@@ -35,10 +35,9 @@ public class Match {
         players.add(player);
     }
 
-    public MinigamePlayer findPlayer(UUID uuid)
+    public Optional<MinigamePlayer> findPlayer(UUID uuid)
     {
-        return players.stream().filter(matchplayer -> matchplayer.getPlayer().getUniqueId().equals(uuid)).findFirst().
-                orElse(null);
+        return players.stream().filter(matchplayer -> matchplayer.getPlayer().getUniqueId().equals(uuid)).findFirst();
     }
 
     public void broadcast(String string)
@@ -114,29 +113,10 @@ public class Match {
     public void start()
     {
         arena.setOccupied(true);
-        players.forEach((player) -> {
-            player.setLobby(null);
-            player.saveData();
-            player.join(this);
-            player.resetMaxHealth();
-            player.setHealth(20);
-            player.setFoodLevel(20);
-            player.setWalkSpeed(arena.getRunSpeed());
-            player.getInventory().setHeldItemSlot(0);
-            player.setGameMode(GameMode.SURVIVAL);
-
-            player.getInventory().clear();
-
-            for (Weapon weapon : arena.getWeapons()) {
-                Weapon _weapon = weapon.clone();
-                _weapon.setPlayer(player);
-                player.addWeapon(_weapon);
-            }
-
-            Spawn spawn = getFeasibleSpawn();
-            player.teleport(spawn.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
-            startCooldownBar(player);
-        });
+        List<MinigamePlayer> playersCopy = new ArrayList<>();
+        playersCopy.addAll(players);
+        players.clear();
+        playersCopy.forEach(player -> player.join(this));
         startScoreboard();
         this.objectives = arena.getObjectives();
         this.getObjectives().forEach((objective) -> {

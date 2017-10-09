@@ -24,6 +24,10 @@ public class Lobby {
     private BukkitTask checker_timer;
     private BukkitTask waiting_timer;
 
+    public Lobby(Arena arena) {
+        this.arena = arena;
+    }
+
     public Arena getArena() {
         return arena;
     }
@@ -47,7 +51,7 @@ public class Lobby {
     }
 
     public void startWaitingTimerIfNotStarted() {
-        if (!this.isWaiting()) {
+        if (!this.isWaiting() && this.starting_timer == null) {
             this.timeTillStart = this.countdownTime;
             this.startWaitingTimer();
         }
@@ -108,12 +112,20 @@ public class Lobby {
     public void startStartingTimer()
     {
         starting_timer = FrozenGun.plugin.getServer().getScheduler().runTaskTimer(FrozenGun.plugin, () -> {
+            // If the amount of players gets below the minimum amount needed, start waiting again
+            if (players.size() < arena.getMinPlayers()) {
+                this.timeTillStart = countdownTime;
+                startWaitingTimer();
+                starting_timer.cancel();
+                starting_timer = null;
+                return;
+            }
             players.forEach((player) -> {
-                if (timeTillStart % 5 == 0 && timeTillStart > 0) {
+                if (timeTillStart > 0) {
                     player.getPlayer().sendMessage(Messenger.infoMsg("Starting in " + timeTillStart));
-                } else if (timeTillStart <= 5 && timeTillStart > 0) {
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1);
-                    player.getPlayer().sendMessage(Messenger.infoMsg("Starting in " + timeTillStart));
+                    if (timeTillStart <= 5) {
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 1, 1);
+                    }
                 }
             });
             if (timeTillStart <= 0) {
@@ -134,7 +146,6 @@ public class Lobby {
     public void addPlayer(MinigamePlayer player)
     {
         player.sendMessage(Messenger.infoMsg("Joined the queue for " + arena.getName()) + ".");
-        MinigameManager.addPlayer(player);
         players.add(player);
     }
 

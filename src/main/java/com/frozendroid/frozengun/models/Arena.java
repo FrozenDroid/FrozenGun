@@ -22,18 +22,11 @@ public class Arena {
     private String name;
     private ArrayList<Weapon> weapons = new ArrayList<>();
     private boolean occupied = false;
-    private Lobby lobby;
+    private Lobby lobby = new Lobby(this);
     private List<GameObjective> objectives = new ArrayList<>();
     private boolean announceKillingSpree = false;
     private Double killingSpreeDelay = 0D;
-    private float runSpeed = 1f;
-    private Location lobbyLoc;
-    private int lobbyDuration;
-
-    public Arena() {
-        this.setLobby(new Lobby());
-        this.lobby.setArena(this);
-    }
+    private float runSpeed = 0.2f;
 
     // Options
     private boolean fallingDamage = false;
@@ -226,19 +219,4 @@ public class Arena {
         this.runSpeed = runSpeed;
     }
 
-    public Optional<Location> getLobbyLoc() {
-        return Optional.of(lobbyLoc);
-    }
-
-    public void setLobbyLocation(Location lobbyLoc) {
-        this.lobbyLoc = lobbyLoc;
-    }
-
-    public int getLobbyDuration() {
-        return lobbyDuration;
-    }
-
-    public void setLobbyDuration(int lobbyDuration) {
-        this.lobbyDuration = lobbyDuration;
-    }
 }

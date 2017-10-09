@@ -157,6 +157,23 @@ public class MinigamePlayer {
 
     public void join(Match match) {
         this.match = match;
+        this.setLobby(null);
+        player.resetMaxHealth();
+        player.setHealth(20);
+        player.setFoodLevel(20);
+        player.setWalkSpeed(match.getArena().getRunSpeed());
+        player.getInventory().setHeldItemSlot(0);
+        player.setGameMode(GameMode.SURVIVAL);
+        this.getInventory().clear();
+        for (Weapon weapon : match.getArena().getWeapons()) {
+            Weapon _weapon = weapon.clone();
+            _weapon.setPlayer(this);
+            this.addWeapon(_weapon);
+        }
+        Spawn spawn = match.getFeasibleSpawn();
+        player.teleport(spawn.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        match.startCooldownBar(this);
+        match.addPlayer(this);
     }
 
     public GameMode getLastGamemode() {

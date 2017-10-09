@@ -54,7 +54,7 @@ public class ArenaConfig {
                 arena.setMinPlayers(section.getInt("min_players"));
                 arena.setMaxPlayers(section.getInt("max_players"));
                 arena.getLobby().setCountdownTime(section.getInt("start_time"));
-                arena.setRunSpeed(Float.parseFloat(String.valueOf(section.getDouble("running_speed", 1D))));
+                arena.setRunSpeed(Float.parseFloat(String.valueOf(section.getDouble("running_speed", 0.2D))));
 
                 // load lobby location (optional)
                 ConfigurationSection lobbyLocSection = section.getConfigurationSection("lobbyLocation");

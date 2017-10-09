@@ -26,6 +26,10 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        if (player.getLobby() != null) {
+            player.getLobby().removePlayer(player);
+        }
+
         // TODO: change this to work with some file to track player's state.
         if (player.isInMatch()) {
             player.getMatch().leave(player);

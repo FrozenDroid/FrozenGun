@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MinigameManager {
 
@@ -19,6 +20,10 @@ public class MinigameManager {
         arenas.clear();
         weapons.clear();
         players.clear();
+    }
+
+    public static Optional<Match> findMatchByArena(Arena arena) {
+        return matches.stream().filter(match -> match.getArena() == arena).findFirst();
     }
 
     public static List<Match> getMatches() {
@@ -50,6 +55,11 @@ public class MinigameManager {
     public static MinigamePlayer getPlayer(Player player)
     {
         return players.stream().filter((player_) -> player_.getPlayer().equals(player)).findFirst().orElse(null);
+    }
+
+    public static MinigamePlayer getPlayerOrNewIfNotExists(Player player) {
+        MinigamePlayer minigamePlayer = getPlayer(player);
+        return minigamePlayer == null ? new MinigamePlayer(player) : minigamePlayer;
     }
 
     public static List<Weapon> getWeapons()
