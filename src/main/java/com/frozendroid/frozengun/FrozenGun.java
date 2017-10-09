@@ -9,7 +9,6 @@ import com.frozendroid.frozengun.listeners.PlayerListener;
 import com.frozendroid.frozengun.models.Arena;
 import com.frozendroid.frozengun.models.Weapon;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
