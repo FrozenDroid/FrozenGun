@@ -3,18 +3,23 @@ package com.frozendroid.frozengun.models;
 import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class Queue {
+public class Lobby {
 
     private Arena arena;
+    private Location location;
     private List<MinigamePlayer> players = new ArrayList<>();
+    private long countdownTime = 20;
     private long timeTillStart = 20;
-    private Long startingSince;
+    private long startingSince;
+
     private BukkitTask starting_timer;
     private BukkitTask checker_timer;
     private BukkitTask waiting_timer;
@@ -25,8 +30,6 @@ public class Queue {
 
     public void setArena(Arena arena) {
         this.arena = arena;
-        arena.setQueue(this);
-        timeTillStart = arena.getStartingTime();
     }
 
     public void setTimeTillStart(Integer timeTillStart)
@@ -39,11 +42,23 @@ public class Queue {
         return timeTillStart;
     }
 
+    public boolean isWaiting() {
+        return waiting_timer != null;
+    }
+
+    public void startWaitingTimerIfNotStarted() {
+        if (!this.isWaiting()) {
+            this.timeTillStart = this.countdownTime;
+            this.startWaitingTimer();
+        }
+    }
+
     public void startWaitingTimer()
     {
+        this.timeTillStart = this.countdownTime;
         waiting_timer = FrozenGun.plugin.getServer().getScheduler().runTaskTimer(FrozenGun.plugin, () -> {
             if (checker_timer == null) {
-                startQueueChecker();
+                startLobbyChecker();
             }
             int delta = arena.getMinPlayers()-players.size();
             if (delta != 0)
@@ -53,24 +68,39 @@ public class Queue {
 
     public void stop()
     {
-        if (waiting_timer != null)
+        if (waiting_timer != null) {
             waiting_timer.cancel();
+            this.waiting_timer = null;
+        }
 
-        if (checker_timer != null)
+        if (checker_timer != null) {
             checker_timer.cancel();
+            this.checker_timer = null;
+        }
 
-        if (starting_timer != null)
+        if (starting_timer != null) {
             starting_timer.cancel();
+            this.starting_timer = null;
+        }
     }
 
-    public void startQueueChecker()
+    public void reset() {
+        this.stop();
+        this.players = new ArrayList<>();
+    }
+
+    public void startLobbyChecker()
     {
         checker_timer = FrozenGun.plugin.getServer().getScheduler().runTaskTimer(FrozenGun.plugin, () -> {
             if (arena.getMinPlayers() <= players.size()) {
-                startingSince = System.currentTimeMillis()/1000L;
+                startingSince = System.currentTimeMillis() / 1000L;
                 startStartingTimer();
-                this.waiting_timer.cancel();
-                this.checker_timer.cancel();
+                if (this.waiting_timer != null)
+                    this.waiting_timer.cancel();
+                this.waiting_timer = null;
+                if (this.checker_timer != null)
+                    this.checker_timer.cancel();
+                this.checker_timer = null;
             }
         }, 0L, 10L);
     }
@@ -78,8 +108,6 @@ public class Queue {
     public void startStartingTimer()
     {
         starting_timer = FrozenGun.plugin.getServer().getScheduler().runTaskTimer(FrozenGun.plugin, () -> {
-
-
             players.forEach((player) -> {
                 if (timeTillStart % 5 == 0 && timeTillStart > 0) {
                     player.getPlayer().sendMessage(Messenger.infoMsg("Starting in " + timeTillStart));
@@ -94,9 +122,10 @@ public class Queue {
                 match.setArena(arena);
                 players.forEach(match::addPlayer);
                 match.start();
-                arena.setQueue(null);
                 players.forEach((player) -> player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 2F, 2F));
-                this.starting_timer.cancel();
+                if (this.starting_timer != null) {
+                   this.starting_timer.cancel();
+                }
             }
             timeTillStart--;
         }, 0L, 20L);
@@ -117,5 +146,21 @@ public class Queue {
 
     public List<MinigamePlayer> getPlayers() {
         return players;
+    }
+
+    public Optional<Location> getLocation() {
+        return Optional.ofNullable(location);
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public long getCountdownTime() {
+        return countdownTime;
+    }
+
+    public void setCountdownTime(long countdownTime) {
+        this.countdownTime = countdownTime;
     }
 }

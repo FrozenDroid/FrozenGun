@@ -32,7 +32,6 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 
 public class ActionListener implements Listener {
-    final int ATTACK_REACH = 100;
     private Plugin plugin;
 
     public ActionListener(Plugin plugin) {
@@ -201,26 +200,22 @@ public class ActionListener implements Listener {
                 player = new MinigamePlayer(evt.getPlayer());
             }
 
-            if (arena.hasQueue()) {
-                if (player.getQueue() != null) {
-                    evt.getPlayer().sendMessage(Messenger.infoMsg("Already in queue!"));
-                    return;
-                }
-
-                arena.getQueue().addPlayer(player);
-                player.setQueue(arena.getQueue());
+            Lobby arenaLobby = arena.getLobby();
+            arenaLobby.startWaitingTimerIfNotStarted();
+            if (player.getLobby() == arenaLobby) {
+                evt.getPlayer().sendMessage(Messenger.infoMsg("Already in queue!"));
                 return;
             }
-            if (arena.isOccupied()) {
-                evt.getPlayer().sendMessage(Messenger.infoMsg("This arena is already in use!"));
-                return;
-            }
+            arenaLobby.addPlayer(player);
+            player.saveCurrentState();
+            player.teleportToLobbyIfExists(arenaLobby);
+            player.setLobby(arenaLobby);
 
-            Queue queue = new Queue();
-            queue.setArena(arena);
-            queue.addPlayer(player);
-            player.setQueue(queue);
-            queue.startWaitingTimer();
+//            TODO: fix this
+//            if (arena.isOccupied()) {
+//                evt.getPlayer().sendMessage(Messenger.infoMsg("This arena is already in use!"));
+//                return;
+//            }
         }
 
         if (evt.getAction() == Action.RIGHT_CLICK_BLOCK || evt.getAction() == Action.RIGHT_CLICK_AIR) {

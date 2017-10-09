@@ -23,7 +23,7 @@ public class StartTimePrompt extends NumericPrompt {
         if (number.intValue() < 0)
             return this;
 
-        arena.setStartingTime(number.intValue());
+        arena.getLobby().setCountdownTime(number.intValue());
 
         return new SpawnPrompt();
     }

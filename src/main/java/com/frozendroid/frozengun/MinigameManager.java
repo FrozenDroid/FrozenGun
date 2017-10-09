@@ -71,15 +71,15 @@ public class MinigameManager {
     {
         ArrayList<Match> array = new ArrayList();
         array.addAll(matches);
-        array.forEach(Match::end);
+        array.forEach(Match::endImmediately);
     }
 
-    public static void endAllQueues()
+    public static void endAllLobbies()
     {
         arenas.forEach(arena -> {
-            Queue queue = arena.getQueue();
-            if (queue != null)
-                queue.stop();
+            Lobby lobby = arena.getLobby();
+            if (lobby != null)
+                lobby.stop();
         });
     }
 

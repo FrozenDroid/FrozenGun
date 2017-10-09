@@ -46,8 +46,6 @@ public class ObjectivePrompt extends StringPrompt {
             return this;
         }
 
-
-
-        return new StartTimePrompt();
+        return new LobbyLocationPrompt();
     }
 }

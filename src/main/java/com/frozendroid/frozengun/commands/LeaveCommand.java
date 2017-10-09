@@ -20,9 +20,9 @@ public class LeaveCommand {
             return;
         }
 
-        if (player.inQueue()) {
-            player.getQueue().removePlayer(player);
-            player.sendMessage(Messenger.infoMsg("Left queue for arena " + player.getQueue().getArena().getName() + "!"));
+        if (player.inLobby()) {
+            player.getLobby().removePlayer(player);
+            player.sendMessage(Messenger.infoMsg("Left queue for arena " + player.getLobby().getArena().getName() + "!"));
             return;
         }
 

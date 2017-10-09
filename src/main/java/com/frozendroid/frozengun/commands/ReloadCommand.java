@@ -10,7 +10,7 @@ public class ReloadCommand {
 
     public static void run(CommandSender sender)
     {
-        MinigameManager.endAllQueues();
+        MinigameManager.endAllLobbies();
         MinigameManager.endAllMatches();
 
         MinigameManager.reset();

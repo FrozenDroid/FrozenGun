@@ -35,7 +35,6 @@ public class SpawnPrompt extends StringPrompt {
         }
 
         Pattern p = Pattern.compile("delete (\\d+)");
-        System.out.println(p.matcher(s).group(0));
 
         if (s.equalsIgnoreCase("done")) {
             conversationContext.getForWhom().sendRawMessage(Messenger.infoMsg("Arena saved!"));

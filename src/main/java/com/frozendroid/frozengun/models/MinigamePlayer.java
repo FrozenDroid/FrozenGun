@@ -9,6 +9,7 @@ import org.bukkit.conversations.ConversationAbandonedEvent;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapView;
@@ -34,27 +35,57 @@ public class MinigamePlayer {
     private Location lastLocation;
     private ItemStack[] lastInventoryContents;
     private GameMode lastGamemode;
-    private Queue queue;
+    private Lobby lobby;
     private int lastFoodLevel;
     private double lastHealth;
     private double lastMaxHealth;
     private float lastExp;
+
+    /**
+     * Use this method to save the player's state (location, health, etc).
+     */
+    public void saveCurrentState() {
+        this.setLastLocation(this.getLocation());
+        this.setLastHealth(this.getHealth());
+        this.setLastExp(this.getExp());
+        this.setLastFoodLevel(this.getFoodLevel());
+        this.setLastInventoryContents(this.getInventory().getContents());
+        this.setLastGamemode(this.getGameMode());
+        this.setLastMaxHealth(this.getMaxHealth());
+    }
+
+    /**
+     * Use this method to set the player's state back to when it was saved.
+     */
+    public void restoreState() {
+        this.teleport(this.lastLocation, TeleportCause.PLUGIN);
+        this.setHealth(this.lastHealth);
+        this.setMaxHealth(this.lastMaxHealth);
+        this.setExp(this.lastExp);
+        this.getInventory().setContents(this.lastInventoryContents);
+        this.setGameMode(this.lastGamemode);
+        this.setFoodLevel(this.lastFoodLevel);
+    }
+
+    public boolean teleportToLobbyIfExists(Lobby lobby) {
+        return lobby.getLocation().isPresent() && this.teleport(lobby.getLocation().get(), TeleportCause.PLUGIN);
+    }
 
     public MinigamePlayer(Player player)
     {
         this.player = player;
     }
 
-    public Queue getQueue() {
-        return queue;
+    public Lobby getLobby() {
+        return lobby;
     }
 
-    public void setQueue(Queue queue) {
-        this.queue = queue;
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 
-    public boolean inQueue() {
-        return this.queue != null;
+    public boolean inLobby() {
+        return this.lobby != null;
     }
 
     public void addWeapon(Weapon weapon)
@@ -92,7 +123,7 @@ public class MinigamePlayer {
     public void respawn(Match match)
     {
         player.setHealth(20);
-        player.teleport(match.getFeasibleSpawn().getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        player.teleport(match.getFeasibleSpawn().getLocation(), TeleportCause.PLUGIN);
     }
 
     public Location getLastLocation()
@@ -2427,7 +2458,7 @@ public class MinigamePlayer {
      * @param cause The cause of this teleportation
      * @return <code>true</code> if the teleport was successful
      */
-    public boolean teleport(Location location, PlayerTeleportEvent.TeleportCause cause) {
+    public boolean teleport(Location location, TeleportCause cause) {
         return player.teleport(location, cause);
     }
 
@@ -2450,7 +2481,7 @@ public class MinigamePlayer {
      * @param cause The cause of this teleportation
      * @return <code>true</code> if the teleport was successful
      */
-    public boolean teleport(Entity destination, PlayerTeleportEvent.TeleportCause cause) {
+    public boolean teleport(Entity destination, TeleportCause cause) {
         return player.teleport(destination, cause);
     }
 
@@ -3239,7 +3270,7 @@ public class MinigamePlayer {
      *
      * @param conversation The conversation to begin
      * @return True if the conversation should proceed, false if it has been
-     *     enqueued
+     *     enlobbyd
      */
     public boolean beginConversation(Conversation conversation) {
         return player.beginConversation(conversation);

@@ -20,16 +20,20 @@ public class Arena {
     private Integer id;
     private List<Spawn> spawns = new ArrayList<>();
     private String name;
-    private Integer startingTime = 30;
     private ArrayList<Weapon> weapons = new ArrayList<>();
     private boolean occupied = false;
-    private Queue queue;
+    private Lobby lobby;
     private List<GameObjective> objectives = new ArrayList<>();
     private boolean announceKillingSpree = false;
     private Double killingSpreeDelay = 0D;
     private float runSpeed = 1f;
     private Location lobbyLoc;
     private int lobbyDuration;
+
+    public Arena() {
+        this.setLobby(new Lobby());
+        this.lobby.setArena(this);
+    }
 
     // Options
     private boolean fallingDamage = false;
@@ -80,15 +84,13 @@ public class Arena {
         ArrayList<String> weapons = new ArrayList<>();
         this.weapons.forEach(weapon -> weapons.add(weapon.getName()));
         arenaSection.set("weapons", weapons);
-        arenaSection.set("start_time", startingTime);
+        arenaSection.set("start_time", this.getLobby().getCountdownTime());
 
-        ConfigurationSection lobbySection = arenaSection.createSection("lobby");
-        ConfigurationSection lobbyLocSection = lobbySection.createSection("location");
 
+        ConfigurationSection lobbyLocSection = arenaSection.createSection("lobbyLocation");
         // Save lobby information
-        if (this.getLobbyLoc().isPresent() && this.getLobbyDuration() != 0) {
-            lobbySection.set("duration", this.getLobbyDuration());
-            Location lobbyLoc = this.getLobbyLoc().get();
+        if (this.getLobby().getLocation().isPresent()) {
+            Location lobbyLoc = this.getLobby().getLocation().get();
             lobbyLocSection.set("x", lobbyLoc.getX());
             lobbyLocSection.set("y", lobbyLoc.getY());
             lobbyLocSection.set("z", lobbyLoc.getZ());
@@ -137,17 +139,17 @@ public class Arena {
         this.maxPlayers = maxPlayers;
     }
 
-    public Queue getQueue() {
-        return queue;
+    public Lobby getLobby() {
+        return this.lobby;
     }
 
-    public void setQueue(Queue queue) {
-        this.queue = queue;
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 
-    public boolean hasQueue()
+    public boolean hasLobby()
     {
-        return this.queue != null;
+        return this.lobby != null;
     }
 
     public List<GameObjective> getObjectives()
@@ -183,16 +185,6 @@ public class Arena {
     public void setKillingSpreeDelay(Double killingSpreeDelay)
     {
         this.killingSpreeDelay = killingSpreeDelay;
-    }
-
-    public Integer getStartingTime()
-    {
-        return startingTime;
-    }
-
-    public void setStartingTime(Integer startingTime)
-    {
-        this.startingTime = startingTime;
     }
 
     public boolean isOccupied()

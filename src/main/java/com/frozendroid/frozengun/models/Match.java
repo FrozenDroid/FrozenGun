@@ -64,7 +64,15 @@ public class Match {
         cooldownbars.remove(cooldownbars.keySet().stream().filter(player_ -> player_.equals(player)).findFirst().orElse(null));
     }
 
-    public void end()
+    public void endImmediately() {
+        this.end(true);
+    }
+
+    public void end() {
+        this.end(false);
+    }
+
+    public void end(boolean now)
     {
         if (ended)
             return;
@@ -83,7 +91,8 @@ public class Match {
                 gun.lastShot = System.currentTimeMillis();
             }
         });
-        Bukkit.getServer().getScheduler().runTaskLater(FrozenGun.plugin, () -> {
+
+        Runnable task = () -> {
             Set<MinigamePlayer> playerSet = new HashSet<>();
             playerSet.addAll(players);
             playerSet.forEach(player -> {
@@ -93,22 +102,21 @@ public class Match {
             });
             arena.setOccupied(false);
             MinigameManager.getMatches().remove(this);
-        }, 20L*10);
+        };
+
+        if (!now) {
+            Bukkit.getServer().getScheduler().runTaskLater(FrozenGun.plugin, task, 20L*10);
+        } else {
+            task.run();
+        }
     }
 
     public void start()
     {
-        arena.setQueue(null);
         arena.setOccupied(true);
         players.forEach((player) -> {
-            player.setQueue(null);
-            player.setLastFoodLevel(player.getFoodLevel());
-            player.setLastHealth(player.getHealth());
-            player.setLastMaxHealth(player.getMaxHealth());
-            player.setLastExp(player.getExp());
-            player.setLastLocation(player.getLocation());
-            player.setLastInventoryContents(player.getInventory().getContents());
-            player.setLastGamemode(player.getGameMode());
+            player.setLobby(null);
+            player.saveData();
             player.join(this);
             player.resetMaxHealth();
             player.setHealth(20);
@@ -135,18 +143,13 @@ public class Match {
             objective.setMatch(this);
             objective.start();
         });
+        this.getArena().getLobby().reset();
     }
 
     public void leave(MinigamePlayer player)
     {
         stopScoreboard(player);
-        player.setFoodLevel(player.getLastFoodLevel());
-        player.setMaxHealth(player.getLastMaxHealth());
-        player.setHealth(player.getLastHealth());
-        player.getInventory().setContents(player.getLastInventoryContents());
-        player.setExp(player.getLastExp());
-        player.teleport(player.getLastLocation());
-        player.setGameMode(player.getLastGamemode());
+        player.restoreState();
         player.setWalkSpeed(0.2f);
         MinigameManager.removePlayer(player);
         objectives.forEach((objective) -> objective.removePlayer(player));

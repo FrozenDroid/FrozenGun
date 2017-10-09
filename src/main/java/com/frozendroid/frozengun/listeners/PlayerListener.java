@@ -14,7 +14,7 @@ public class PlayerListener implements Listener {
     public PlayerListener(Plugin plugin)
     {
         this.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
@@ -25,7 +25,6 @@ public class PlayerListener implements Listener {
         if (player == null) {
             return;
         }
-
 
         // TODO: change this to work with some file to track player's state.
         if (player.isInMatch()) {

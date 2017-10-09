@@ -53,21 +53,19 @@ public class ArenaConfig {
                 arena.setName(section.getString("name"));
                 arena.setMinPlayers(section.getInt("min_players"));
                 arena.setMaxPlayers(section.getInt("max_players"));
-                arena.setStartingTime(section.getInt("start_time"));
+                arena.getLobby().setCountdownTime(section.getInt("start_time"));
                 arena.setRunSpeed(Float.parseFloat(String.valueOf(section.getDouble("running_speed", 1D))));
 
-                ConfigurationSection lobbySection = section.getConfigurationSection("lobby");
-                if (lobbySection != null) {
-                    arena.setLobbyDuration(lobbySection.getInt("duration"));
-                    ConfigurationSection lobbyLocSection = lobbySection.getConfigurationSection("location");
-
+                // load lobby location (optional)
+                ConfigurationSection lobbyLocSection = section.getConfigurationSection("lobbyLocation");
+                if (lobbyLocSection != null) {
                     World lobbyWorld = Bukkit.getServer().getWorld(lobbyLocSection.getString("world"));
                     double lobbyX = lobbyLocSection.getDouble("x");
                     double lobbyY = lobbyLocSection.getDouble("y");
                     double lobbyZ = lobbyLocSection.getDouble("z");
                     double lobbyYaw = lobbyLocSection.getDouble("yaw");
                     double lobbyPitch = lobbyLocSection.getDouble("pitch");
-                    arena.setLobbyLocation(
+                    arena.getLobby().setLocation(
                             new Location(lobbyWorld, lobbyX, lobbyY, lobbyZ, (float) lobbyYaw, (float) lobbyPitch)
                     );
                 }
