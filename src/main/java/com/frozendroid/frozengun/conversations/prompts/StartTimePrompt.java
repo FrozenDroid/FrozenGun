@@ -16,12 +16,23 @@ public class StartTimePrompt extends NumericPrompt {
     }
 
     @Override
+    public boolean isNumberValid(ConversationContext conversationContext, Number number)
+    {
+        if (number.intValue() < 0)
+            return false;
+        return true;
+    }
+
+    @Override
+    public String getFailedValidationText(ConversationContext conversationContext, Number number)
+    {
+        return "The wait time can not be lower than 0";
+    }
+
+    @Override
     protected Prompt acceptValidatedInput(ConversationContext conversationContext, Number number)
     {
         Arena arena = (Arena) conversationContext.getSessionData("arena");
-
-        if (number.intValue() < 0)
-            return this;
 
         arena.getLobby().setCountdownTime(number.intValue());
 

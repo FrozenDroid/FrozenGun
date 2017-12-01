@@ -15,32 +15,26 @@ public class MaxPlayersPrompt extends NumericPrompt {
     }
 
     @Override
-    public boolean isNumberValid(ConversationContext conversationContext, Number number)
-    {
+    public boolean isNumberValid(ConversationContext context, Number number) {
         int maxPlayers = number.intValue();
-
-        if (maxPlayers < 0 || ((Arena) conversationContext.getSessionData("arena")).getMinPlayers() > maxPlayers)
+        if (((Arena) context.getSessionData("arena")).getMinPlayers() > maxPlayers)
             return false;
         return true;
     }
 
     @Override
-    public String getFailedValidationText(ConversationContext conversationContext, Number number)
+    public String getFailedValidationText(ConversationContext context, Number number)
     {
-        int maxPlayers = number.intValue();
-        if (maxPlayers < 0)
-            return "This amount can not be lower than 0";
-        if (((Arena) conversationContext.getSessionData("arena")).getMinPlayers() > maxPlayers)
-            return "Maximum players amount must be higher than minimum players amount.";
-        return "wut";
+        return "Maximum player amount must be higher than minimum player amount.";
     }
 
     @Override
-    protected Prompt acceptValidatedInput(ConversationContext conversationContext, Number number)
+    protected Prompt acceptValidatedInput(ConversationContext context, Number number)
     {
-        Arena arena = (Arena) conversationContext.getSessionData("arena");
-        int maxPlayers = number.intValue();
-        arena.setMaxPlayers(maxPlayers);
+        Arena arena = (Arena) context.getSessionData("arena");
+
+        arena.setMaxPlayers(number.intValue());
+
         return new GunPrompt();
     }
 

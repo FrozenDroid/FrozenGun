@@ -48,6 +48,16 @@ public class Arena {
         spawns.add(spawn);
     }
 
+    public void removeSpawn(Spawn spawn)
+    {
+        spawns.remove(spawn);
+    }
+
+    public void removeSpawn(int spawn)
+    {
+        spawns.remove(spawn);
+    }
+
     public static Arena getByName(String name)
     {
         return MinigameManager.getArenas().stream().filter(arena -> arena.getName().equalsIgnoreCase(name)).findFirst()
