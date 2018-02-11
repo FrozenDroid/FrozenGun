@@ -29,9 +29,8 @@ public class DeathListener implements Listener {
 
         event.getDrops().clear();
 
-        Match match = player.getMatch();
         event.setDeathMessage(null);
-        player.respawn(match);
+        player.respawn();
         event.setKeepInventory(true);
     }
 

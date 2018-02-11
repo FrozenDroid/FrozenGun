@@ -2,6 +2,9 @@ package com.frozendroid.frozengun.listeners;
 
 import com.frozendroid.frozengun.MinigameManager;
 import com.frozendroid.frozengun.models.MinigamePlayer;
+import com.xxmicloxx.NoteBlockAPI.RadioSongPlayer;
+import com.xxmicloxx.NoteBlockAPI.Song;
+import com.xxmicloxx.NoteBlockAPI.SongPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;

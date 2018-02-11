@@ -22,6 +22,7 @@ public class FrozenGun extends JavaPlugin {
     public static Plugin plugin;
     private static long lastModified = 0L;
     private static boolean hasFoundNewFile = false;
+    private static boolean useNoteBlockAPI = false;
 
     private static FileConfiguration config;
     private static boolean devMode = false;
@@ -33,6 +34,14 @@ public class FrozenGun extends JavaPlugin {
     {
         plugin = this;
         lastModified = getFile().lastModified();
+    }
+
+    public static boolean useNoteBlockAPI() {
+        return useNoteBlockAPI;
+    }
+
+    public static void setUseNoteBlockAPI(boolean useNoteBlockAPI) {
+        FrozenGun.useNoteBlockAPI = useNoteBlockAPI;
     }
 
     @Override
@@ -47,6 +56,8 @@ public class FrozenGun extends JavaPlugin {
             setEnabled(false);
             return;
         }
+
+        detectNoteBlockAPI();
 
         if (inDebugMode()) {
             info("Debug mode is activated.");
@@ -71,6 +82,16 @@ public class FrozenGun extends JavaPlugin {
         new ActionListener(this);
         new PlayerListener(this);
         new CommandHandler(this);
+    }
+
+    private static boolean detectNoteBlockAPI() {
+        setUseNoteBlockAPI(false);
+        if (plugin.getServer().getPluginManager().isPluginEnabled("NoteBlockAPI")) {
+            info("NoteBlockAPI was found so we're using it.");
+            setUseNoteBlockAPI(true);
+            return true;
+        }
+        return false;
     }
 
     private void reloadOnUpdate()

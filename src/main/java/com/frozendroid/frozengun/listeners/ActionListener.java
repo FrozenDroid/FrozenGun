@@ -221,8 +221,10 @@ public class ActionListener implements Listener {
             arenaLobby.addPlayer(player);
             MinigameManager.addPlayer(player);
             player.saveCurrentState();
-            player.teleportToLobbyIfExists(arenaLobby);
             player.setLobby(arenaLobby);
+            if (arenaLobby.getLocation().isPresent()) {
+                player.teleport(arenaLobby.getLocation().get());
+            }
         }
 
         if (evt.getAction() == Action.RIGHT_CLICK_BLOCK || evt.getAction() == Action.RIGHT_CLICK_AIR) {
