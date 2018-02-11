@@ -50,6 +50,9 @@ shadowJar {
     baseName = rootProject.name
     classifier = null
     dependencies {
+        include dependency("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
+        include dependency("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
+        include dependency("org.jetbrains.kotlin:kotlin-runtime:$kotlin_version")
         include(dependency('org.inventivetalent:particleapi'))
         include(dependency('org.json:json'))
     }

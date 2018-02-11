@@ -124,7 +124,6 @@ public class Lobby {
                 if (timeTillStart > 0) {
                     player.getPlayer().sendMessage(Messenger.infoMsg("Starting in " + timeTillStart));
                     if (timeTillStart <= 5) {
-                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1f, 1f);
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 1f, 1f);
                     }
                 }
