@@ -13,7 +13,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class MostKillObjective extends GameObjective implements Listener {
@@ -45,23 +47,12 @@ public class MostKillObjective extends GameObjective implements Listener {
 
     public String getEndText()
     {
-        Comparator<MinigamePlayer> byKills = (p1, p2) -> Integer.compare(kills.get(p2).size(), kills.get(p1).size());
-        Stream<MinigamePlayer> stream =  kills.keySet().stream().sorted(byKills);
-        MinigamePlayer player = stream.findFirst().orElse(null);
-        if (player == null) {
-            return "The game at " + match.getArena().getName() + " ended.";
+        ArrayList<MinigamePlayer> winners = getWinners();
+        if (winners.size() == 0) {
+            return "The game at " + match.getArena() + " ended.";
         }
-        for (int i = 0; i < 20; i++) {
-            Bukkit.getServer().getScheduler().runTaskLater(FrozenGun.plugin, () -> {
-                Firework fw = player.getWorld().spawn(player.getLocation(), Firework.class);
-                FireworkMeta meta = fw.getFireworkMeta();
-                FireworkEffect fe = FireworkEffect.builder().withColor(Color.BLUE).trail(true).flicker(true).with(FireworkEffect.Type.BALL_LARGE).withFlicker().withColor(Color.BLUE).withFade(Color.RED).build();
-                meta.setPower(1);
-                meta.addEffect(fe);
-                fw.setFireworkMeta(meta);
-            }, 5L*i);
-        }
-        return player.getPlayer().getName() + " won the game at " + match.getArena().getName() + "!";
+
+        return winners.get(0).getDisplayName() + " won the game at " + match.getArena().getName() + "!";
     }
 
     public String getTypeName()
@@ -97,5 +88,17 @@ public class MostKillObjective extends GameObjective implements Listener {
     public void reset()
     {
         kills.clear();
+    }
+
+    /**
+     * @return The one player that got the most kills.
+     */
+    @Override
+    public ArrayList<MinigamePlayer> getWinners() {
+        ArrayList<MinigamePlayer> winners = new ArrayList<>();
+        Comparator<MinigamePlayer> byKills = (p1, p2) -> Integer.compare(kills.get(p2).size(), kills.get(p1).size());
+        Optional<MinigamePlayer> winner = kills.keySet().stream().min(byKills);
+        winner.ifPresent(winners::add);
+        return winners;
     }
 }

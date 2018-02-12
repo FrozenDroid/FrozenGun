@@ -4,10 +4,10 @@ import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
 import com.frozendroid.frozengun.models.objectives.GameObjective;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
+import org.bukkit.*;
+import org.bukkit.entity.Firework;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -76,14 +76,53 @@ public class Match {
         if (ended)
             return;
         setEnded(true);
-        objectives.forEach((objective) -> {
+
+        ArrayList<MinigamePlayer> winners = new ArrayList<>();
+        HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>();
+
+        for (GameObjective objective : objectives) {
             FrozenGun.plugin.getServer().broadcastMessage(Messenger.infoMsg(objective.getEndText()));
+            winners.addAll(objective.getWinners());
+            kills.putAll(objective.kills);
             objective.stop();
             objective.reset();
-        });
+
+
+            for (MinigamePlayer winner : winners) {
+                for (int i = 0; i < 20; i++) {
+                    Bukkit.getServer().getScheduler().runTaskLater(FrozenGun.plugin, () -> {
+                        Firework fw = winner.getWorld().spawn(winner.getLocation(), Firework.class);
+                        FireworkMeta meta = fw.getFireworkMeta();
+                        FireworkEffect fe = FireworkEffect.builder()
+                                .withColor(Color.BLUE)
+                                .trail(true)
+                                .flicker(true)
+                                .with(FireworkEffect.Type.BALL_LARGE)
+                                .withFlicker()
+                                .withColor(Color.BLUE)
+                                .withFade(Color.RED)
+                                .build();
+                        meta.setPower(1);
+                        meta.addEffect(fe);
+                        fw.setFireworkMeta(meta);
+                    }, 5L*i);
+                }
+            }
+        }
 
         players.forEach(player -> {
-            player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Victory", "You won!");
+            if (winners.contains(player)) {
+                player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Victory", "You won!", 5, 30, 5);
+            } else {
+                player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Defeat", "You lost!", 5, 30, 5);
+            }
+            Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {
+                ArrayList<Kill> playerKills = kills.get(player);
+                int killCount = 0;
+                if (playerKills != null)
+                    killCount = playerKills.size();
+                player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Stats:", "Kills: " + killCount, 5, 30, 5);
+            }, 40);
             if (player.getWeaponInHand() instanceof Gun) {
                 Gun gun = (Gun) player.getWeaponInHand();
                 gun.setCooldown(10);

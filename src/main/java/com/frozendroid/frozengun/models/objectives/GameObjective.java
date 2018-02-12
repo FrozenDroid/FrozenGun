@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 public abstract class GameObjective implements Listener {
 
@@ -27,6 +28,7 @@ public abstract class GameObjective implements Listener {
     public abstract void start();
     public abstract void stop();
     public abstract void reset();
+    public abstract ArrayList<MinigamePlayer> getWinners();
 
     public void onPlayerShot(PlayerShotEvent event)
     {

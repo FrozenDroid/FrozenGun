@@ -6,6 +6,7 @@ import com.frozendroid.frozengun.models.MinigamePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
@@ -20,6 +21,11 @@ public class TotalKillObjective extends GameObjective implements Listener {
         kills.clear();
     }
 
+    @Override
+    public ArrayList<MinigamePlayer> getWinners() {
+//        throw new Exception("Unimplemented");
+        return new ArrayList<>();
+    }
 
 
     @EventHandler

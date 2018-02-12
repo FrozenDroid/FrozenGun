@@ -59,6 +59,10 @@ public class FrozenGun extends JavaPlugin {
 
         detectNoteBlockAPI();
 
+        if (inDevelopmentMode()) {
+            getServer().broadcastMessage(Messenger.infoMsg("Loaded plugin."));
+        }
+
         if (inDebugMode()) {
             info("Debug mode is activated.");
         }
