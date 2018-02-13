@@ -23,7 +23,7 @@ public class Match {
     private List<MinigamePlayer> players = new ArrayList<>();
     private HashMap<MinigamePlayer, BukkitTask> cooldownbars = new HashMap<>();
     private Scoreboard scoreboard;
-    private List<GameObjective> objectives = new ArrayList<>();
+    private GameObjective objective;
 
     public List<MinigamePlayer> getPlayers()
     {
@@ -80,41 +80,42 @@ public class Match {
         ArrayList<MinigamePlayer> winners = new ArrayList<>();
         HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>();
 
-        for (GameObjective objective : objectives) {
-            FrozenGun.plugin.getServer().broadcastMessage(Messenger.infoMsg(objective.getEndText()));
-            winners.addAll(objective.getWinners());
-            kills.putAll(objective.kills);
-            objective.stop();
-            objective.reset();
+
+//        for (GameObjective objective : objectives) {
+        FrozenGun.plugin.getServer().broadcastMessage(Messenger.infoMsg(objective.getEndText()));
+        winners.addAll(objective.getWinners());
+        kills.putAll(objective.kills);
+        objective.stop();
+        objective.reset();
 
 
-            for (MinigamePlayer winner : winners) {
-                for (int i = 0; i < 20; i++) {
-                    Bukkit.getServer().getScheduler().runTaskLater(FrozenGun.plugin, () -> {
-                        Firework fw = winner.getWorld().spawn(winner.getLocation(), Firework.class);
-                        FireworkMeta meta = fw.getFireworkMeta();
-                        FireworkEffect fe = FireworkEffect.builder()
-                                .withColor(Color.BLUE)
-                                .trail(true)
-                                .flicker(true)
-                                .with(FireworkEffect.Type.BALL_LARGE)
-                                .withFlicker()
-                                .withColor(Color.BLUE)
-                                .withFade(Color.RED)
-                                .build();
-                        meta.setPower(1);
-                        meta.addEffect(fe);
-                        fw.setFireworkMeta(meta);
-                    }, 5L*i);
-                }
+        for (MinigamePlayer winner : winners) {
+            for (int i = 0; i < 20; i++) {
+                Bukkit.getServer().getScheduler().runTaskLater(FrozenGun.plugin, () -> {
+                    Firework fw = winner.getWorld().spawn(winner.getLocation(), Firework.class);
+                    FireworkMeta meta = fw.getFireworkMeta();
+                    FireworkEffect fe = FireworkEffect.builder()
+                            .withColor(Color.BLUE)
+                            .trail(true)
+                            .flicker(true)
+                            .with(FireworkEffect.Type.BALL_LARGE)
+                            .withFlicker()
+                            .withColor(Color.BLUE)
+                            .withFade(Color.RED)
+                            .build();
+                    meta.setPower(1);
+                    meta.addEffect(fe);
+                    fw.setFireworkMeta(meta);
+                }, 5L*i);
             }
         }
+//        }
 
         players.forEach(player -> {
             if (winners.contains(player)) {
-                player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Victory", "You won!", 5, 30, 5);
+                player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Victory", "You won!", 5, 50, 5);
             } else {
-                player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Defeat", "You lost!", 5, 30, 5);
+                player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Defeat", "You lost!", 5, 50, 5);
             }
             Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {
                 ArrayList<Kill> playerKills = kills.get(player);
@@ -122,7 +123,7 @@ public class Match {
                 if (playerKills != null)
                     killCount = playerKills.size();
                 player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Stats:", "Kills: " + killCount, 5, 30, 5);
-            }, 40);
+            }, 60);
             if (player.getWeaponInHand() instanceof Gun) {
                 Gun gun = (Gun) player.getWeaponInHand();
                 gun.setCooldown(10);
@@ -157,11 +158,9 @@ public class Match {
         players.clear();
         playersCopy.forEach(player -> player.join(this));
         startScoreboard();
-        this.objectives = arena.getObjectives();
-        this.getObjectives().forEach((objective) -> {
-            objective.setMatch(this);
-            objective.start();
-        });
+        this.objective = arena.getObjectives().get(0);
+        objective.setMatch(this);
+        objective.start();
         this.getArena().getLobby().reset();
     }
 
@@ -171,7 +170,8 @@ public class Match {
         player.restoreState();
         player.setWalkSpeed(0.2f);
         MinigameManager.removePlayer(player);
-        objectives.forEach((objective) -> objective.removePlayer(player));
+        objective.removePlayer(player);
+//        objectives.forEach((objective) -> objective.removePlayer(player));
         players.remove(player);
 
         if (players.size() <= 1 && !this.ended)
@@ -211,7 +211,6 @@ public class Match {
 
     public void setArena(Arena arena)
     {
-        objectives.clear();
         this.arena = arena;
     }
 
@@ -223,14 +222,9 @@ public class Match {
         }
     }
 
-    public void addObjective(GameObjective objective)
+    public GameObjective getObjective()
     {
-        this.objectives.add(objective);
-    }
-
-    public List<GameObjective> getObjectives()
-    {
-        return objectives;
+        return objective;
     }
 
     public Scoreboard getScoreboard()
@@ -238,10 +232,11 @@ public class Match {
         return scoreboard;
     }
 
-    public void setObjectives(List<GameObjective> objectives)
+    public void setObjective(GameObjective objective)
     {
-        this.objectives = objectives;
+        this.objective = objective;
     }
+
 
     public boolean isEnded()
     {

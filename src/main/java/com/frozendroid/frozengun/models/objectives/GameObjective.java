@@ -16,6 +16,7 @@ public abstract class GameObjective implements Listener {
     public Match match;
 
     public HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>();
+    public HashMap<MinigamePlayer, Integer> deaths = new HashMap<>();
 
     public abstract void setMatch(Match match);
     public abstract Match getMatch();
@@ -42,6 +43,8 @@ public abstract class GameObjective implements Listener {
         kill.setKiller(event.getShooter());
         kill.setTime(System.currentTimeMillis());
         kills.putIfAbsent(event.getShooter(), new ArrayList<>());
+
+        deaths.put(event.getVictim(), deaths.getOrDefault(event.getVictim(), 0) + 1);
 
         ArrayList<Kill> _kills = kills.get(event.getShooter());
 
