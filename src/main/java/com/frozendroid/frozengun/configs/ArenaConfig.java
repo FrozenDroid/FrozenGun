@@ -95,12 +95,12 @@ public class ArenaConfig {
                         case "total_kills":
                             TotalKillObjective totalKillObjective = new TotalKillObjective();
                             totalKillObjective.setGoal(section.getConfigurationSection("objectives").getInt(key_));
-                            arena.addObjective(totalKillObjective);
+                            arena.setObjective(totalKillObjective);
                             break;
                         case "most_kills":
                             MostKillObjective mostKillObjective = new MostKillObjective();
                             mostKillObjective.setGoal(section.getConfigurationSection("objectives").getInt(key_));
-                            arena.addObjective(mostKillObjective);
+                            arena.setObjective(mostKillObjective);
                             break;
                     }
                 });

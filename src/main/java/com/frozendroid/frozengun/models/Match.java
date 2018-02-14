@@ -153,12 +153,11 @@ public class Match {
     public void start()
     {
         arena.setOccupied(true);
-        List<MinigamePlayer> playersCopy = new ArrayList<>();
-        playersCopy.addAll(players);
+        List<MinigamePlayer> playersCopy = new ArrayList<>(players);
         players.clear();
         playersCopy.forEach(player -> player.join(this));
         startScoreboard();
-        this.objective = arena.getObjectives().get(0);
+        this.objective = arena.getObjective();
         objective.setMatch(this);
         objective.start();
         this.getArena().getLobby().reset();
@@ -171,7 +170,6 @@ public class Match {
         player.setWalkSpeed(0.2f);
         MinigameManager.removePlayer(player);
         objective.removePlayer(player);
-//        objectives.forEach((objective) -> objective.removePlayer(player));
         players.remove(player);
 
         if (players.size() <= 1 && !this.ended)

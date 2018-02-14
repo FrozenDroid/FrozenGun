@@ -33,18 +33,17 @@ public class ObjectivePrompt extends StringPrompt {
             return this;
         }
 
+        GameObjective objective;
         if (s.contains("total_kills") && goal != 0) {
-            GameObjective objective = new TotalKillObjective();
-            objective.setGoal(goal);
-            arena.addObjective(objective);
-
+            objective = new TotalKillObjective();
         } else if (s.contains("most_kills") && goal != 0) {
-            GameObjective objective = new MostKillObjective();
-            objective.setGoal(goal);
-            arena.addObjective(objective);
+            objective = new MostKillObjective();
         } else {
             return this;
         }
+
+        objective.setGoal(goal);
+        arena.setObjective(objective);
 
         return new LobbyLocationPrompt();
     }

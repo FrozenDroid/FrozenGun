@@ -22,6 +22,11 @@ public class MostKillObjective extends GameObjective implements Listener {
 
     private Integer killGoal;
 
+    public String getTypeName()
+    {
+        return "most_kills";
+    }
+
     @EventHandler
     public void onPlayerShot(PlayerShotEvent event)
     {
@@ -55,11 +60,6 @@ public class MostKillObjective extends GameObjective implements Listener {
         return winners.get(0).getDisplayName() + " won the game at " + match.getArena().getName() + "!";
     }
 
-    public String getTypeName()
-    {
-        return "most_kills";
-    }
-
     public Object getGoal()
     {
         return killGoal;
@@ -83,11 +83,6 @@ public class MostKillObjective extends GameObjective implements Listener {
     public void stop()
     {
         PlayerShotEvent.getHandlerList().unregister(this);
-    }
-
-    public void reset()
-    {
-        kills.clear();
     }
 
     /**

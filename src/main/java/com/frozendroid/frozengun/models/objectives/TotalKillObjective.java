@@ -12,21 +12,17 @@ import java.util.stream.Stream;
 
 public class TotalKillObjective extends GameObjective implements Listener {
 
-    private boolean achieved = false;
-
     private Integer killGoal;
 
-    public void reset()
+    public String getTypeName()
     {
-        kills.clear();
+        return "total_kills";
     }
 
     @Override
     public ArrayList<MinigamePlayer> getWinners() {
-//        throw new Exception("Unimplemented");
         return new ArrayList<>();
     }
-
 
     @EventHandler
     public void onPlayerShot(PlayerShotEvent event)
@@ -59,11 +55,6 @@ public class TotalKillObjective extends GameObjective implements Listener {
             return "The game at "+match.getArena().getName()+" ended.";
         }
         return player.getPlayer().getName() + " won the game at "+match.getArena().getName();
-    }
-
-    public String getTypeName()
-    {
-        return "total_kills";
     }
 
     public Integer getGoal()

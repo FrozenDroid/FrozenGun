@@ -4,6 +4,7 @@ import com.frozendroid.frozengun.events.PlayerShotEvent;
 import com.frozendroid.frozengun.models.Kill;
 import com.frozendroid.frozengun.models.Match;
 import com.frozendroid.frozengun.models.MinigamePlayer;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public abstract class GameObjective implements Listener {
 
     boolean achieved = false;
     public Match match;
+
+    private ConfigurationSection section;
 
     public HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>();
     public HashMap<MinigamePlayer, Integer> deaths = new HashMap<>();
@@ -28,8 +31,12 @@ public abstract class GameObjective implements Listener {
     public abstract void setGoal(Integer i);
     public abstract void start();
     public abstract void stop();
-    public abstract void reset();
     public abstract ArrayList<MinigamePlayer> getWinners();
+
+    public void reset()
+    {
+        kills.clear();
+    }
 
     public void onPlayerShot(PlayerShotEvent event)
     {
@@ -72,4 +79,13 @@ public abstract class GameObjective implements Listener {
 
         _kills.add(kill);
     }
+
+    public ConfigurationSection getSection() {
+        return section;
+    }
+
+    public void setSection(ConfigurationSection section) {
+        this.section = section;
+    }
+
 }

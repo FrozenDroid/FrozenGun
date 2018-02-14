@@ -23,7 +23,7 @@ public class Arena {
     private ArrayList<Weapon> weapons = new ArrayList<>();
     private boolean occupied = false;
     private Lobby lobby = new Lobby(this);
-    private List<GameObjective> objectives = new ArrayList<>();
+    private GameObjective objective;
     private boolean announceKillingSpree = false;
     private Double killingSpreeDelay = 0D;
     private float runSpeed = 0.2f;
@@ -79,7 +79,6 @@ public class Arena {
         arenaSection.set("weapons", weapons);
         arenaSection.set("start_time", this.getLobby().getCountdownTime());
 
-
         ConfigurationSection lobbyLocSection = arenaSection.createSection("lobbyLocation");
         // Save lobby information
         if (this.getLobby().getLocation().isPresent()) {
@@ -92,7 +91,6 @@ public class Arena {
             lobbyLocSection.set("world", lobbyLoc.getWorld().getName());
         }
 
-
         // Options section
         ConfigurationSection options = arenaSection.createSection("options");
         options.set("falling_damage", fallingDamage);
@@ -103,7 +101,7 @@ public class Arena {
 
         ConfigurationSection objectivesSection = arenaSection.createSection("objectives");
 
-        objectives.forEach((objective) -> objectivesSection.set(objective.getTypeName(), objective.getGoal()));
+        objectivesSection.set(objective.getTypeName(), objective.getGoal());
 
         ArenaConfig.save();
     }
@@ -145,19 +143,14 @@ public class Arena {
         return this.lobby != null;
     }
 
-    public List<GameObjective> getObjectives()
+    public GameObjective getObjective()
     {
-        return objectives;
+        return objective;
     }
 
-    public void setObjectives(List<GameObjective> objectives)
+    public void setObjective(GameObjective objective)
     {
-        this.objectives = objectives;
-    }
-
-    public void addObjective(GameObjective objective)
-    {
-        objectives.add(objective);
+        this.objective = objective;
     }
 
     public boolean isAnnounceKillingSpree()
