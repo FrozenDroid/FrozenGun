@@ -52,7 +52,7 @@ public class TotalKillObjective extends GameObjective implements Listener {
         Stream<MinigamePlayer> stream =  kills.keySet().stream().sorted(byKills);
         MinigamePlayer player = stream.findFirst().orElse(null);
         if (player == null) {
-            return "The game at "+match.getArena().getName()+" ended.";
+            return "The game at " + match.getArena().getName() + " ended.";
         }
         return player.getPlayer().getName() + " won the game at "+match.getArena().getName();
     }

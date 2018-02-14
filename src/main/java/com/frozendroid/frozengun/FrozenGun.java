@@ -4,7 +4,6 @@ import com.frozendroid.frozengun.commands.CommandHandler;
 import com.frozendroid.frozengun.configs.ArenaConfig;
 import com.frozendroid.frozengun.configs.WeaponConfig;
 import com.frozendroid.frozengun.listeners.ActionListener;
-import com.frozendroid.frozengun.listeners.DeathListener;
 import com.frozendroid.frozengun.listeners.PlayerListener;
 import com.frozendroid.frozengun.models.Arena;
 import com.frozendroid.frozengun.models.Weapon;
@@ -57,7 +56,9 @@ public class FrozenGun extends JavaPlugin {
             return;
         }
 
-        detectNoteBlockAPI();
+        if (detectNoteBlockAPI()) {
+            info("NoteBlockAPI was found so we're using it.");
+        }
 
         if (inDevelopmentMode()) {
             getServer().broadcastMessage(Messenger.infoMsg("Loaded plugin."));
@@ -82,7 +83,6 @@ public class FrozenGun extends JavaPlugin {
             }
         }, 1L);
 
-        new DeathListener(this);
         new ActionListener(this);
         new PlayerListener(this);
         new CommandHandler(this);
@@ -91,7 +91,6 @@ public class FrozenGun extends JavaPlugin {
     private static boolean detectNoteBlockAPI() {
         setUseNoteBlockAPI(false);
         if (plugin.getServer().getPluginManager().isPluginEnabled("NoteBlockAPI")) {
-            info("NoteBlockAPI was found so we're using it.");
             setUseNoteBlockAPI(true);
             return true;
         }

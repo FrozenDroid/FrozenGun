@@ -134,7 +134,7 @@ public class ActionListener implements Listener {
 
         if (player.getHealth() - event.getDamage() <= 0) {
             event.setCancelled(true);
-            Bukkit.getServer().broadcastMessage("Prevented death");
+            player.respawn();
         } else {
             event.setCancelled(false);
         }
