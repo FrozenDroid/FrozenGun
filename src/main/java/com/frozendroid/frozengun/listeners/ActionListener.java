@@ -3,8 +3,6 @@ package com.frozendroid.frozengun.listeners;
 import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
-import com.frozendroid.frozengun.events.PlayerKilledEvent;
-import com.frozendroid.frozengun.events.PlayerShotEvent;
 import com.frozendroid.frozengun.models.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -22,21 +20,19 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class ActionListener implements Listener {
-    private Plugin plugin;
 
     public ActionListener(Plugin plugin) {
-        this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -155,15 +151,12 @@ public class ActionListener implements Listener {
         if (match == null)
             return;
 
-        Weapon weapon = null;
-
         if (event.getEntity().getType() == EntityType.SPLASH_POTION) {
             Bukkit.broadcastMessage("potion has been thrown");
             SplashPotion potion = (SplashPotion) event.getEntity();
             ItemStack item = potion.getItem();
 
             Item _item = potion.getLocation().getWorld().dropItemNaturally(player.getLocation(), item);
-            Vector vector = new Vector();
             _item.teleport(player.getEyeLocation());
             _item.getLocation().setDirection(player.getEyeLocation().getDirection());
             Bukkit.getPluginManager().callEvent(new PlayerDropItemEvent(player.getPlayer(), _item));
@@ -218,7 +211,7 @@ public class ActionListener implements Listener {
 
             Lobby arenaLobby = arena.getLobby();
             arenaLobby.startWaitingTimerIfNotStarted();
-            if (player.getLobby() == arenaLobby) {
+            if (player.getLobby() == arenaLobby || player.inLobby()) {
                 evt.getPlayer().sendMessage(Messenger.infoMsg("Already in queue!"));
                 return;
             }
@@ -235,16 +228,11 @@ public class ActionListener implements Listener {
         if (evt.getAction() == Action.RIGHT_CLICK_BLOCK || evt.getAction() == Action.RIGHT_CLICK_AIR) {
             MinigamePlayer player = MinigameManager.getPlayer(evt.getPlayer());
 
-            if (player == null)
-                return;
-
-            if (!player.isInMatch())
-                return;
+            if (player == null || !player.isInMatch()) return;
 
             Weapon weapon = player.getWeaponInHand();
 
-            if (weapon == null)
-                return;
+            if (weapon == null) return;
 
             if (weapon instanceof Gun) {
                 Gun gun = (Gun) weapon;
@@ -257,39 +245,24 @@ public class ActionListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
+        if (event.getCause() != DamageCause.ENTITY_EXPLOSION) return;
+
         if (event.getEntityType() == EntityType.PLAYER) {
             Player player = (Player) event.getEntity();
 
-            MinigamePlayer _player = MinigameManager.getPlayer(player);
+            MinigamePlayer minigamePlayer = MinigameManager.getPlayer(player);
 
-            if (_player == null) {
-                return;
-            }
+            if (minigamePlayer == null || minigamePlayer.getMatch() == null) return;
 
-            if (!_player.isInMatch()) {
-                return;
-            }
 
-            if (
-                    !_player.getMatch().getArena().hasFallingDamage() &&
-                            event.getCause() == EntityDamageEvent.DamageCause.FALL
-                    ) {
+
+            if (!minigamePlayer.getMatch().getArena().hasFallingDamage() && event.getCause() == DamageCause.FALL) {
                 event.setDamage(0);
                 event.setCancelled(true);
+                return;
             }
 
-            if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION)
-                return;
-
             event.setDamage(9999);
-        }
-    }
-
-    @EventHandler
-    public void onPlayerShot(PlayerShotEvent event) {
-        if (event.getVictim().getHealth() <= 0) {
-            PlayerKilledEvent playerKilledEvent = new PlayerKilledEvent();
-//            playerKilledEvent
         }
     }
 

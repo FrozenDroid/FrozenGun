@@ -54,7 +54,7 @@ public class TotalKillObjective extends GameObjective implements Listener {
         if (player == null) {
             return "The game at " + match.getArena().getName() + " ended.";
         }
-        return player.getPlayer().getName() + " won the game at "+match.getArena().getName();
+        return player.getPlayer().getName() + " won the game at " + match.getArena().getName();
     }
 
     public Integer getGoal()

@@ -2,6 +2,7 @@ package com.frozendroid.frozengun.models
 
 import org.bukkit.GameMode
 import org.bukkit.Location
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN
 import org.bukkit.inventory.ItemStack
@@ -84,7 +85,7 @@ class MinigamePlayer(p: Player) : Player by p {
             restoreState()
             return
         }
-        health = 20.0
+        health = getAttribute(Attribute.GENERIC_MAX_HEALTH).value
         teleport(match!!.feasibleSpawn.location, PLUGIN)
     }
 

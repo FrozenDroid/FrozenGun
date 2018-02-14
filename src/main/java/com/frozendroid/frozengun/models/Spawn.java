@@ -16,6 +16,7 @@ public class Spawn {
         this.location = location;
     }
 
+    // TODO: Implement ray-tracing so that people don't spawn in location that someone has in sight
     public boolean isFeasible()
     {
         return this.getLocation().getWorld().getEntities().stream().filter(

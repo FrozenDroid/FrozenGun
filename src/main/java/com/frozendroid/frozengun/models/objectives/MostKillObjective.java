@@ -4,19 +4,12 @@ import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.events.PlayerShotEvent;
 import com.frozendroid.frozengun.models.Match;
 import com.frozendroid.frozengun.models.MinigamePlayer;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.entity.Firework;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public class MostKillObjective extends GameObjective implements Listener {
 

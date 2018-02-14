@@ -4,9 +4,11 @@ import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
 import com.frozendroid.frozengun.models.objectives.GameObjective;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.entity.Firework;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -15,6 +17,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Match {
 
@@ -123,7 +126,17 @@ public class Match {
                 if (playerKills != null)
                     killCount = playerKills.size();
                 player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Stats:", "Kills: " + killCount, 5, 30, 5);
+
             }, 60);
+            Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {
+                AtomicInteger gotKilled = new AtomicInteger();
+                kills.forEach((shooter, killArray) -> {
+                    killArray.forEach(killObj -> {
+                        if (killObj.getKilled() == player) gotKilled.getAndIncrement();
+                    });
+                });
+                player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Stats:", "Deaths: " + gotKilled.get(), 5, 30, 5);
+            }, 100);
             if (player.getWeaponInHand() instanceof Gun) {
                 Gun gun = (Gun) player.getWeaponInHand();
                 gun.setCooldown(10);
@@ -181,19 +194,21 @@ public class Match {
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Team team = scoreboard.registerNewTeam("all");
         team.setDisplayName("test");
-        Objective objective = scoreboard.registerNewObjective("test", "playerKillCount");
+        Objective objective = scoreboard.registerNewObjective("killObjective", "playerKillCount");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName("Kills");
         players.forEach((player) -> {
-            team.addPlayer(player.getPlayer());
-            player.getPlayer().setScoreboard(scoreboard);
-            objective.getScore(player.getPlayer()).setScore(0);
+            Bukkit.getServer().broadcastMessage("Enabling scoreboard for " + player.getDisplayName());
+            String entryName = player.getDisplayName();
+            team.addEntry(entryName);
+            objective.getScore(entryName).setScore(0);
+            player.setScoreboard(scoreboard);
         });
     }
 
     public void stopScoreboard(MinigamePlayer player)
     {
-        scoreboard.resetScores(player.getPlayer());
+        scoreboard.resetScores(player.getDisplayName());
         player.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
     }
 
@@ -234,7 +249,6 @@ public class Match {
     {
         this.objective = objective;
     }
-
 
     public boolean isEnded()
     {

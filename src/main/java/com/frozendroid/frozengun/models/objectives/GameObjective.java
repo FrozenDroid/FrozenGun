@@ -6,6 +6,7 @@ import com.frozendroid.frozengun.models.Match;
 import com.frozendroid.frozengun.models.MinigamePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Listener;
+import org.bukkit.scoreboard.Score;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +44,8 @@ public abstract class GameObjective implements Listener {
         if (event.getVictim().getHealth()-event.getGun().getDamage() > 0)
             return;
 
+        Score score = match.getScoreboard().getObjective("killObjective").getScore(event.getShooter().getDisplayName());
+        score.setScore(score.getScore() + 1);
         match.broadcast(event.getShooter().getName() + " killed " + event.getVictim().getName()+"!");
 
         Kill kill = new Kill();
