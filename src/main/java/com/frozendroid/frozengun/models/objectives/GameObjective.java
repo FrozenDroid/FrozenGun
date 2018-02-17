@@ -10,43 +10,46 @@ import org.bukkit.scoreboard.Score;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
 
 public abstract class GameObjective implements Listener {
 
-    boolean achieved = false;
     public Match match;
-
-    private ConfigurationSection section;
-
     public HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>();
     public HashMap<MinigamePlayer, Integer> deaths = new HashMap<>();
+    boolean achieved = false;
+    private ConfigurationSection section;
 
-    public abstract void setMatch(Match match);
     public abstract Match getMatch();
 
+    public abstract void setMatch(Match match);
+
     public abstract String getEndText();
+
     public abstract String getTypeName();
+
     public abstract Object getGoal();
-    public abstract void removePlayer(MinigamePlayer player);
+
     public abstract void setGoal(Integer i);
+
+    public abstract void removePlayer(MinigamePlayer player);
+
     public abstract void start();
+
     public abstract void stop();
+
     public abstract ArrayList<MinigamePlayer> getWinners();
 
-    public void reset()
-    {
+    public void reset() {
         kills.clear();
     }
 
-    public void onPlayerShot(PlayerShotEvent event)
-    {
-        if (event.getVictim().getHealth()-event.getGun().getDamage() > 0)
+    public void onPlayerShot(PlayerShotEvent event) {
+        if (event.getVictim().getHealth() - event.getGun().getDamage() > 0)
             return;
 
         Score score = match.getScoreboard().getObjective("killObjective").getScore(event.getShooter().getDisplayName());
         score.setScore(score.getScore() + 1);
-        match.broadcast(event.getShooter().getName() + " killed " + event.getVictim().getName()+"!");
+        match.broadcast(event.getShooter().getName() + " killed " + event.getVictim().getName() + "!");
 
         Kill kill = new Kill();
         kill.setKilled(event.getVictim());
@@ -63,7 +66,7 @@ public abstract class GameObjective implements Listener {
             Kill lastKill = _kills.get(_kills.size() - 1);
 
             Long delta = kill.getTime() - lastKill.getTime();
-            if (match.getArena().getKillingSpreeDelay() >= delta/1000) {
+            if (match.getArena().getKillingSpreeDelay() >= delta / 1000) {
                 kill.setSpree(lastKill.getSpree() + 1);
 
                 if (kill.getSpree() == 2)

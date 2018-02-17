@@ -16,9 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class FrozenGun extends JavaPlugin {
 
-    private static String defaultPrefix;
-
     public static Plugin plugin;
+    private static String defaultPrefix;
     private static long lastModified = 0L;
     private static boolean hasFoundNewFile = false;
     private static boolean useNoteBlockAPI = false;
@@ -29,8 +28,7 @@ public class FrozenGun extends JavaPlugin {
 
     private static ConsoleCommandSender console;
 
-    public FrozenGun()
-    {
+    public FrozenGun() {
         plugin = this;
         lastModified = getFile().lastModified();
     }
@@ -43,9 +41,45 @@ public class FrozenGun extends JavaPlugin {
         FrozenGun.useNoteBlockAPI = useNoteBlockAPI;
     }
 
+    private static boolean detectNoteBlockAPI() {
+        setUseNoteBlockAPI(false);
+        if (plugin.getServer().getPluginManager().isPluginEnabled("NoteBlockAPI")) {
+            setUseNoteBlockAPI(true);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean debug(String msg) {
+        if (inDebugMode()) {
+            FrozenGun.info("DEBUG: " + msg);
+            return true;
+        }
+        return false;
+    }
+
+    public static void info(String msg) {
+        console.sendMessage(Messenger.infoMsg(msg));
+    }
+
+    public static void warn(String msg) {
+        plugin.getLogger().warning(msg);
+    }
+
+    public static void error(String msg) {
+        plugin.getLogger().severe(msg);
+    }
+
+    public static boolean inDebugMode() {
+        return debugMode;
+    }
+
+    public static boolean inDevelopmentMode() {
+        return devMode;
+    }
+
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         defaultPrefix = this.getName();
         console = this.getServer().getConsoleSender();
 
@@ -88,21 +122,11 @@ public class FrozenGun extends JavaPlugin {
         new CommandHandler(this);
     }
 
-    private static boolean detectNoteBlockAPI() {
-        setUseNoteBlockAPI(false);
-        if (plugin.getServer().getPluginManager().isPluginEnabled("NoteBlockAPI")) {
-            setUseNoteBlockAPI(true);
-            return true;
-        }
-        return false;
-    }
-
-    private void reloadOnUpdate()
-    {
+    private void reloadOnUpdate() {
         if (inDevelopmentMode()) {
             info(
                     "Development mode is true, therefore we'll reload the server when " +
-                    "the JAR's modified date is newer."
+                            "the JAR's modified date is newer."
             );
 
             hasFoundNewFile = false;
@@ -127,28 +151,7 @@ public class FrozenGun extends JavaPlugin {
         }
     }
 
-    public static boolean debug(String msg) {
-        if (inDebugMode()) {
-            FrozenGun.info("DEBUG: " + msg);
-            return true;
-        }
-        return false;
-    }
-    public static void info(String msg)
-    {
-        console.sendMessage(Messenger.infoMsg(msg));
-    }
-    public static void warn(String msg)
-    {
-        plugin.getLogger().warning(msg);
-    }
-    public static void error(String msg)
-    {
-        plugin.getLogger().severe(msg);
-    }
-
-    private boolean loadMainConfig()
-    {
+    private boolean loadMainConfig() {
         this.saveDefaultConfig();
         this.reloadConfig();
         config = this.getConfig();
@@ -170,19 +173,8 @@ public class FrozenGun extends JavaPlugin {
     }
 
     @Override
-    public void onDisable()
-    {
+    public void onDisable() {
         MinigameManager.endAllMatches();
-    }
-
-    public static boolean inDebugMode()
-    {
-        return debugMode;
-    }
-
-    public static boolean inDevelopmentMode()
-    {
-        return devMode;
     }
 
 }

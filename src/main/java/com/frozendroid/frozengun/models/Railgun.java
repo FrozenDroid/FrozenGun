@@ -20,12 +20,12 @@ public class Railgun extends Gun {
     public void shoot() {
         lastShot = System.currentTimeMillis();
         List<Block> los = player.getLineOfSight(passthroughMaterials, (int) this.getRange());
-        double block_distance = los.get(los.size()-1).getLocation().distance(player.getLocation());
+        double block_distance = los.get(los.size() - 1).getLocation().distance(player.getLocation());
 
         Location start = player.getEyeLocation();
         Vector increase = start.getDirection();
 
-        for (int counter = 0; counter < block_distance-1; counter++) {
+        for (int counter = 0; counter < block_distance - 1; counter++) {
             Location point = start.add(increase);
             ParticleEffect.CRIT.send(Bukkit.getOnlinePlayers(), point, 0, 0, 0, 0.1, 1);
         }
@@ -41,7 +41,7 @@ public class Railgun extends Gun {
         int i = 0;
         for (Player target : player.getWorld().getPlayers()) {
             Vector3D targetPos = new Vector3D(target.getLocation());
-            double hitboxVal = this.getHitbox()/2;
+            double hitboxVal = this.getHitbox() / 2;
             Vector3D minimum = targetPos.add(-hitboxVal, 0, -hitboxVal);
             Vector3D maximum = targetPos.add(hitboxVal, 1.80, hitboxVal);
 
@@ -54,7 +54,7 @@ public class Railgun extends Gun {
                     final int finalI = i;
                     Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {
                         player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_BULLET_HIT, 1, 1 + (finalI * 0.25F));
-                    }, 2 + (i*2));
+                    }, 2 + (i * 2));
                     target.damage(this.getDamage(), player.getPlayer());
                     PlayerShotEvent event = new PlayerShotEvent();
                     event.setShooter(player);

@@ -40,13 +40,13 @@ class MinigamePlayer(p: Player) : Player by p {
      */
     fun restoreState() {
         // Teleport to last location, otherwise teleport to bed spawn.
-        this.teleport(this.lastLocation?: this.bedSpawnLocation)
+        this.teleport(this.lastLocation ?: this.bedSpawnLocation)
 
-        this.health = this.lastHealth?: 20.0
-        this.maxHealth = this.lastMaxHealth?: 20.0
-        this.gameMode = this.gameMode?: GameMode.SURVIVAL
-        this.exp = this.lastExp?: 0.0F
-        this.foodLevel = this.lastFoodLevel?: 0
+        this.health = this.lastHealth ?: 20.0
+        this.maxHealth = this.lastMaxHealth ?: 20.0
+        this.gameMode = this.gameMode ?: GameMode.SURVIVAL
+        this.exp = this.lastExp ?: 0.0F
+        this.foodLevel = this.lastFoodLevel ?: 0
         this.inventory.contents = this.lastInventory
     }
 
@@ -99,7 +99,7 @@ class MinigamePlayer(p: Player) : Player by p {
         this.match = match
         health = 20.0
         foodLevel = 20
-        walkSpeed = this.match?.arena?.runSpeed?: 1.0F
+        walkSpeed = this.match?.arena?.runSpeed ?: 1.0F
         inventory.heldItemSlot = 0
         gameMode = GameMode.SURVIVAL
         inventory.clear()

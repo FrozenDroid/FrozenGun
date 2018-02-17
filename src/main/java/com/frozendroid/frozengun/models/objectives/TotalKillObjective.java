@@ -1,4 +1,5 @@
 package com.frozendroid.frozengun.models.objectives;
+
 import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.events.PlayerShotEvent;
 import com.frozendroid.frozengun.models.Match;
@@ -14,8 +15,7 @@ public class TotalKillObjective extends GameObjective implements Listener {
 
     private Integer killGoal;
 
-    public String getTypeName()
-    {
+    public String getTypeName() {
         return "total_kills";
     }
 
@@ -25,11 +25,10 @@ public class TotalKillObjective extends GameObjective implements Listener {
     }
 
     @EventHandler
-    public void onPlayerShot(PlayerShotEvent event)
-    {
+    public void onPlayerShot(PlayerShotEvent event) {
         super.onPlayerShot(event);
 
-        if (event.getVictim().getPlayer().getHealth()-event.getGun().getDamage() > 0)
+        if (event.getVictim().getPlayer().getHealth() - event.getGun().getDamage() > 0)
             return;
 
         if (match.isEnded())
@@ -46,10 +45,9 @@ public class TotalKillObjective extends GameObjective implements Listener {
         }
     }
 
-    public String getEndText()
-    {
+    public String getEndText() {
         Comparator<MinigamePlayer> byKills = (p1, p2) -> Integer.compare(kills.get(p2).size(), kills.get(p1).size());
-        Stream<MinigamePlayer> stream =  kills.keySet().stream().sorted(byKills);
+        Stream<MinigamePlayer> stream = kills.keySet().stream().sorted(byKills);
         MinigamePlayer player = stream.findFirst().orElse(null);
         if (player == null) {
             return "The game at " + match.getArena().getName() + " ended.";
@@ -57,29 +55,24 @@ public class TotalKillObjective extends GameObjective implements Listener {
         return player.getPlayer().getName() + " won the game at " + match.getArena().getName();
     }
 
-    public Integer getGoal()
-    {
+    public Integer getGoal() {
         return killGoal;
     }
 
-    @Override
-    public void removePlayer(MinigamePlayer player)
-    {
-        kills.remove(player);
-    }
-
-    public void setGoal(Integer i)
-    {
+    public void setGoal(Integer i) {
         killGoal = i;
     }
 
-    public void start()
-    {
+    @Override
+    public void removePlayer(MinigamePlayer player) {
+        kills.remove(player);
+    }
+
+    public void start() {
         FrozenGun.plugin.getServer().getPluginManager().registerEvents(this, FrozenGun.plugin);
     }
 
-    public void stop()
-    {
+    public void stop() {
         PlayerShotEvent.getHandlerList().unregister(this);
     }
 

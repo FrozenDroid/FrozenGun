@@ -225,12 +225,12 @@ public class Match {
         return objective;
     }
 
-    public Scoreboard getScoreboard() {
-        return scoreboard;
-    }
-
     public void setObjective(GameObjective objective) {
         this.objective = objective;
+    }
+
+    public Scoreboard getScoreboard() {
+        return scoreboard;
     }
 
     public boolean isEnded() {

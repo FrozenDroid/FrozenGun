@@ -26,13 +26,11 @@ public class ArenaConfig {
 
     private static FileConfiguration config;
 
-    public static FileConfiguration get()
-    {
+    public static FileConfiguration get() {
         return config;
     }
 
-    public static boolean loadArenas()
-    {
+    public static boolean loadArenas() {
         config = ConfigLoader.getArenaConfig();
         ConfigurationSection arenasection = config.getConfigurationSection("arenas");
 
@@ -44,7 +42,7 @@ public class ArenaConfig {
         HashMap<Integer, ConfigurationSection> arenasections = new HashMap<>();
 
         list.forEach((String key) -> keys.add(Integer.parseInt((String) key)));
-        keys.forEach((Integer key) -> arenasections.put(key, config.getConfigurationSection("arenas."+key)));
+        keys.forEach((Integer key) -> arenasections.put(key, config.getConfigurationSection("arenas." + key)));
 
         try {
             arenasections.forEach((Integer key, ConfigurationSection section) -> {
@@ -130,8 +128,7 @@ public class ArenaConfig {
         return true;
     }
 
-    public static void save()
-    {
+    public static void save() {
         ConfigLoader.saveArenaConfig();
     }
 

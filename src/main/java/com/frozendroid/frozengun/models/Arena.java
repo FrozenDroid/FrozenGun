@@ -9,7 +9,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class Arena {
 
@@ -31,6 +30,19 @@ public class Arena {
     // Options
     private boolean fallingDamage = false;
 
+    public static Arena getByName(String name) {
+        return MinigameManager.getArenas().stream().filter(arena -> arena.getName().equalsIgnoreCase(name)).findFirst()
+                .orElse(null);
+    }
+
+    public static Arena getById(Integer id) {
+        return MinigameManager.getArenas().stream().filter(arena -> arena.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    public static Arena create() {
+        return new Arena();
+    }
+
     public String getName() {
         return name;
     }
@@ -43,34 +55,16 @@ public class Arena {
         return spawns;
     }
 
-    public void addSpawn(Spawn spawn)
-    {
+    public void addSpawn(Spawn spawn) {
         spawns.add(spawn);
     }
 
-    public static Arena getByName(String name)
-    {
-        return MinigameManager.getArenas().stream().filter(arena -> arena.getName().equalsIgnoreCase(name)).findFirst()
-                .orElse(null);
-    }
-
-    public static Arena getById(Integer id)
-    {
-        return MinigameManager.getArenas().stream().filter(arena -> arena.getId().equals(id)).findFirst().orElse(null);
-    }
-
-    public static Arena create()
-    {
-        return new Arena();
-    }
-
-    public void save()
-    {
+    public void save() {
         ConfigurationSection section = ArenaConfig.get().getConfigurationSection("arenas");
         Map<String, Object> ids = section.getValues(false);
 
-        System.out.println(ids.size()+1);
-        ConfigurationSection arenaSection = section.createSection(""+ (ids.size() + 1));
+        System.out.println(ids.size() + 1);
+        ConfigurationSection arenaSection = section.createSection("" + (ids.size() + 1));
         arenaSection.set("name", name);
         arenaSection.set("min_players", minPlayers);
         arenaSection.set("max_players", maxPlayers);
@@ -138,48 +132,39 @@ public class Arena {
         this.lobby = lobby;
     }
 
-    public boolean hasLobby()
-    {
+    public boolean hasLobby() {
         return this.lobby != null;
     }
 
-    public GameObjective getObjective()
-    {
+    public GameObjective getObjective() {
         return objective;
     }
 
-    public void setObjective(GameObjective objective)
-    {
+    public void setObjective(GameObjective objective) {
         this.objective = objective;
     }
 
-    public boolean isAnnounceKillingSpree()
-    {
+    public boolean isAnnounceKillingSpree() {
         return announceKillingSpree;
     }
 
-    public void setAnnounceKillingSpree(boolean announceKillingSpree)
-    {
+    public void setAnnounceKillingSpree(boolean announceKillingSpree) {
         this.announceKillingSpree = announceKillingSpree;
     }
 
-    public Double getKillingSpreeDelay()
-    {
+    public Double getKillingSpreeDelay() {
         return killingSpreeDelay;
     }
 
-    public void setKillingSpreeDelay(Double killingSpreeDelay)
-    {
+    public void setKillingSpreeDelay(Double killingSpreeDelay) {
         this.killingSpreeDelay = killingSpreeDelay;
     }
 
-    public boolean isOccupied()
-    {
+    public boolean isOccupied() {
         return occupied;
     }
 
-    public void setOccupied(boolean occupied)
-    {
+    public void setOccupied(boolean occupied) {
         this.occupied = occupied;
     }
 
@@ -191,8 +176,7 @@ public class Arena {
         this.weapons = weapons;
     }
 
-    public void addWeapon(Weapon weapon)
-    {
+    public void addWeapon(Weapon weapon) {
         this.weapons.add(weapon);
     }
 

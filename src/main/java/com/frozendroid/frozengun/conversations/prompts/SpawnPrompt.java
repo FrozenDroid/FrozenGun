@@ -15,15 +15,13 @@ public class SpawnPrompt extends StringPrompt {
     private int spawnCount = 0;
 
     @Override
-    public String getPromptText(ConversationContext conversationContext)
-    {
+    public String getPromptText(ConversationContext conversationContext) {
         return Messenger.infoMsg("Stand at a spawn location, then type \"add\" to add the location to the arena. " +
                 "Type \"delete\" to remove the last added spawn. When done, type \"done\".");
     }
 
     @Override
-    public Prompt acceptInput(ConversationContext conversationContext, String s)
-    {
+    public Prompt acceptInput(ConversationContext conversationContext, String s) {
         Arena arena = (Arena) conversationContext.getSessionData("arena");
         if (s.equalsIgnoreCase("add")) {
             Spawn spawn = Spawn.fromLocation(((Player) conversationContext.getForWhom()).getLocation());

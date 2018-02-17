@@ -36,14 +36,12 @@ public class Lobby {
         this.arena = arena;
     }
 
-    public void setTimeTillStart(Integer timeTillStart)
-    {
-        this.timeTillStart = timeTillStart;
+    public long getTimeTillStart() {
+        return timeTillStart;
     }
 
-    public long getTimeTillStart()
-    {
-        return timeTillStart;
+    public void setTimeTillStart(Integer timeTillStart) {
+        this.timeTillStart = timeTillStart;
     }
 
     public boolean isWaiting() {
@@ -57,21 +55,19 @@ public class Lobby {
         }
     }
 
-    public void startWaitingTimer()
-    {
+    public void startWaitingTimer() {
         this.timeTillStart = this.countdownTime;
         waiting_timer = FrozenGun.plugin.getServer().getScheduler().runTaskTimer(FrozenGun.plugin, () -> {
             if (checker_timer == null) {
                 startLobbyChecker();
             }
-            int delta = arena.getMinPlayers()-players.size();
+            int delta = arena.getMinPlayers() - players.size();
             if (delta != 0)
-                players.forEach((player) -> player.getPlayer().sendMessage(Messenger.infoMsg("Waiting for "+delta+" more players to join...")));
-        }, 0L, 20L*5L);
+                players.forEach((player) -> player.getPlayer().sendMessage(Messenger.infoMsg("Waiting for " + delta + " more players to join...")));
+        }, 0L, 20L * 5L);
     }
 
-    public void stop()
-    {
+    public void stop() {
         if (waiting_timer != null) {
             waiting_timer.cancel();
             this.waiting_timer = null;
@@ -93,8 +89,7 @@ public class Lobby {
         this.players = new ArrayList<>();
     }
 
-    public void startLobbyChecker()
-    {
+    public void startLobbyChecker() {
         checker_timer = FrozenGun.plugin.getServer().getScheduler().runTaskTimer(FrozenGun.plugin, () -> {
             if (arena.getMinPlayers() <= players.size()) {
                 startingSince = System.currentTimeMillis() / 1000L;
@@ -109,8 +104,7 @@ public class Lobby {
         }, 0L, 10L);
     }
 
-    public void startStartingTimer()
-    {
+    public void startStartingTimer() {
         starting_timer = FrozenGun.plugin.getServer().getScheduler().runTaskTimer(FrozenGun.plugin, () -> {
             // If the amount of players gets below the minimum amount needed, start waiting again
             if (players.size() < arena.getMinPlayers()) {
@@ -136,21 +130,19 @@ public class Lobby {
                 match.start();
                 players.forEach((player) -> player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 2F, 2F));
                 if (this.starting_timer != null) {
-                   this.starting_timer.cancel();
+                    this.starting_timer.cancel();
                 }
             }
             timeTillStart--;
         }, 0L, 20L);
     }
 
-    public void addPlayer(MinigamePlayer player)
-    {
+    public void addPlayer(MinigamePlayer player) {
         player.sendMessage(Messenger.infoMsg("Joined the queue for " + arena.getName()) + ".");
         players.add(player);
     }
 
-    public void removePlayer(MinigamePlayer player)
-    {
+    public void removePlayer(MinigamePlayer player) {
         MinigameManager.removePlayer(player);
         players.remove(player);
     }

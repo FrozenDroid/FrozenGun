@@ -3,7 +3,6 @@ package com.frozendroid.frozengun.models;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +11,11 @@ public abstract class Sound {
     protected File file;
     protected SoundType type;
     protected Set<Player> listeners = new HashSet<>();
+
+    Sound(File file, SoundType type) {
+        this.file = file;
+        this.type = type;
+    }
 
     public SoundType getType() {
         return type;
@@ -29,13 +33,10 @@ public abstract class Sound {
         this.listeners = listeners;
     }
 
-    Sound(File file, SoundType type) {
-        this.file = file;
-        this.type = type;
-    }
-
     abstract void load();
+
     abstract void play();
+
     abstract void stop();
 
 }

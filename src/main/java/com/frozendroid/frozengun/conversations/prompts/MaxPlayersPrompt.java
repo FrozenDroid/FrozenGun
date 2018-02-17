@@ -9,14 +9,12 @@ import org.bukkit.conversations.Prompt;
 public class MaxPlayersPrompt extends NumericPrompt {
 
     @Override
-    public String getPromptText(ConversationContext conversationContext)
-    {
+    public String getPromptText(ConversationContext conversationContext) {
         return Messenger.infoMsg("Please enter the maximum amount of players that this arena can hold.");
     }
 
     @Override
-    public boolean isNumberValid(ConversationContext conversationContext, Number number)
-    {
+    public boolean isNumberValid(ConversationContext conversationContext, Number number) {
         int maxPlayers = number.intValue();
 
         if (maxPlayers < 0 || ((Arena) conversationContext.getSessionData("arena")).getMinPlayers() > maxPlayers)
@@ -25,8 +23,7 @@ public class MaxPlayersPrompt extends NumericPrompt {
     }
 
     @Override
-    public String getFailedValidationText(ConversationContext conversationContext, Number number)
-    {
+    public String getFailedValidationText(ConversationContext conversationContext, Number number) {
         int maxPlayers = number.intValue();
         if (maxPlayers < 0)
             return "This amount can not be lower than 0";
@@ -36,8 +33,7 @@ public class MaxPlayersPrompt extends NumericPrompt {
     }
 
     @Override
-    protected Prompt acceptValidatedInput(ConversationContext conversationContext, Number number)
-    {
+    protected Prompt acceptValidatedInput(ConversationContext conversationContext, Number number) {
         Arena arena = (Arena) conversationContext.getSessionData("arena");
         int maxPlayers = number.intValue();
         arena.setMaxPlayers(maxPlayers);

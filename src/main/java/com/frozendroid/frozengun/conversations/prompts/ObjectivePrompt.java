@@ -1,8 +1,8 @@
 package com.frozendroid.frozengun.conversations.prompts;
 
 import com.frozendroid.frozengun.Messenger;
-import com.frozendroid.frozengun.models.objectives.GameObjective;
 import com.frozendroid.frozengun.models.Arena;
+import com.frozendroid.frozengun.models.objectives.GameObjective;
 import com.frozendroid.frozengun.models.objectives.MostKillObjective;
 import com.frozendroid.frozengun.models.objectives.TotalKillObjective;
 import org.bukkit.conversations.ConversationContext;
@@ -14,14 +14,12 @@ import java.util.regex.Pattern;
 
 public class ObjectivePrompt extends StringPrompt {
     @Override
-    public String getPromptText(ConversationContext conversationContext)
-    {
+    public String getPromptText(ConversationContext conversationContext) {
         return Messenger.infoMsg("Enter the objectives that this arena will have.");
     }
 
     @Override
-    public Prompt acceptInput(ConversationContext conversationContext, String s)
-    {
+    public Prompt acceptInput(ConversationContext conversationContext, String s) {
         Arena arena = (Arena) conversationContext.getSessionData("arena");
 
         Pattern pattern = Pattern.compile("(\\d+)");

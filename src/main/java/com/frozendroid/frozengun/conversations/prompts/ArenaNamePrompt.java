@@ -10,14 +10,12 @@ public class ArenaNamePrompt extends StringPrompt {
 
 
     @Override
-    public String getPromptText(ConversationContext conversationContext)
-    {
+    public String getPromptText(ConversationContext conversationContext) {
         return Messenger.infoMsg("Please enter a name for the new arena.");
     }
 
     @Override
-    public Prompt acceptInput(ConversationContext conversationContext, String s)
-    {
+    public Prompt acceptInput(ConversationContext conversationContext, String s) {
         Arena arena = (Arena) conversationContext.getSessionData("arena");
         if (s.equals(""))
             return this;

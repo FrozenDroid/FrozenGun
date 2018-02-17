@@ -12,43 +12,35 @@ public class PlayerShotEvent extends Event {
     private MinigamePlayer shooter;
     private Gun gun;
 
-    public HandlerList getHandlers()
-    {
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList()
-    {
+    public HandlerList getHandlers() {
         return handlers;
     }
 
-    public MinigamePlayer getVictim()
-    {
+    public MinigamePlayer getVictim() {
         return victim;
     }
 
-    public void setVictim(MinigamePlayer victim)
-    {
+    public void setVictim(MinigamePlayer victim) {
         this.victim = victim;
     }
 
-    public MinigamePlayer getShooter()
-    {
+    public MinigamePlayer getShooter() {
         return shooter;
     }
 
-    public void setShooter(MinigamePlayer shooter)
-    {
+    public void setShooter(MinigamePlayer shooter) {
         this.shooter = shooter;
     }
 
-    public Gun getGun()
-    {
+    public Gun getGun() {
         return gun;
     }
 
-    public void setGun(Gun gun)
-    {
+    public void setGun(Gun gun) {
         this.gun = gun;
     }
 }

@@ -9,14 +9,12 @@ import org.bukkit.conversations.StringPrompt;
 
 public class GunPrompt extends StringPrompt {
     @Override
-    public String getPromptText(ConversationContext conversationContext)
-    {
+    public String getPromptText(ConversationContext conversationContext) {
         return Messenger.infoMsg("Please enter the name for the gun to use for this arena.");
     }
 
     @Override
-    public Prompt acceptInput(ConversationContext conversationContext, String s)
-    {
+    public Prompt acceptInput(ConversationContext conversationContext, String s) {
         Arena arena = (Arena) conversationContext.getSessionData("arena");
         if (s.equals(""))
             return this;

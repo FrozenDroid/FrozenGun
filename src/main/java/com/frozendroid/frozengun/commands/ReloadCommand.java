@@ -8,8 +8,7 @@ import org.bukkit.command.CommandSender;
 
 public class ReloadCommand {
 
-    public static void run(CommandSender sender)
-    {
+    public static void run(CommandSender sender) {
         MinigameManager.endAllLobbies();
         MinigameManager.endAllMatches();
 

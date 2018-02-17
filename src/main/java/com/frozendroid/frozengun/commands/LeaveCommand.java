@@ -9,8 +9,7 @@ import org.bukkit.entity.Player;
 
 public class LeaveCommand {
 
-    public static void run(CommandSender sender)
-    {
+    public static void run(CommandSender sender) {
         if (!(sender instanceof Player)) {
             return;
         }

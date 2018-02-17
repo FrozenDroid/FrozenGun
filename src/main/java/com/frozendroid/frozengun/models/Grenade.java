@@ -55,7 +55,7 @@ public class Grenade extends Throwable {
                 ParticleEffect.CRIT.send(Bukkit.getOnlinePlayers(), item.getLocation(), 0, 0, 0, 1, 1);
             }
 
-            if (taskCounter >= this.getDetonationTime()*20) {
+            if (taskCounter >= this.getDetonationTime() * 20) {
                 task.cancel();
                 Location location = item.getLocation();
                 double x = location.getX();
@@ -68,14 +68,12 @@ public class Grenade extends Throwable {
 
     }
 
-    public boolean isMoving(Item item)
-    {
+    public boolean isMoving(Item item) {
         return item.getVelocity().length() < 0.01;
     }
 
     @Override
-    public Weapon clone()
-    {
+    public Weapon clone() {
         Grenade grenade = new Grenade();
         grenade.setName(this.getName());
         grenade.setLore(this.getLore());

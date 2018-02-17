@@ -1,26 +1,26 @@
 package com.frozendroid.frozengun.utils;
 
 /*
-* Attack hidden players
-*
-* Copyright 2012 Kristian S. Stangeland (Comphenix)
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 2.1 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a clone of the GNU Lesser General Public
-* License along with this library. If not, see <[url]http://www.gnu.org/licenses/>[/url].
-*/
+ * Attack hidden players
+ *
+ * Copyright 2012 Kristian S. Stangeland (Comphenix)
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a clone of the GNU Lesser General Public
+ * License along with this library. If not, see <[url]http://www.gnu.org/licenses/>[/url].
+ */
 
-        import org.bukkit.Location;
-        import org.bukkit.util.Vector;
+import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 public class Vector3D {
     /**
@@ -44,6 +44,7 @@ public class Vector3D {
 
     /**
      * Construct an immutable floating point 3D vector from a location object.
+     *
      * @param location - the location to clone.
      */
     public Vector3D(Location location) {
@@ -52,6 +53,7 @@ public class Vector3D {
 
     /**
      * Construct an immutable floating point 3D vector from a mutable Bukkit vector.
+     *
      * @param vector - the mutable real Bukkit vector to clone.
      */
     public Vector3D(Vector vector) {
@@ -64,6 +66,7 @@ public class Vector3D {
 
     /**
      * Convert this instance to an equivalent real 3D vector.
+     *
      * @return Real 3D vector.
      */
     public Vector toVector() {
@@ -72,6 +75,7 @@ public class Vector3D {
 
     /**
      * Adds the current vector and a given position vector, producing a result vector.
+     *
      * @param other - the other vector.
      * @return The new result vector.
      */
@@ -83,6 +87,7 @@ public class Vector3D {
 
     /**
      * Adds the current vector and a given vector together, producing a result vector.
+     *
      * @param other - the other vector.
      * @return The new result vector.
      */
@@ -92,6 +97,7 @@ public class Vector3D {
 
     /**
      * Substracts the current vector and a given vector, producing a result position.
+     *
      * @param other - the other position.
      * @return The new result position.
      */
@@ -103,6 +109,7 @@ public class Vector3D {
 
     /**
      * Substracts the current vector and a given vector together, producing a result vector.
+     *
      * @param other - the other vector.
      * @return The new result vector.
      */
@@ -112,6 +119,7 @@ public class Vector3D {
 
     /**
      * Multiply each dimension in the current vector by the given factor.
+     *
      * @param factor - multiplier.
      * @return The new result.
      */
@@ -121,6 +129,7 @@ public class Vector3D {
 
     /**
      * Multiply each dimension in the current vector by the given factor.
+     *
      * @param factor - multiplier.
      * @return The new result.
      */
@@ -130,6 +139,7 @@ public class Vector3D {
 
     /**
      * Divide each dimension in the current vector by the given divisor.
+     *
      * @param divisor - the divisor.
      * @return The new result.
      */
@@ -141,6 +151,7 @@ public class Vector3D {
 
     /**
      * Divide each dimension in the current vector by the given divisor.
+     *
      * @param divisor - the divisor.
      * @return The new result.
      */
@@ -152,6 +163,7 @@ public class Vector3D {
 
     /**
      * Retrieve the absolute value of this vector.
+     *
      * @return The new result.
      */
     public Vector3D abs() {

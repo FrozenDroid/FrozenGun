@@ -15,14 +15,12 @@ public class MostKillObjective extends GameObjective implements Listener {
 
     private Integer killGoal;
 
-    public String getTypeName()
-    {
+    public String getTypeName() {
         return "most_kills";
     }
 
     @EventHandler
-    public void onPlayerShot(PlayerShotEvent event)
-    {
+    public void onPlayerShot(PlayerShotEvent event) {
         super.onPlayerShot(event);
 
         for (MinigamePlayer player : kills.keySet()) {
@@ -33,18 +31,15 @@ public class MostKillObjective extends GameObjective implements Listener {
         }
     }
 
-    public void setMatch(Match match)
-    {
-        this.match = match;
-    }
-
-    public Match getMatch()
-    {
+    public Match getMatch() {
         return match;
     }
 
-    public String getEndText()
-    {
+    public void setMatch(Match match) {
+        this.match = match;
+    }
+
+    public String getEndText() {
         ArrayList<MinigamePlayer> winners = getWinners();
         if (winners.size() == 0) {
             return "The game at " + match.getArena() + " ended.";
@@ -53,28 +48,23 @@ public class MostKillObjective extends GameObjective implements Listener {
         return winners.get(0).getDisplayName() + " won the game at " + match.getArena().getName() + "!";
     }
 
-    public Object getGoal()
-    {
+    public Object getGoal() {
         return killGoal;
     }
 
-    public void removePlayer(MinigamePlayer player)
-    {
-        kills.remove(player);
-    }
-
-    public void setGoal(Integer i)
-    {
+    public void setGoal(Integer i) {
         this.killGoal = i;
     }
 
-    public void start()
-    {
+    public void removePlayer(MinigamePlayer player) {
+        kills.remove(player);
+    }
+
+    public void start() {
         FrozenGun.plugin.getServer().getPluginManager().registerEvents(this, FrozenGun.plugin);
     }
 
-    public void stop()
-    {
+    public void stop() {
         PlayerShotEvent.getHandlerList().unregister(this);
     }
 

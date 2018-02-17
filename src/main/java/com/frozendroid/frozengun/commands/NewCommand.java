@@ -12,8 +12,7 @@ import java.util.Map;
 
 public class NewCommand {
 
-    public static void run(CommandSender sender)
-    {
+    public static void run(CommandSender sender) {
         if (!(sender instanceof Player))
             return;
 

@@ -1,7 +1,5 @@
 package com.frozendroid.frozengun.commands;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,8 +9,7 @@ public class CommandHandler implements CommandExecutor {
 
     private Plugin plugin;
 
-    public CommandHandler(Plugin plugin)
-    {
+    public CommandHandler(Plugin plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginCommand("frozengun").setExecutor(this);
     }

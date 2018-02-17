@@ -8,6 +8,7 @@ public abstract class Weapon {
     protected MinigamePlayer player;
     protected Material material;
     protected String[] lore;
+
     public abstract Weapon clone();
 
     public Material getMaterial() {

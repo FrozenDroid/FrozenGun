@@ -2,10 +2,6 @@ package com.frozendroid.frozengun.listeners;
 
 import com.frozendroid.frozengun.MinigameManager;
 import com.frozendroid.frozengun.models.MinigamePlayer;
-import com.xxmicloxx.NoteBlockAPI.RadioSongPlayer;
-import com.xxmicloxx.NoteBlockAPI.Song;
-import com.xxmicloxx.NoteBlockAPI.SongPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,15 +13,13 @@ public class PlayerListener implements Listener {
 
     private Plugin plugin;
 
-    public PlayerListener(Plugin plugin)
-    {
+    public PlayerListener(Plugin plugin) {
         this.plugin = plugin;
         this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
-    public void onPlayerLeave(PlayerQuitEvent event)
-    {
+    public void onPlayerLeave(PlayerQuitEvent event) {
         MinigamePlayer player = MinigameManager.getPlayer(event.getPlayer());
 
         if (player == null) {

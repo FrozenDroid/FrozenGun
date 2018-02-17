@@ -9,15 +9,13 @@ import org.bukkit.conversations.Prompt;
 public class StartTimePrompt extends NumericPrompt {
 
     @Override
-    public String getPromptText(ConversationContext conversationContext)
-    {
+    public String getPromptText(ConversationContext conversationContext) {
         return Messenger.infoMsg("Insert a time (in seconds) for which to wait after the minimum" +
                 " amount of players has been reached.");
     }
 
     @Override
-    protected Prompt acceptValidatedInput(ConversationContext conversationContext, Number number)
-    {
+    protected Prompt acceptValidatedInput(ConversationContext conversationContext, Number number) {
         Arena arena = (Arena) conversationContext.getSessionData("arena");
 
         if (number.intValue() < 0)

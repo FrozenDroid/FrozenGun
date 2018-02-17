@@ -255,7 +255,6 @@ public class ActionListener implements Listener {
             if (minigamePlayer == null || minigamePlayer.getMatch() == null) return;
 
 
-
             if (!minigamePlayer.getMatch().getArena().hasFallingDamage() && event.getCause() == DamageCause.FALL) {
                 event.setDamage(0);
                 event.setCancelled(true);

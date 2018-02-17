@@ -2,7 +2,6 @@ package com.frozendroid.frozengun.commands;
 
 import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.utils.DefaultFontInfo;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -11,8 +10,7 @@ import java.util.HashMap;
 
 public class HelpCommand {
 
-    public static void run(CommandSender sender, int page)
-    {
+    public static void run(CommandSender sender, int page) {
         ArrayList<String> helpMessage = new ArrayList<>();
 
         ArrayList<String> commands = new ArrayList<>();
@@ -40,7 +38,7 @@ public class HelpCommand {
                     continue;
                 } else if (previousCode) {
                     previousCode = false;
-                    if(c == 'l' || c == 'L'){
+                    if (c == 'l' || c == 'L') {
                         isBold = true;
                         continue;
                     } else isBold = false;
@@ -80,8 +78,7 @@ public class HelpCommand {
         sender.sendMessage(finalCommands.toArray(new String[]{}));
     }
 
-    public static void run(CommandSender sender)
-    {
+    public static void run(CommandSender sender) {
         run(sender, 1);
     }
 

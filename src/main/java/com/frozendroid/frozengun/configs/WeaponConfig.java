@@ -16,19 +16,17 @@ public class WeaponConfig {
 
     private static FileConfiguration config;
 
-    public static FileConfiguration get()
-    {
+    public static FileConfiguration get() {
         return config;
     }
 
-    public static boolean loadGuns()
-    {
+    public static boolean loadGuns() {
         config = ConfigLoader.getGunConfig();
 
         List<ConfigurationSection> gunsections = new ArrayList<>();
 
         config.getConfigurationSection("guns").getKeys(false).forEach((String key) -> {
-            gunsections.add(config.getConfigurationSection("guns."+key));
+            gunsections.add(config.getConfigurationSection("guns." + key));
         });
 
         gunsections.forEach((ConfigurationSection section) -> {
@@ -45,8 +43,7 @@ public class WeaponConfig {
         return true;
     }
 
-    public static void loadGrenade(ConfigurationSection section)
-    {
+    public static void loadGrenade(ConfigurationSection section) {
         Grenade grenade = new Grenade();
         grenade.setName(section.getString("display_name"));
         Material material = Material.getMaterial(section.getString("material"));
@@ -61,8 +58,7 @@ public class WeaponConfig {
         WeaponManager.addWeapon(grenade);
     }
 
-    public static void loadRailgun(ConfigurationSection section)
-    {
+    public static void loadRailgun(ConfigurationSection section) {
         Railgun gun = new Railgun();
         gun.setName(section.getString("display_name"));
         gun.setMaterial(Material.getMaterial(section.getString("material")));
@@ -89,8 +85,7 @@ public class WeaponConfig {
         WeaponManager.addWeapon(gun);
     }
 
-    public static void save()
-    {
+    public static void save() {
         ConfigLoader.saveGunConfig();
     }
 

@@ -8,6 +8,12 @@ public class Spawn {
 
     private Location location;
 
+    public static Spawn fromLocation(Location location) {
+        Spawn spawn = new Spawn();
+        spawn.setLocation(location);
+        return spawn;
+    }
+
     public Location getLocation() {
         return location;
     }
@@ -17,8 +23,7 @@ public class Spawn {
     }
 
     // TODO: Implement ray-tracing so that people don't spawn in location that someone has in sight
-    public boolean isFeasible()
-    {
+    public boolean isFeasible() {
         return this.getLocation().getWorld().getEntities().stream().filter(
                 (entity -> entity instanceof Player)
         ).noneMatch(
@@ -26,15 +31,7 @@ public class Spawn {
         );
     }
 
-    public static Spawn fromLocation(Location location)
-    {
-        Spawn spawn = new Spawn();
-        spawn.setLocation(location);
-        return spawn;
-    }
-
-    public String toJson()
-    {
+    public String toJson() {
         JSONObject json = new JSONObject();
         json.put("x", location.getX());
         json.put("y", location.getY());
