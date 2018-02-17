@@ -28,28 +28,23 @@ public class Match {
     private Scoreboard scoreboard;
     private GameObjective objective;
 
-    public List<MinigamePlayer> getPlayers()
-    {
+    public List<MinigamePlayer> getPlayers() {
         return players;
     }
 
-    public void addPlayer(MinigamePlayer player)
-    {
+    public void addPlayer(MinigamePlayer player) {
         players.add(player);
     }
 
-    public Optional<MinigamePlayer> findPlayer(UUID uuid)
-    {
+    public Optional<MinigamePlayer> findPlayer(UUID uuid) {
         return players.stream().filter(matchplayer -> matchplayer.getPlayer().getUniqueId().equals(uuid)).findFirst();
     }
 
-    public void broadcast(String string)
-    {
+    public void broadcast(String string) {
         players.forEach(player -> player.sendMessage(Messenger.infoMsg(string)));
     }
 
-    public void startCooldownBar(MinigamePlayer player)
-    {
+    public void startCooldownBar(MinigamePlayer player) {
         cooldownbars.put(player, Bukkit.getScheduler().runTaskTimer(FrozenGun.plugin, () -> {
             if (player.getWeaponInHand() instanceof Gun) {
                 Gun gun = (Gun) player.getWeaponInHand();
@@ -60,8 +55,7 @@ public class Match {
         }, 0L, 1L));
     }
 
-    public void stopCooldownBar(MinigamePlayer player)
-    {
+    public void stopCooldownBar(MinigamePlayer player) {
         cooldownbars.forEach((player_, task) -> task.cancel());
         cooldownbars.remove(cooldownbars.keySet().stream().filter(player_ -> player_.equals(player)).findFirst().orElse(null));
     }
@@ -74,8 +68,7 @@ public class Match {
         this.end(false);
     }
 
-    public void end(boolean now)
-    {
+    public void end(boolean now) {
         if (ended)
             return;
         setEnded(true);
@@ -109,7 +102,7 @@ public class Match {
                     meta.setPower(1);
                     meta.addEffect(fe);
                     fw.setFireworkMeta(meta);
-                }, 5L*i);
+                }, 5L * i);
             }
         }
 //        }
@@ -120,6 +113,7 @@ public class Match {
             } else {
                 player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Defeat", "You lost!", 5, 50, 5);
             }
+            int delay = 0;
             Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {
                 ArrayList<Kill> playerKills = kills.get(player);
                 int killCount = 0;
@@ -127,7 +121,7 @@ public class Match {
                     killCount = playerKills.size();
                 player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Stats:", "Kills: " + killCount, 5, 30, 5);
 
-            }, 60);
+            }, delay += 60);
             Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {
                 AtomicInteger gotKilled = new AtomicInteger();
                 kills.forEach((shooter, killArray) -> {
@@ -136,7 +130,7 @@ public class Match {
                     });
                 });
                 player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Stats:", "Deaths: " + gotKilled.get(), 5, 30, 5);
-            }, 100);
+            }, delay += 40);
             if (player.getWeaponInHand() instanceof Gun) {
                 Gun gun = (Gun) player.getWeaponInHand();
                 gun.setCooldown(10);
@@ -157,14 +151,13 @@ public class Match {
         };
 
         if (!now) {
-            Bukkit.getServer().getScheduler().runTaskLater(FrozenGun.plugin, task, 20L*10);
+            Bukkit.getServer().getScheduler().runTaskLater(FrozenGun.plugin, task, 20L * 10);
         } else {
             task.run();
         }
     }
 
-    public void start()
-    {
+    public void start() {
         arena.setOccupied(true);
         List<MinigamePlayer> playersCopy = new ArrayList<>(players);
         players.clear();
@@ -176,8 +169,7 @@ public class Match {
         this.getArena().getLobby().reset();
     }
 
-    public void leave(MinigamePlayer player)
-    {
+    public void leave(MinigamePlayer player) {
         stopScoreboard(player);
         player.restoreState();
         player.setWalkSpeed(0.2f);
@@ -189,8 +181,7 @@ public class Match {
             this.end();
     }
 
-    public void startScoreboard()
-    {
+    public void startScoreboard() {
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Team team = scoreboard.registerNewTeam("all");
         team.setDisplayName("test");
@@ -206,57 +197,47 @@ public class Match {
         });
     }
 
-    public void stopScoreboard(MinigamePlayer player)
-    {
+    public void stopScoreboard(MinigamePlayer player) {
         scoreboard.resetScores(player.getDisplayName());
         player.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
     }
 
-    public Spawn getFeasibleSpawn()
-    {
+    public Spawn getFeasibleSpawn() {
         return arena.getSpawns().stream().filter(Spawn::isFeasible).findFirst().orElse(arena.getSpawns().stream().findAny().get());
     }
 
-    public Arena getArena()
-    {
+    public Arena getArena() {
         return arena;
     }
 
-    public void setArena(Arena arena)
-    {
+    public void setArena(Arena arena) {
         this.arena = arena;
     }
 
-    public void removePlayer(MinigamePlayer player)
-    {
+    public void removePlayer(MinigamePlayer player) {
         players.remove(player);
         if (players.size() == 0) {
             end();
         }
     }
 
-    public GameObjective getObjective()
-    {
+    public GameObjective getObjective() {
         return objective;
     }
 
-    public Scoreboard getScoreboard()
-    {
+    public Scoreboard getScoreboard() {
         return scoreboard;
     }
 
-    public void setObjective(GameObjective objective)
-    {
+    public void setObjective(GameObjective objective) {
         this.objective = objective;
     }
 
-    public boolean isEnded()
-    {
+    public boolean isEnded() {
         return ended;
     }
 
-    public void setEnded(boolean ended)
-    {
+    public void setEnded(boolean ended) {
         this.ended = ended;
     }
 }
