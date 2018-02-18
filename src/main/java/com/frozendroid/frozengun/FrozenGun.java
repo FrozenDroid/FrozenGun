@@ -2,8 +2,12 @@ package com.frozendroid.frozengun;
 
 import com.frozendroid.frozengun.commands.CommandHandler;
 import com.frozendroid.frozengun.configs.ArenaConfig;
+import com.frozendroid.frozengun.configs.MessagesConfig;
 import com.frozendroid.frozengun.configs.WeaponConfig;
+import com.frozendroid.frozengun.events.MessageEvent;
+import com.frozendroid.frozengun.events.PlayerJoinedLobbyEvent;
 import com.frozendroid.frozengun.listeners.ActionListener;
+import com.frozendroid.frozengun.listeners.MessageListener;
 import com.frozendroid.frozengun.listeners.PlayerListener;
 import com.frozendroid.frozengun.models.Arena;
 import com.frozendroid.frozengun.models.Weapon;
@@ -107,6 +111,10 @@ public class FrozenGun extends JavaPlugin {
         Bukkit.getScheduler().runTaskLater(this, () -> {
             WeaponConfig.loadGuns();
             ArenaConfig.loadArenas();
+            MessagesConfig.loadMessages();
+
+            MessageEvent.checkLookupCaches(PlayerJoinedLobbyEvent.class);
+
 
             for (Arena arena : MinigameManager.getArenas()) {
                 FrozenGun.debug("Arena loaded: " + arena.getName());
@@ -117,6 +125,11 @@ public class FrozenGun extends JavaPlugin {
             }
         }, 1L);
 
+        /*
+        Check caches here so that lookups don't have to be computed in the constructor.
+         */
+
+        new MessageListener(this);
         new ActionListener(this);
         new PlayerListener(this);
         new CommandHandler(this);

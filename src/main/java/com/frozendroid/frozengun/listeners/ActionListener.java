@@ -3,6 +3,8 @@ package com.frozendroid.frozengun.listeners;
 import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
+import com.frozendroid.frozengun.events.MessageEvent;
+import com.frozendroid.frozengun.events.PlayerJoinedLobbyEvent;
 import com.frozendroid.frozengun.models.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -223,6 +225,8 @@ public class ActionListener implements Listener {
             if (arenaLobby.getLocation().isPresent()) {
                 player.teleport(arenaLobby.getLocation().get());
             }
+            Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinedLobbyEvent(player, arenaLobby, player));
+            return;
         }
 
         if (evt.getAction() == Action.RIGHT_CLICK_BLOCK || evt.getAction() == Action.RIGHT_CLICK_AIR) {

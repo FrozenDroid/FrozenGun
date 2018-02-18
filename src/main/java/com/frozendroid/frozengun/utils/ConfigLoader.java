@@ -8,6 +8,7 @@ public class ConfigLoader {
 
     private static ConfigAccessor arenaConfig;
     private static ConfigAccessor gunConfig;
+    private static ConfigAccessor messagesConfig;
 
     public static FileConfiguration getArenaConfig() {
         arenaConfig = new ConfigAccessor((JavaPlugin) FrozenGun.plugin, "arenas.yml");
@@ -29,6 +30,13 @@ public class ConfigLoader {
         gunConfig.saveDefaultConfig();
         gunConfig.reloadConfig();
         return gunConfig.getConfig();
+    }
+
+    public static FileConfiguration getMessagesConfig() {
+        messagesConfig = new ConfigAccessor((JavaPlugin) FrozenGun.plugin, "messages.yml");
+        messagesConfig.saveDefaultConfig();
+        messagesConfig.reloadConfig();
+        return messagesConfig.getConfig();
     }
 
 }

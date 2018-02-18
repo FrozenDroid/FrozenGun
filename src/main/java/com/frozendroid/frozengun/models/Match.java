@@ -3,6 +3,7 @@ package com.frozendroid.frozengun.models;
 import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
+import com.frozendroid.frozengun.interfaces.Messageable;
 import com.frozendroid.frozengun.models.objectives.GameObjective;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,7 +20,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Match {
+public class Match implements Messageable {
 
     private boolean ended = false;
     private Arena arena;
@@ -113,29 +114,30 @@ public class Match {
             } else {
                 player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Defeat", "You lost!", 5, 50, 5);
             }
-            int delay = 0;
-            Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {
-                ArrayList<Kill> playerKills = kills.get(player);
-                int killCount = 0;
-                if (playerKills != null)
-                    killCount = playerKills.size();
-                player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Stats:", "Kills: " + killCount, 5, 30, 5);
+            if (!now) {
+                int delay = 0;
+                Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {
+                    ArrayList<Kill> playerKills = kills.get(player);
+                    int killCount = 0;
+                    if (playerKills != null)
+                        killCount = playerKills.size();
+                    player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Stats:", "Kills: " + killCount, 5, 30, 5);
 
-            }, delay += 60);
-            Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {
-                AtomicInteger gotKilled = new AtomicInteger();
-                kills.forEach((shooter, killArray) -> {
-                    killArray.forEach(killObj -> {
+                }, delay += 60);
+                Bukkit.getScheduler().runTaskLater(FrozenGun.plugin, () -> {
+                    AtomicInteger gotKilled = new AtomicInteger();
+                    kills.forEach((shooter, killArray) -> killArray.forEach(killObj -> {
                         if (killObj.getKilled() == player) gotKilled.getAndIncrement();
-                    });
-                });
-                player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Stats:", "Deaths: " + gotKilled.get(), 5, 30, 5);
-            }, delay += 40);
-            if (player.getWeaponInHand() instanceof Gun) {
-                Gun gun = (Gun) player.getWeaponInHand();
-                gun.setCooldown(10);
-                gun.lastShot = System.currentTimeMillis();
+                    }));
+                    player.sendTitle(ChatColor.BOLD + "" + ChatColor.BLUE + "Stats:", "Deaths: " + gotKilled.get(), 5, 30, 5);
+                }, delay += 40);
+                if (player.getWeaponInHand() instanceof Gun) {
+                    Gun gun = (Gun) player.getWeaponInHand();
+                    gun.setCooldown(10);
+                    gun.lastShot = System.currentTimeMillis();
+                }
             }
+
         });
 
         Runnable task = () -> {
@@ -239,5 +241,10 @@ public class Match {
 
     public void setEnded(boolean ended) {
         this.ended = ended;
+    }
+
+    @Override
+    public void sendMessage(String s) {
+        this.broadcast(s);
     }
 }

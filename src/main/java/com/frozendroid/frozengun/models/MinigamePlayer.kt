@@ -1,5 +1,8 @@
 package com.frozendroid.frozengun.models
 
+import com.frozendroid.frozengun.events.PlayerJoinedMatchEvent
+import com.frozendroid.frozengun.interfaces.Messageable
+import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.attribute.Attribute
@@ -7,7 +10,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN
 import org.bukkit.inventory.ItemStack
 
-class MinigamePlayer(p: Player) : Player by p {
+class MinigamePlayer(p: Player) : Player by p, Messageable {
 
     var weapons: ArrayList<Weapon> = ArrayList()
     var match: Match? = null
@@ -111,6 +114,7 @@ class MinigamePlayer(p: Player) : Player by p {
         teleport(match.feasibleSpawn.location, PLUGIN)
         match.startCooldownBar(this)
         match.addPlayer(this)
+        Bukkit.getServer().pluginManager.callEvent(PlayerJoinedMatchEvent(match, this, match))
     }
 
     fun inLobby(): Boolean {
