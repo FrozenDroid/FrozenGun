@@ -5,6 +5,7 @@ import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
 import com.frozendroid.frozengun.events.MessageEvent;
 import com.frozendroid.frozengun.events.PlayerJoinedLobbyEvent;
+import com.frozendroid.frozengun.events.PlayerLeaveLobbyEvent;
 import com.frozendroid.frozengun.models.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -214,7 +215,7 @@ public class ActionListener implements Listener {
             Lobby arenaLobby = arena.getLobby();
             arenaLobby.startWaitingTimerIfNotStarted();
             if (player.getLobby() == arenaLobby || player.inLobby()) {
-                evt.getPlayer().sendMessage(Messenger.infoMsg("Already in queue!"));
+                player.leaveLobby(arenaLobby);
                 return;
             }
 

@@ -1,6 +1,7 @@
 package com.frozendroid.frozengun.models
 
 import com.frozendroid.frozengun.events.PlayerJoinedMatchEvent
+import com.frozendroid.frozengun.events.PlayerLeaveLobbyEvent
 import com.frozendroid.frozengun.interfaces.Messageable
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
@@ -115,6 +116,12 @@ class MinigamePlayer(p: Player) : Player by p, Messageable {
         match.startCooldownBar(this)
         match.addPlayer(this)
         Bukkit.getServer().pluginManager.callEvent(PlayerJoinedMatchEvent(match, this, match))
+    }
+
+    fun leaveLobby(lobby: Lobby, restore: Boolean = false) {
+        Bukkit.getPluginManager().callEvent(PlayerLeaveLobbyEvent(lobby, this, lobby))
+        if (restore) restoreState()
+        lobby.removePlayer(this)
     }
 
     fun inLobby(): Boolean {

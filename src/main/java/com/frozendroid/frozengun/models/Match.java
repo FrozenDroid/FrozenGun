@@ -77,8 +77,6 @@ public class Match implements Messageable {
         ArrayList<MinigamePlayer> winners = new ArrayList<>();
         HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>();
 
-
-//        for (GameObjective objective : objectives) {
         FrozenGun.plugin.getServer().broadcastMessage(Messenger.infoMsg(objective.getEndText()));
         winners.addAll(objective.getWinners());
         kills.putAll(objective.kills);
@@ -106,7 +104,6 @@ public class Match implements Messageable {
                 }, 5L * i);
             }
         }
-//        }
 
         players.forEach(player -> {
             if (winners.contains(player)) {

@@ -9,7 +9,7 @@ import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 import java.lang.reflect.Method
 
-abstract class MessageEvent(var messageable: Messageable) : Event() {
+abstract class MessageEvent(vararg val messageable: Messageable) : Event() {
 
     @Suppress("MemberVisibilityCanBePrivate")
     var prefix = "No prefix"

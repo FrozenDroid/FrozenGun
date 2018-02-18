@@ -3,6 +3,7 @@ package com.frozendroid.frozengun.models;
 import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
+import com.frozendroid.frozengun.interfaces.Messageable;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitTask;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Lobby {
+public class Lobby implements Messageable {
 
     private Arena arena;
     private Location location;
@@ -166,4 +167,10 @@ public class Lobby {
     public void setCountdownTime(long countdownTime) {
         this.countdownTime = countdownTime;
     }
+
+    @Override
+    public void sendMessage(String s) {
+        players.forEach(p -> p.sendMessage(s));
+    }
+
 }

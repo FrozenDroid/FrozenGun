@@ -3,7 +3,6 @@ package com.frozendroid.frozengun.listeners
 import com.frozendroid.frozengun.configs.MessagesConfig
 import com.frozendroid.frozengun.events.MessageEvent
 import com.google.common.base.CaseFormat
-import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
@@ -38,7 +37,7 @@ class MessageListener(plugin: Plugin) : Listener {
             message = message?.replace(it.key, current.toString())
         }
 
-        event.messageable.sendMessage(message)
+        event.messageable.forEach { it.sendMessage(message) }
     }
 
 }
