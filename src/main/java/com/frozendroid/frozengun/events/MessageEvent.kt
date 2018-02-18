@@ -11,7 +11,8 @@ import java.lang.reflect.Method
 
 abstract class MessageEvent(var messageable: Messageable) : Event() {
 
-    private var prefix = "No prefix"
+    @Suppress("MemberVisibilityCanBePrivate")
+    var prefix = "No prefix"
     val silent = false
 
     init {
@@ -66,7 +67,7 @@ abstract class MessageEvent(var messageable: Messageable) : Event() {
                                 methodGetterName == pattern[patternIndex]
                             }
                     if (methodMatch == null) {
-                        println("Error while trying to fill in $message")
+                        println("Error while trying to fill in $message, couldn't find ${pattern[patternIndex]}")
                         return
                     }
                     methodMatch.isAccessible = true
