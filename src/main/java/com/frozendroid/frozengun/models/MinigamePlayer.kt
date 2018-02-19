@@ -6,7 +6,7 @@ import com.frozendroid.frozengun.interfaces.Messageable
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.Location
-import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.Attribute.*
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN
 import org.bukkit.inventory.ItemStack
@@ -31,7 +31,7 @@ class MinigamePlayer(p: Player) : Player by p, Messageable {
     fun saveCurrentState() {
         this.lastLocation = this.location
         this.lastHealth = this.health
-        this.lastMaxHealth = this.maxHealth
+        this.lastMaxHealth = this.getAttribute(GENERIC_MAX_HEALTH).baseValue
         this.lastInventory = this.inventory.contents
         this.lastExp = this.exp
         this.lastFoodLevel = this.foodLevel
@@ -47,7 +47,7 @@ class MinigamePlayer(p: Player) : Player by p, Messageable {
         this.teleport(this.lastLocation ?: this.bedSpawnLocation)
 
         this.health = this.lastHealth ?: 20.0
-        this.maxHealth = this.lastMaxHealth ?: 20.0
+        this.getAttribute(GENERIC_MAX_HEALTH).baseValue = lastMaxHealth?: 20.0
         this.gameMode = this.gameMode ?: GameMode.SURVIVAL
         this.exp = this.lastExp ?: 0.0F
         this.foodLevel = this.lastFoodLevel ?: 0
@@ -89,7 +89,7 @@ class MinigamePlayer(p: Player) : Player by p, Messageable {
             restoreState()
             return
         }
-        health = getAttribute(Attribute.GENERIC_MAX_HEALTH).value
+        health = getAttribute(GENERIC_MAX_HEALTH).value
         teleport(match!!.feasibleSpawn.location, PLUGIN)
     }
 
