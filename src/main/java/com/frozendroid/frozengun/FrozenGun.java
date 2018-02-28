@@ -6,6 +6,8 @@ import com.frozendroid.frozengun.configs.MessagesConfig;
 import com.frozendroid.frozengun.configs.WeaponConfig;
 import com.frozendroid.frozengun.events.MessageEvent;
 import com.frozendroid.frozengun.events.PlayerJoinedLobbyEvent;
+import com.frozendroid.frozengun.events.PlayerJoinedMatchEvent;
+import com.frozendroid.frozengun.events.PlayerLeaveLobbyEvent;
 import com.frozendroid.frozengun.listeners.ActionListener;
 import com.frozendroid.frozengun.listeners.MessageListener;
 import com.frozendroid.frozengun.listeners.PlayerListener;
@@ -114,6 +116,8 @@ public class FrozenGun extends JavaPlugin {
             MessagesConfig.loadMessages();
 
             MessageEvent.checkLookupCaches(PlayerJoinedLobbyEvent.class);
+            MessageEvent.checkLookupCaches(PlayerJoinedMatchEvent.class);
+            MessageEvent.checkLookupCaches(PlayerLeaveLobbyEvent.class);
 
 
             for (Arena arena : MinigameManager.getArenas()) {

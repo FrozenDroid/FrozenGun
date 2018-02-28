@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack
 
 class MinigamePlayer(p: Player) : Player by p, Messageable {
 
-    var weapons: ArrayList<Weapon> = ArrayList()
+    var weapons: ArrayList<Weapon> = arrayListOf()
     var match: Match? = null
     var lobby: Lobby? = null
 
