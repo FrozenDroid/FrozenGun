@@ -1,6 +1,8 @@
 package com.frozendroid.frozengun.models.objectives;
 
+import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.events.PlayerShotEvent;
+import com.frozendroid.frozengun.events.multikills.*;
 import com.frozendroid.frozengun.models.Kill;
 import com.frozendroid.frozengun.models.Match;
 import com.frozendroid.frozengun.models.MinigamePlayer;
@@ -61,7 +63,6 @@ public abstract class GameObjective implements Listener {
 
         ArrayList<Kill> _kills = kills.get(event.getShooter());
 
-
         if (_kills.size() >= 1) {
             Kill lastKill = _kills.get(_kills.size() - 1);
 
@@ -70,15 +71,25 @@ public abstract class GameObjective implements Listener {
                 kill.setSpree(lastKill.getSpree() + 1);
 
                 if (kill.getSpree() == 2)
-                    match.broadcast(event.getShooter().getDisplayName() + " got a double kill!");
+                    FrozenGun.plugin.getServer().getPluginManager().callEvent(
+                            new DoubleKillEvent(match, event.getShooter())
+                    );
                 if (kill.getSpree() == 3)
-                    match.broadcast(event.getShooter().getDisplayName() + " got a triple kill!");
+                    FrozenGun.plugin.getServer().getPluginManager().callEvent(
+                            new TripleKillEvent(match, event.getShooter())
+                    );
                 if (kill.getSpree() == 4)
-                    match.broadcast(event.getShooter().getDisplayName() + " got a quadra kill!");
+                    FrozenGun.plugin.getServer().getPluginManager().callEvent(
+                            new QuadraKillEvent(match, event.getShooter())
+                    );
                 if (kill.getSpree() == 5)
-                    match.broadcast(event.getShooter().getDisplayName() + " got a penta kill!");
+                    FrozenGun.plugin.getServer().getPluginManager().callEvent(
+                            new PentaKillEvent(match, event.getShooter())
+                    );
                 if (kill.getSpree() == 6)
-                    match.broadcast(event.getShooter().getDisplayName() + " got a hexa kill!");
+                    FrozenGun.plugin.getServer().getPluginManager().callEvent(
+                            new HexaKillEvent(match, event.getShooter())
+                    );
             }
         } else
             kill.setSpree(1);

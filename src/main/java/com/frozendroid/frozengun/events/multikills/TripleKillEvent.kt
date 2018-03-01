@@ -5,5 +5,5 @@ import com.frozendroid.frozengun.interfaces.Messageable
 import com.frozendroid.frozengun.models.MinigamePlayer
 
 class TripleKillEvent(messageable: Messageable,
-                      val player: MinigamePlayer) : MessageEvent() {
+                      val player: MinigamePlayer) : MessageEvent(messageable) {
 }

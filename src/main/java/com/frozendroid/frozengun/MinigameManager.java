@@ -71,8 +71,7 @@ public class MinigameManager {
     }
 
     public static void endAllMatches() {
-        ArrayList<Match> array = new ArrayList();
-        array.addAll(matches);
+        ArrayList<Match> array = new ArrayList(matches);
         array.forEach(Match::endImmediately);
     }
 

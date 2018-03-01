@@ -1,2 +1,7 @@
 player_joined_match:
 player_joined_lobby:
+double_kill: "{{player.name}} got a double kill!!!"
+triple_kill: "{{player.name}} got a triple kill!!!"
+quadra_kill: "{{player.name}} got a quadra kill!!!"
+penta_kill: "{{player.name}} got a penta kill!!!"
+hexa_kill: "{{player.name}} got a hexa kill!!!"

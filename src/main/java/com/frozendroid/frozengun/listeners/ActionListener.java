@@ -215,7 +215,7 @@ public class ActionListener implements Listener {
             Lobby arenaLobby = arena.getLobby();
             arenaLobby.startWaitingTimerIfNotStarted();
             if (player.getLobby() == arenaLobby || player.inLobby()) {
-                player.leaveLobby(arenaLobby);
+                player.leaveLobby(arenaLobby, false);
                 return;
             }
 
