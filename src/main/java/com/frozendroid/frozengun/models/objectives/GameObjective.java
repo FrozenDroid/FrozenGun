@@ -1,6 +1,7 @@
 package com.frozendroid.frozengun.models.objectives;
 
 import com.frozendroid.frozengun.FrozenGun;
+import com.frozendroid.frozengun.events.PlayerKillEvent;
 import com.frozendroid.frozengun.events.PlayerShotEvent;
 import com.frozendroid.frozengun.events.multikills.*;
 import com.frozendroid.frozengun.models.Kill;
@@ -8,6 +9,7 @@ import com.frozendroid.frozengun.models.Match;
 import com.frozendroid.frozengun.models.MinigamePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.scoreboard.Score;
 
 import java.util.ArrayList;
@@ -51,7 +53,9 @@ public abstract class GameObjective implements Listener {
 
         Score score = match.getScoreboard().getObjective("killObjective").getScore(event.getShooter().getDisplayName());
         score.setScore(score.getScore() + 1);
-        match.broadcast(event.getShooter().getName() + " killed " + event.getVictim().getName() + "!");
+
+        PluginManager pluginManager = FrozenGun.plugin.getServer().getPluginManager();
+        pluginManager.callEvent(new PlayerKillEvent(match, event.getShooter(), event.getVictim()));
 
         Kill kill = new Kill();
         kill.setKilled(event.getVictim());
@@ -71,25 +75,15 @@ public abstract class GameObjective implements Listener {
                 kill.setSpree(lastKill.getSpree() + 1);
 
                 if (kill.getSpree() == 2)
-                    FrozenGun.plugin.getServer().getPluginManager().callEvent(
-                            new DoubleKillEvent(match, event.getShooter())
-                    );
+                    pluginManager.callEvent(new DoubleKillEvent(match, event.getShooter()));
                 if (kill.getSpree() == 3)
-                    FrozenGun.plugin.getServer().getPluginManager().callEvent(
-                            new TripleKillEvent(match, event.getShooter())
-                    );
+                    pluginManager.callEvent(new TripleKillEvent(match, event.getShooter()));
                 if (kill.getSpree() == 4)
-                    FrozenGun.plugin.getServer().getPluginManager().callEvent(
-                            new QuadraKillEvent(match, event.getShooter())
-                    );
+                    pluginManager.callEvent(new QuadraKillEvent(match, event.getShooter()));
                 if (kill.getSpree() == 5)
-                    FrozenGun.plugin.getServer().getPluginManager().callEvent(
-                            new PentaKillEvent(match, event.getShooter())
-                    );
+                    pluginManager.callEvent(new PentaKillEvent(match, event.getShooter()));
                 if (kill.getSpree() == 6)
-                    FrozenGun.plugin.getServer().getPluginManager().callEvent(
-                            new HexaKillEvent(match, event.getShooter())
-                    );
+                    pluginManager.callEvent(new HexaKillEvent(match, event.getShooter()));
             }
         } else
             kill.setSpree(1);

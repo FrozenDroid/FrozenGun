@@ -1,5 +1,6 @@
 package com.frozendroid.frozengun.configs
 
+import com.frozendroid.frozengun.Messenger
 import com.frozendroid.frozengun.utils.ConfigLoader
 import org.bukkit.ChatColor
 import org.bukkit.configuration.file.FileConfiguration
@@ -15,6 +16,8 @@ class MessagesConfig {
         fun loadMessages() {
             config = ConfigLoader.getMessagesConfig()
             prefix = ChatColor.translateAlternateColorCodes('&', config.getString("prefix"))
+
+            Messenger.setPrefix(prefix)
         }
     }
 

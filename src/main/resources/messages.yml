@@ -1,7 +1,11 @@
-player_joined_match:
-player_joined_lobby:
-double_kill: "{{player.name}} got a double kill!!!"
-triple_kill: "{{player.name}} got a triple kill!!!"
-quadra_kill: "{{player.name}} got a quadra kill!!!"
-penta_kill: "{{player.name}} got a penta kill!!!"
-hexa_kill: "{{player.name}} got a hexa kill!!!"
+prefix: "&3&l[&bFrozenGun&3&l]&e"
+player_joined_match: ""
+player_joined_lobby: "You joined the lobby for {{lobby.arena.name}}."
+player_kill: "{{shooter.name}} killed {{victim.name}}!"
+double_kill: "{{player.name}} got a double kill!"
+triple_kill: "{{player.name}} got a triple kill!"
+quadra_kill: "{{player.name}} got a quadra kill!"
+penta_kill: "{{player.name}} got a penta kill!"
+hexa_kill: "{{player.name}} got a hexa kill!"
+player_already_in_match: "You're already in this match..."
+lobby_countdown: "Starting in {{lobby.timeTillStart}}..."

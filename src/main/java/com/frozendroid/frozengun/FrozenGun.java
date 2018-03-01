@@ -23,7 +23,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class FrozenGun extends JavaPlugin {
 
     public static Plugin plugin;
-    private static String defaultPrefix;
     private static long lastModified = 0L;
     private static boolean hasFoundNewFile = false;
     private static boolean useNoteBlockAPI = false;
@@ -56,12 +55,10 @@ public class FrozenGun extends JavaPlugin {
         return false;
     }
 
-    public static boolean debug(String msg) {
+    public static void debug(String msg) {
         if (inDebugMode()) {
             FrozenGun.info("DEBUG: " + msg);
-            return true;
         }
-        return false;
     }
 
     public static void info(String msg) {
@@ -86,7 +83,6 @@ public class FrozenGun extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        defaultPrefix = this.getName();
         console = this.getServer().getConsoleSender();
 
         // Disable plugin if it can't find the main config values.
@@ -176,12 +172,6 @@ public class FrozenGun extends JavaPlugin {
         try {
             FrozenGun.devMode = config.getBoolean("devMode");
             FrozenGun.debugMode = config.getBoolean("debugMode");
-            String prefix = config.getString("prefix");
-            if (prefix == null || prefix.equalsIgnoreCase("")) {
-                prefix = defaultPrefix;
-            }
-
-            Messenger.setPrefix(prefix);
         } catch (NullPointerException ex) {
             return false;
         }

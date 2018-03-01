@@ -3,9 +3,8 @@ package com.frozendroid.frozengun.listeners;
 import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
-import com.frozendroid.frozengun.events.MessageEvent;
+import com.frozendroid.frozengun.events.PlayerAlreadyInMatchEvent;
 import com.frozendroid.frozengun.events.PlayerJoinedLobbyEvent;
-import com.frozendroid.frozengun.events.PlayerLeaveLobbyEvent;
 import com.frozendroid.frozengun.models.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -29,6 +28,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -155,7 +155,6 @@ public class ActionListener implements Listener {
             return;
 
         if (event.getEntity().getType() == EntityType.SPLASH_POTION) {
-            Bukkit.broadcastMessage("potion has been thrown");
             SplashPotion potion = (SplashPotion) event.getEntity();
             ItemStack item = potion.getItem();
 
@@ -176,6 +175,9 @@ public class ActionListener implements Listener {
                                         evt.getClickedBlock().getType() == Material.SIGN_POST
                         )
                 ) {
+
+
+            PluginManager pluginManager = Bukkit.getServer().getPluginManager();
             Sign sign = (Sign) evt.getClickedBlock().getState();
             String[] lines = sign.getLines();
 
@@ -207,7 +209,7 @@ public class ActionListener implements Listener {
                     player.join(match);
                     return;
                 } else {
-                    player.sendMessage(Messenger.infoMsg("You're already in this match!"));
+                    pluginManager.callEvent(new PlayerAlreadyInMatchEvent(player, player));
                     return;
                 }
             }
@@ -226,7 +228,7 @@ public class ActionListener implements Listener {
             if (arenaLobby.getLocation().isPresent()) {
                 player.teleport(arenaLobby.getLocation().get());
             }
-            Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinedLobbyEvent(player, arenaLobby, player));
+            pluginManager.callEvent(new PlayerJoinedLobbyEvent(player, arenaLobby, player));
             return;
         }
 
@@ -244,7 +246,6 @@ public class ActionListener implements Listener {
                 if (gun.canShoot())
                     gun.shoot();
             }
-
         }
     }
 

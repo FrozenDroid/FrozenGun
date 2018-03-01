@@ -3,6 +3,7 @@ package com.frozendroid.frozengun.models;
 import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
+import com.frozendroid.frozengun.events.LobbyCountdownEvent;
 import com.frozendroid.frozengun.interfaces.Messageable;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -115,9 +116,11 @@ public class Lobby implements Messageable {
                 starting_timer = null;
                 return;
             }
+            FrozenGun.plugin.getServer().getPluginManager().callEvent(
+                    new LobbyCountdownEvent(this, this)
+            );
             players.forEach((player) -> {
                 if (timeTillStart > 0) {
-                    player.getPlayer().sendMessage(Messenger.infoMsg("Starting in " + timeTillStart));
                     if (timeTillStart <= 5) {
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 1f, 1f);
                     }
@@ -139,7 +142,6 @@ public class Lobby implements Messageable {
     }
 
     public void addPlayer(MinigamePlayer player) {
-        player.sendMessage(Messenger.infoMsg("Joined the queue for " + arena.getName()) + ".");
         players.add(player);
     }
 

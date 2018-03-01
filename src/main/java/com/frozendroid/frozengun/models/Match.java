@@ -42,7 +42,7 @@ public class Match implements Messageable {
     }
 
     public void broadcast(String string) {
-        players.forEach(player -> player.sendMessage(Messenger.infoMsg(string)));
+        players.forEach(player -> player.sendMessage(string));
     }
 
     public void startCooldownBar(MinigamePlayer player) {
@@ -74,36 +74,33 @@ public class Match implements Messageable {
             return;
         setEnded(true);
 
-        ArrayList<MinigamePlayer> winners = new ArrayList<>();
-        HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>();
-
         FrozenGun.plugin.getServer().broadcastMessage(Messenger.infoMsg(objective.getEndText()));
-        winners.addAll(objective.getWinners());
-        kills.putAll(objective.kills);
+        ArrayList<MinigamePlayer> winners = new ArrayList<>(objective.getWinners());
+        HashMap<MinigamePlayer, ArrayList<Kill>> kills = new HashMap<>(objective.kills);
         objective.stop();
         objective.reset();
 
-
-        for (MinigamePlayer winner : winners) {
-            for (int i = 0; i < 20; i++) {
-                Bukkit.getServer().getScheduler().runTaskLater(FrozenGun.plugin, () -> {
-                    Firework fw = winner.getWorld().spawn(winner.getLocation(), Firework.class);
-                    FireworkMeta meta = fw.getFireworkMeta();
-                    FireworkEffect fe = FireworkEffect.builder()
-                            .withColor(Color.BLUE)
-                            .trail(true)
-                            .flicker(true)
-                            .with(FireworkEffect.Type.BALL_LARGE)
-                            .withFlicker()
-                            .withColor(Color.BLUE)
-                            .withFade(Color.RED)
-                            .build();
-                    meta.setPower(1);
-                    meta.addEffect(fe);
-                    fw.setFireworkMeta(meta);
-                }, 5L * i);
+        if (!now)
+            for (MinigamePlayer winner : winners) {
+                for (int i = 0; i < 20; i++) {
+                    Bukkit.getServer().getScheduler().runTaskLater(FrozenGun.plugin, () -> {
+                        Firework fw = winner.getWorld().spawn(winner.getLocation(), Firework.class);
+                        FireworkMeta meta = fw.getFireworkMeta();
+                        FireworkEffect fe = FireworkEffect.builder()
+                                .withColor(Color.BLUE)
+                                .trail(true)
+                                .flicker(true)
+                                .with(FireworkEffect.Type.BALL_LARGE)
+                                .withFlicker()
+                                .withColor(Color.BLUE)
+                                .withFade(Color.RED)
+                                .build();
+                        meta.setPower(1);
+                        meta.addEffect(fe);
+                        fw.setFireworkMeta(meta);
+                    }, 5L * i);
+                }
             }
-        }
 
         players.forEach(player -> {
             if (winners.contains(player)) {
@@ -138,8 +135,7 @@ public class Match implements Messageable {
         });
 
         Runnable task = () -> {
-            Set<MinigamePlayer> playerSet = new HashSet<>();
-            playerSet.addAll(players);
+            Set<MinigamePlayer> playerSet = new HashSet<>(players);
             playerSet.forEach(player -> {
                 this.stopCooldownBar(player);
                 this.stopScoreboard(player);
@@ -153,6 +149,14 @@ public class Match implements Messageable {
             Bukkit.getServer().getScheduler().runTaskLater(FrozenGun.plugin, task, 20L * 10);
         } else {
             task.run();
+            Set<MinigamePlayer> playerSet = new HashSet<>(players);
+            playerSet.forEach(player -> {
+                this.stopCooldownBar(player);
+                this.stopScoreboard(player);
+                this.leave(player);
+            });
+            arena.setOccupied(false);
+            MinigameManager.getMatches().remove(this);
         }
     }
 
@@ -188,7 +192,6 @@ public class Match implements Messageable {
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName("Kills");
         players.forEach((player) -> {
-            Bukkit.getServer().broadcastMessage("Enabling scoreboard for " + player.getDisplayName());
             String entryName = player.getDisplayName();
             team.addEntry(entryName);
             objective.getScore(entryName).setScore(0);

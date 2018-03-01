@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class MinigameManager {
 
-    private static List<Match> matches = new ArrayList<>();
+    private static ArrayList<Match> matches = new ArrayList<>();
     private static List<Arena> arenas = new ArrayList<>();
     private static List<Weapon> weapons = new ArrayList<>();
     private static List<MinigamePlayer> players = new ArrayList<>();
@@ -29,7 +29,7 @@ public class MinigameManager {
         return matches;
     }
 
-    public static void setMatches(List<Match> matches) {
+    public static void setMatches(ArrayList<Match> matches) {
         MinigameManager.matches = matches;
     }
 
@@ -71,8 +71,8 @@ public class MinigameManager {
     }
 
     public static void endAllMatches() {
-        ArrayList<Match> array = new ArrayList(matches);
-        array.forEach(Match::endImmediately);
+        ArrayList<Match> matchesCopy = new ArrayList<>(matches);
+        matchesCopy.forEach(Match::endImmediately);
     }
 
     public static void endAllLobbies() {
