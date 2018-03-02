@@ -3,6 +3,7 @@ package com.frozendroid.frozengun.listeners;
 import com.frozendroid.frozengun.FrozenGun;
 import com.frozendroid.frozengun.Messenger;
 import com.frozendroid.frozengun.MinigameManager;
+import com.frozendroid.frozengun.events.CantFindArenaEvent;
 import com.frozendroid.frozengun.events.PlayerAlreadyInMatchEvent;
 import com.frozendroid.frozengun.events.PlayerJoinedLobbyEvent;
 import com.frozendroid.frozengun.models.*;
@@ -193,12 +194,13 @@ public class ActionListener implements Listener {
             String arena_name = lines[2];
             Arena arena = Arena.getByName(arena_name);
 
+            MinigamePlayer player = MinigameManager.getPlayerOrNewIfNotExists(evt.getPlayer());
+
             if (arena == null) {
-                evt.getPlayer().sendMessage(Messenger.infoMsg("Couldn't find the arena :("));
+                pluginManager.callEvent(new CantFindArenaEvent(player, player));
                 return;
             }
 
-            MinigamePlayer player = MinigameManager.getPlayerOrNewIfNotExists(evt.getPlayer());
 
             Optional<Match> matchOptional = MinigameManager.findMatchByArena(arena);
             if (matchOptional.isPresent()) {
